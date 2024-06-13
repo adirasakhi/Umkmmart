@@ -35,7 +35,6 @@
           @include("partials.pages.dashboard.header-dashboard")
           @include("partials.pages.dashboard.sidebar-dashboard")
           @include("partials.pages.dashboard.content-dashboard")
-          {{-- @yield("content") --}}
         </div>
 
         <!-- General JS Scripts -->

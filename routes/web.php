@@ -16,8 +16,9 @@ Route::get('/', function () {
     return view('LandingPage.index');
 });
 Route::get('/shop', function () {
-    return view('LandingPage.shop');
+    return view('LandingPage.shop')->name('shop');
 });
+
 Route::get('/detail', function () {
     return view('LandingPage.Detail');
 });

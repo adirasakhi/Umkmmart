@@ -1,4 +1,4 @@
-@extends("partials.layouts.dashboard")
+@extends("layouts.dashboard")
 @section("content")
      <!-- Main Content -->
      <div class="main-content">

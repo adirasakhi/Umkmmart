@@ -1,3 +1,5 @@
+@extends("layouts.dashboard")
+@section("content")
 <div class="main-content">
   <section class="section">
     <div class="section-header">
@@ -63,7 +65,7 @@
             </div>
           </div>
         </div>
-      </div>                  
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-8 col-md-12 col-12 col-sm-12">
@@ -106,12 +108,6 @@
       </div>
     </section>
   </div>
-  <footer class="main-footer">
-    <div class="footer-left">
-      Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
-    </div>
-    <div class="footer-right">
+  @endsection
 
-    </div>
-  </footer>
-</div>
+

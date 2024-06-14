@@ -22,7 +22,6 @@
                   <div class="form-group">
                     <label>Deskripsi Produk</label>
                     <textarea class="form-control">
-
                     </textarea>
                   </div>
                   <div class="form-group">

@@ -36,8 +36,8 @@
   <body>
     <div id="app">
       <div class="main-wrapper main-wrapper-1">
-        @include("partials.pages.dashboard.header-dashboard")
-        @include("partials.pages.dashboard.sidebar-dashboard")
+        @include("partials.dashboard.navbar")
+        @include("partials.dashboard.sidebar")
       </div>
       @yield("content")
       <footer class="main-footer">

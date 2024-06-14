@@ -1,4 +1,4 @@
-@extends("partials.layouts.dashboard")
+@extends("layouts.dashboard")
 @section("content")
 <!-- Main Content -->
 <div class="main-content">
@@ -211,7 +211,7 @@
     </div>
   </div>
 </div>
-<!-- end --> 
+<!-- end -->
 
 
 <script type="text/javascript">
@@ -223,7 +223,7 @@
        {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
        function(html){
         $(".data").html(html);
-      }   
+      }
       );
     });
   });

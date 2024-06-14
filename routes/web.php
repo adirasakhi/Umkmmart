@@ -4,33 +4,33 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/dashboard', function () {
-    return view('partials.pages.dashboard.content-dashboard');
+    return view('pages.dashboard.content-dashboard');
 });
 Route::get('/produk', function () {
-    return view('partials.pages.dashboard.produk');
+    return view('pages.dashboard.produk');
 });
 Route::get('/create-produk', function () {
-    return view('partials.pages.dashboard.createProduk');
+    return view('pages.dashboard.createProduk');
 });
 Route::get('/', function () {
-    return view('LandingPage.index');
+    return view('pages.Landing.index');
 });
 Route::get('/shop', function () {
-    return view('LandingPage.shop')->name('shop');
+    return view('pages.Landing.shop');
 });
 
 Route::get('/detail', function () {
-    return view('LandingPage.Detail');
+    return view('pages.Landing.Detail');
 });
 Route::get('/404', function () {
-    return view('LandingPage.404');
+    return view('pages.Landing.404');
 });
 Route::get('/chart', function () {
-    return view('LandingPage.chart');
+    return view('pages.Landing.chart');
 });
 Route::get('/testimoni', function () {
-    return view('LandingPage.testimoni');
+    return view('pages.Landing.testimoni');
 });
 Route::get('/contact', function () {
-    return view('LandingPage.contact');
+    return view('pages.Landing.contact');
 });

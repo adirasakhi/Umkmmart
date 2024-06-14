@@ -42,7 +42,7 @@
 
 
     <!-- Navbar start -->
-@include("partials.LandingPage.navbar")
+@include("partials.Landing.navbar")
     <!-- Navbar End -->
 
 
@@ -73,7 +73,7 @@
     <!-- Content End -->
 
     <!-- Footer Start -->
-@include("partials.LandingPage.footer")
+@include("partials.Landing.footer")
     <!-- Footer End -->
 
 

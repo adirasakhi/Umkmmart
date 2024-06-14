@@ -1,4 +1,4 @@
-@extends("partials.layouts.dashboard")
+@extends("layouts.dashboard")
 @section("content")
 <div class="main-content">
   <section class="section">

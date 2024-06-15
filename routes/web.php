@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+
 
 
 Route::get('/dashboard', function () {
@@ -34,3 +36,9 @@ Route::get('/testimoni', function () {
 Route::get('/contact', function () {
     return view('pages.Landing.contact');
 });
+Route::get('/kategori', [CategoryController::class, "index"])->name('kategori');
+Route::post('/kategori/insert', [CategoryController::class, "store"])->name('kategori.edit');
+Route::post('/kategori/edit', [CategoryController::class, "edit"])->name('kategori.edit');
+Route::post('/kategori/update/{id}', [CategoryController::class, "update"])->name('kategori.update');
+Route::delete('/kategori/delete/{id}', [CategoryController::class, "destroy"])->name('category.delete');
+

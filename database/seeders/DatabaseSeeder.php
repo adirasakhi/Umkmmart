@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             Insert_category_table::class,
             Insert_role_table::class,
-            Insert_users_table::class,
             Insert_social_media_table::class,
+            Insert_users_table::class,
             Insert_product_table::class,
             // Seeder lainnya jika ada
         ]);

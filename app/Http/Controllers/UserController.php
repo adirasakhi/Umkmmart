@@ -24,7 +24,7 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'social_media_id' => 'required|integer',
+            'social_media_id' => 'nullable|integer',
             'role_id' => 'required|integer',
         ]);
 
@@ -71,7 +71,7 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'social_media_id' => 'required|integer',
+            'social_media_id' => 'nullable|integer',
             'role_id' => 'required|integer',
         ]);
 

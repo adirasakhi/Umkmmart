@@ -17,9 +17,12 @@ return new class extends Migration
             $table->integer('price');
             $table->string('description');
             $table->string('image');
-            $table->integer('category_id');
-            $table->integer('seller_id');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('seller_id');
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
+            $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -28,6 +31,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('product', function (Blueprint $table) {
+            $table->dropForeign(['category_id']);
+            $table->dropForeign(['seller_id']);
+        });
+
         Schema::dropIfExists('product');
     }
 };

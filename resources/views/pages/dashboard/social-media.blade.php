@@ -1,12 +1,47 @@
 @extends('layouts.dashboard')
 @section('content')
+@if(session('success'))
+<div id="successPopup" class="popup success">
+    {{ session('success') }}
+</div>
+<script>
+            // JavaScript untuk menampilkan popup sukses
+    window.onload = function() {
+        var popup = document.getElementById('successPopup');
+        popup.style.display = 'block';
+
+                // Menghilangkan popup setelah beberapa detik (misalnya 3 detik)
+        setTimeout(function() {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+</script>
+@endif
+
+@if(session('error'))
+<div id="errorPopup" class="popup error">
+    {{ session('error') }}
+</div>
+<script>
+            // JavaScript untuk menampilkan popup error
+    window.onload = function() {
+        var popup = document.getElementById('errorPopup');
+        popup.style.display = 'block';
+
+                // Menghilangkan popup setelah beberapa detik (misalnya 3 detik)
+        setTimeout(function() {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+</script>
+@endif
 <!-- Modal Edit -->
 <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Edit Produk</h4>
+            <h4 class="modal-title" id="myModalLabel">Edit Akun Sosial Media</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                 aria-hidden="true">&times;</span></button>
             </div>
@@ -128,16 +163,15 @@ aria-hidden="true">
         $(document).on('click','.edit',function(e){
             e.preventDefault();
             $("#myModalEdit").modal('show');
-            $.post('{{ route("kategori.edit") }}',
-             {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
-             function(html){
+            $.post('{{ route("sosial-media.edit") }}',
+               {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
+               function(html){
                 $(".data").html(html);
             }   
             );
         });
     });
 </script>
-@endsection
 
 {{-- Js Hapus --}}
 <script>
@@ -149,7 +183,7 @@ aria-hidden="true">
                 event.preventDefault();
                 const id = this.getAttribute('data-id');
                 if (confirm('Anda Yakin menghapus data ini?')) {
-                    fetch(`{{ url('/kategori/delete/') }}/${id}`, {
+                    fetch(`{{ url('/sosial-media/delete/') }}/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -173,5 +207,26 @@ aria-hidden="true">
         });
     });
 </script>
+<style>
+    .popup {
+        display: none; /* Awalnya disembunyikan */
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        color: white;
+    }
+    .popup.success {
+        background-color: #4CAF50; /* Warna hijau untuk sukses */
+    }
+    .popup.error {
+        background-color: #f44336; /* Warna merah untuk error */
+    }
+</style>
+@endsection
 
 

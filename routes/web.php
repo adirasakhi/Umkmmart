@@ -44,5 +44,9 @@ Route::delete('/kategori/delete/{id}', [CategoryController::class, "destroy"])->
 
 Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');
 Route::post('/sosial-media/insert', [SocialmediaController::class, "store"])->name('sosial-media.insert');
+Route::post('/sosial-media/edit', [SocialmediaController::class, "edit"])->name('sosial-media.edit');
+Route::post('/sosial-media/update/{id}', [SocialmediaController::class, "update"])->name('sosial-media.update');
+Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destroy"])->name('sosial-media.delete');
+
 
 

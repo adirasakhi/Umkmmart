@@ -36,7 +36,6 @@ class CategoryController extends Controller
 
         $id = $request->id;
         $data = Category::find($id);
-        return view('pages.dashboard.category-edit', compact('data'));
 
         if ($data) {
             return view('pages.dashboard.category-edit', compact('data'));

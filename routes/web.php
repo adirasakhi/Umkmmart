@@ -14,11 +14,9 @@ Route::get('/dashboard', function () {
 // Route::get('/produk', function () {
 //     return view('pages.dashboard.product');
 // });
-Route::get('/create-produk', function () {
-    return view('pages.dashboard.createProduk');
-});
+
 Route::get('/', function () {
-    return view('pages.Landing.index')->name('home');
+    return view('pages.Landing.index');
 });
 Route::get('/shop', function () {
     return view('pages.Landing.shop');

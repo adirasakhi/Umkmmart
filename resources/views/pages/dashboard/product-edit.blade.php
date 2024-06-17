@@ -9,7 +9,6 @@
 @endif
 <form action="{{ url('products/update', $product->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @method('PUT')
     <label for="name" class="control-label">Name</label>
     <input type="text" name="name" class="form-control" value="{{ $product->name }}">
     <label for="price" class="control-label">Price</label>

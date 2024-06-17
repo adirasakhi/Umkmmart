@@ -33,7 +33,11 @@
 
     gtag('config', 'UA-94034622-3');
   </script>
-  <!-- /END GA --></head>
+  <!-- /END GA -->
+  <!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- End SweetAlert2 -->
+</head>
 
   <body>
     <div id="app">
@@ -89,5 +93,29 @@
     {{-- Modal --}}
     <script src="{{ asset('assets/modal/bootstrap.bundle.min.js') }}"></script>
 
+    {{-- sweatallert script --}}
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+    </script>
+
+    {{-- end sweatallert script --}}
   </body>
   </html>

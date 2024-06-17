@@ -1,4 +1,3 @@
-
 @if ($errors->any())
 <div>
 	<ul>

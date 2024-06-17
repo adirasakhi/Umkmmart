@@ -15,13 +15,13 @@ class SocialmediaController extends Controller
 
     public function store(Request $request)
     {
-        $validateData=$request->validate([
-            'id'=> 'required|int',
+        $validateData = $request->validate([
             'whatsapp' => 'required|string|max:15',
             'facebook' => 'required|string|max:100',
             'instagram' => 'required|string|max:100',
-            'tiktok'=> 'required|string|max:100'
+            'tiktok' => 'required|string|max:100'
         ]);
+
         $data = SocialMedia::create([
             'whatsapp' => $validateData['whatsapp'],
             'facebook' => $validateData['facebook'],
@@ -32,6 +32,8 @@ class SocialmediaController extends Controller
         ]);
         if($data){
             return redirect()->route('sosial-media');
+        } else {
+            return redirect()->route('sosial-media')->with('error', 'Gagal menambahkan sosial media');
         }
     }
 
@@ -67,6 +69,7 @@ class SocialmediaController extends Controller
                 return redirect()->route('sosial-media');
             }
     }
+
     public function destroy($id)
     {
         $data = SocialMedia::findOrFail($id);

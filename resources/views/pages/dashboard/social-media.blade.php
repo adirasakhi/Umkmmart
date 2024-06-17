@@ -5,57 +5,39 @@
     {{ session('success') }}
 </div>
 <script>
-            // JavaScript untuk menampilkan popup sukses
+    // JavaScript untuk menampilkan popup sukses
     window.onload = function() {
         var popup = document.getElementById('successPopup');
         popup.style.display = 'block';
 
                 // Menghilangkan popup setelah beberapa detik (misalnya 3 detik)
-        setTimeout(function() {
-            popup.style.display = 'none';
-        }, 3000);
-    }
-</script>
-@endif
-
-@if(session('error'))
-<div id="errorPopup" class="popup error">
-    {{ session('error') }}
-</div>
-<script>
-            // JavaScript untuk menampilkan popup error
     window.onload = function() {
-        var popup = document.getElementById('errorPopup');
+        var popup = document.getElementById('successPopup');
         popup.style.display = 'block';
-
-                // Menghilangkan popup setelah beberapa detik (misalnya 3 detik)
         setTimeout(function() {
             popup.style.display = 'none';
         }, 3000);
     }
 </script>
 @endif
+
 <!-- Modal Edit -->
-<div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Edit Akun Sosial Media</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
+<div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Akun Sosial Media</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <div class="data">
-
-                </div>
+                <div class="data"></div>
             </div>
-            <div class="modal-footer">
-            </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
 </div>
 <!-- end Edit Modal -->
+
 <!-- Main Content -->
 <div class="main-content">
     <section class="section">
@@ -77,6 +59,10 @@ aria-hidden="true">
             </div>
             <div class="row">
                 <!-- dipake -->
+                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Akun</button>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body p-3">
@@ -106,6 +92,7 @@ aria-hidden="true">
                                         </td>
                                     </tr>
                                     @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -153,10 +140,40 @@ aria-hidden="true">
                     <br>
                 </div>
             </form>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
         </div>
     </div>
 </div>
 {{-- end Tambah Modal --}}
+
+{{-- Modal Hapus --}}
+<div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Hapus Akun Sosial Media</h4>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus akun sosial media ini?</p>
+                <form id="deleteForm" action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="row justify-content-end">
+                        <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
+                            <span class="fa fa-times"></span> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary col-2 mr-3">
+                            <span class="fa fa-check"></span> Yakin
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- end Modal Hapus --}}
+
 {{-- Js Edit --}}
 <script type="text/javascript">
     $(function(){
@@ -168,9 +185,9 @@ aria-hidden="true">
                function(html){
                 $(".data").html(html);
             }   
+            }
             );
         });
-    });
 </script>
 
 {{-- Js Hapus --}}
@@ -203,6 +220,10 @@ aria-hidden="true">
                         location.reload();
                     });
                 }
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                const deleteForm = document.getElementById('deleteForm');
+                deleteForm.action = `{{ url('/sosial-media/delete') }}/${id}`;
             });
         });
     });
@@ -210,6 +231,8 @@ aria-hidden="true">
 <style>
     .popup {
         display: none; /* Awalnya disembunyikan */
+    .popup {
+        display: none;
         position: fixed;
         top: 20px;
         left: 50%;
@@ -226,7 +249,6 @@ aria-hidden="true">
     .popup.error {
         background-color: #f44336; /* Warna merah untuk error */
     }
+    
 </style>
 @endsection
-
-

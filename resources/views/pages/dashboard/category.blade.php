@@ -1,5 +1,36 @@
 @extends('layouts.dashboard')
 @section('content')
+
+@if(session('success'))
+<div id="successPopup" class="popup success">
+    {{ session('success') }}
+</div>
+<script>
+    window.onload = function() {
+        var popup = document.getElementById('successPopup');
+        popup.style.display = 'block';
+        setTimeout(function() {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+</script>
+@endif
+
+@if(session('error'))
+<div id="errorPopup" class="popup error">
+    {{ session('error') }}
+</div>
+<script>
+    window.onload = function() {
+        var popup = document.getElementById('errorPopup');
+        popup.style.display = 'block';
+        setTimeout(function() {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+</script>
+@endif
+
 <!-- Modal Edit -->
 <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
@@ -165,4 +196,26 @@ aria-hidden="true">
         });
     });
 </script>
+
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        color: white;
+    }
+    .popup.success {
+        background-color: #4CAF50;
+    }
+    .popup.error {
+        background-color: #f44336;
+    }
+</style>
+
 @endsection

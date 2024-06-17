@@ -43,6 +43,8 @@ class UserController extends Controller
 
         if ($user) {
             return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        } else {
+            return redirect()->route('users.index')->with('error', 'Gagal menambahkan user');
         }
     }
 
@@ -58,7 +60,7 @@ class UserController extends Controller
         if ($user) {
             return view('pages.dashboard.user-edit', compact('user'));
         } else {
-            return response()->json(['message' => 'User tidak ditemukan'], 404);
+            return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
         }
     }
 

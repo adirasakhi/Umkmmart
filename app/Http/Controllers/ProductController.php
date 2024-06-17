@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -14,8 +13,7 @@ class ProductController extends Controller
     {
         $products = Product::all();
         $categories = Category::all();
-        $users = User::where('role_id', 2)->get();
-        return view('pages.dashboard.product', ['products' => $products,'categories' => $categories,'users' => $users]);
+        return view('pages.dashboard.product', ['products' => $products,'categories' => $categories]);
     }
 
     public function store(Request $request)
@@ -26,7 +24,6 @@ class ProductController extends Controller
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required|integer',
-            'seller' => 'required|integer',
         ]);
 
         $imagePath = $request->file('image')->store('product_images', 'public');
@@ -37,11 +34,13 @@ class ProductController extends Controller
             'description' => $validatedData['description'],
             'image' => $imagePath,
             'category_id' => $validatedData['category_id'],
-            'seller_id' => $validatedData['category_id'],
+            'seller_id' => 2,
         ]);
 
         if ($product) {
             return redirect()->route('products.index')->with('success', 'Product berhasil ditambahkan');
+        } else {
+            return redirect()->route('products.index')->with('error', 'Product gagal ditambahkan');
         }
     }
 
@@ -111,6 +110,7 @@ class ProductController extends Controller
         }
 
         $product->delete();
-        return redirect()->back()->with('success', 'Product berhasil dihapus');
+        return redirect()->route('products.index')->with('success', 'Product berhasil dihapus');
     }
+
 }

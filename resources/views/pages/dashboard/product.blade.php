@@ -1,6 +1,36 @@
 @extends('layouts.dashboard')
 @section('content')
 
+@if(session('success'))
+<div id="successPopup" class="popup success">
+    {{ session('success') }}
+</div>
+<script>
+    window.onload = function() {
+        var popup = document.getElementById('successPopup');
+        popup.style.display = 'block';
+        setTimeout(function() {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+</script>
+@endif
+
+@if(session('error'))
+<div id="errorPopup" class="popup error">
+    {{ session('error') }}
+</div>
+<script>
+    window.onload = function() {
+        var popup = document.getElementById('errorPopup');
+        popup.style.display = 'block';
+        setTimeout(function() {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+</script>
+@endif
+
 <!-- Modal Edit -->
 <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -96,32 +126,47 @@
                 <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="name" class="control-label">Name</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <label for="name" class="control-label" value="{{ old('name') }}">Name</label>
+                        <input type="text" name="name" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="price" class="control-label">Price</label>
-                        <input type="number" name="price" class="form-control" required>
+                        <label value="{{ old('price') }}">Harga Produk</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Rp
+                                </div>
+                            </div>
+                            <input type="text" class="form-control currency" name="price" id="price">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="description" class="control-label">Description</label>
-                        <textarea name="description" class="form-control" required></textarea>
+                        <label for="description" class="control-label"
+                            value="{{ old('description') }}">Description</label>
+                        <textarea name="description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller_id" class="control-label"
+                            value="{{ old('seller_id') }}">Seller</label>
+                        <textarea name="seller_id" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="image" class="control-label">Image</label>
-                        <input type="file" name="image" class="form-control" required>
+                        <input type="file" name="image" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="category_id" class="control-label">Category</label>
-                        <select name="category_id" class="form-control" required>
-                            <option value="">-- Pilih Kategori --</option>
-                            @foreach($categories as $category)
+                        <label for="category_id" class="control-label"
+                            value="{{ old('category_id') }}">Category</label>
+                        <select name="category_id" class="form-control">
+                            <option value="">-- Pilih Jenis --</option>
+                            @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->category }}</option>
                             @endforeach
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
                 </form>
+
             </div>
         </div>
     </div>
@@ -185,5 +230,26 @@
         });
     });
 </script>
+
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        color: white;
+    }
+    .popup.success {
+        background-color: #4CAF50;
+    }
+    .popup.error {
+        background-color: #f44336;
+    }
+</style>
 
 @endsection

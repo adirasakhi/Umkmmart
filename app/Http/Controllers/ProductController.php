@@ -34,11 +34,13 @@ class ProductController extends Controller
             'description' => $validatedData['description'],
             'image' => $imagePath,
             'category_id' => $validatedData['category_id'],
-            'seller_id' => 2, // Fixed seller_id as per your request
+            'seller_id' => 2,
         ]);
 
         if ($product) {
             return redirect()->route('products.index')->with('success', 'Product berhasil ditambahkan');
+        } else {
+            return redirect()->route('products.index')->with('error', 'Product gagal ditambahkan');
         }
     }
 
@@ -108,6 +110,7 @@ class ProductController extends Controller
         }
 
         $product->delete();
-        return redirect()->back()->with('success', 'Product berhasil dihapus');
+        return redirect()->route('products.index')->with('success', 'Product berhasil dihapus');
     }
+
 }

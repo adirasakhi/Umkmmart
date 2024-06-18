@@ -18,7 +18,7 @@ Route::get('/create-produk', function () {
     return view('pages.dashboard.createProduk');
 });
 Route::get('/', function () {
-    return view('pages.Landing.index')->name('home');
+    return view('pages.Landing.index');
 });
 Route::get('/shop', function () {
     return view('pages.Landing.shop');
@@ -54,10 +54,17 @@ Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('u
 
 
 // Auth routes
-Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('register', [AuthController::class, 'register']);
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
+// Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+// Route::post('register', [AuthController::class, 'register']);
+// Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+// Route::post('login', [AuthController::class, 'login']);
+
+// pengen buat 1 page yang disitu ada signin/login dan singup/register ---------> ini satu route
+Route::get('index', [AuthController::class, 'indexView'])->name('indexView');
+
+// didalam 1 page tadi, ada 2 action login dan register ditandai dari submit button masing2 atau form masing2
+Route::post('action-register', [AuthController::class, 'registerAction'])->name('registerAction'); // disini ada coding untuk save user
+Route::post('action-login', [AuthController::class, 'loginAction'])->name('loginAction'); // disini ada coding untuk check user
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // product Routes

@@ -1,4 +1,7 @@
 @extends('layouts.dashboard')
+
+@section('title', '|| Pengguna')
+
 @section('content')
 
 @if(session('success'))

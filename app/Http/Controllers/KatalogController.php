@@ -11,7 +11,7 @@ class KatalogController extends Controller
 {
     public function katalog() {
         $products = Product::all();
-        $categories = Category::all();
+        $categories = Category::withCount('products')->get();
         return view('pages.Landing.shop', ['products' => $products, 'categories' => $categories]);
     }
 

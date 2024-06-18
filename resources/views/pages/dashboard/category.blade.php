@@ -1,4 +1,8 @@
 @extends('layouts.dashboard')
+
+@section('title', '|| Kategori')
+
+
 @section('content')
 
 @if(session('success'))
@@ -174,8 +178,8 @@ aria-hidden="true">
             e.preventDefault();
             $("#myModalEdit").modal('show');
             $.post('{{ route("kategori.edit") }}',
-             {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
-             function(html){
+                {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
+                function(html){
                 $(".data").html(html);
             }
             );

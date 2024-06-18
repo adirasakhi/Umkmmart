@@ -9,8 +9,8 @@ class SocialmediaController extends Controller
 {
     public function index()
     {
-        $socialmedia = SocialMedia::all();
-        return view('pages.dashboard.social-media', ['sosmed' => $socialmedia]);
+        $socialmedia= SocialMedia::all();
+        return view('pages.dashboard.social-media',['sosmed'=>$socialmedia]);
     }
 
     public function store(Request $request)
@@ -28,11 +28,10 @@ class SocialmediaController extends Controller
             'instagram' => $validateData['instagram'],
             'tiktok' => $validateData['tiktok'],
             'created_at' => now(),
-            'updated_at' => now()
+            'update_at'=> now()
         ]);
-
-        if ($data) {
-            return redirect()->route('sosial-media')->with('success', 'Sosial media berhasil ditambahkan');
+        if($data){
+            return redirect()->route('sosial-media');
         } else {
             return redirect()->route('sosial-media')->with('error', 'Gagal menambahkan sosial media');
         }
@@ -41,42 +40,40 @@ class SocialmediaController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer'
+            'id'=> 'required|integer'
         ]);
 
         $id = $request->id;
         $data = SocialMedia::find($id);
 
-        if ($data) {
+        if($data){
             return view('pages.dashboard.sosial-media-edit', compact('data'));
-        } else {
-            return redirect()->route('sosial-media')->with('error', 'Sosial media tidak ditemukan');
         }
     }
-
     public function update(Request $request, $id)
     {
-        $validateData = $request->validate([
-            'whatsapp' => 'required|max:15',
-            'facebook' => 'required|max:255',
-            'instagram' => 'required|max:255',
-            'tiktok' => 'required|max:255'
-        ]);
+            $validateData = $request->validate([
+                'id' => 'required|max:255',
+                'whatsapp'=>'required|max:15',
+                'facebook'=> 'required|max:255',
+                'instagram'=> 'required|max:255',
+                'tiktok'=> 'required|max:255'
+            ]);
 
-        $data = SocialMedia::find($id);
+            $data = SocialMedia::find($id);
 
-        if ($data) {
-            $data->update($validateData);
-            return redirect()->route('sosial-media')->with('success', 'Sosial media berhasil diperbarui');
-        } else {
-            return redirect()->route('sosial-media')->with('error', 'Sosial media tidak ditemukan');
-        }
+            if($data){
+                $data->update($validateData);
+                return redirect()->route('sosial-media');
+            }else{
+                return redirect()->route('sosial-media');
+            }
     }
 
     public function destroy($id)
     {
         $data = SocialMedia::findOrFail($id);
         $data->delete();
-        return redirect()->back()->with('success', 'Sosial media berhasil dihapus');
+        return redirect()->back();
     }
 }

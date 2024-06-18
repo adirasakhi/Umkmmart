@@ -5,23 +5,14 @@
     {{ session('success') }}
 </div>
 <script>
+    // JavaScript untuk menampilkan popup sukses
     window.onload = function() {
         var popup = document.getElementById('successPopup');
         popup.style.display = 'block';
-        setTimeout(function() {
-            popup.style.display = 'none';
-        }, 3000);
-    }
-</script>
-@endif
 
-@if(session('error'))
-<div id="errorPopup" class="popup error">
-    {{ session('error') }}
-</div>
-<script>
+                // Menghilangkan popup setelah beberapa detik (misalnya 3 detik)
     window.onload = function() {
-        var popup = document.getElementById('errorPopup');
+        var popup = document.getElementById('successPopup');
         popup.style.display = 'block';
         setTimeout(function() {
             popup.style.display = 'none';
@@ -62,6 +53,12 @@
         <div class="section-body">
             <div class="row">
                 <div class="col d-flex justify-content-end">
+                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
+                    data-bs-target="#myModalCreate">Tambah Akun</button>
+                </div>
+            </div>
+            <div class="row">
+                <!-- dipake -->
                     <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Akun</button>
                 </div>
             </div>
@@ -79,23 +76,22 @@
                                         <th>Tiktok</th>
                                         <th>Aksi</th>
                                     </thead>
-                                    <tbody>
-                                        @php $no = 1; @endphp
-                                        @foreach($sosmed as $val)
-                                        <tr>
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $val->facebook }}</td>
-                                            <td>{{ $val->whatsapp }}</td>
-                                            <td>{{ $val->instagram }}</td>
-                                            <td>{{ $val->tiktok }}</td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <button class="btn btn-icon btn-warning edit mx-2" data-id="{{ $val->id }}"><i class="far fa-edit"></i></button>
-                                                    <button class="btn btn-icon btn-danger delete-btn mx-2" data-id="{{ $val->id }}" data-bs-toggle="modal" data-bs-target="#myModalDelete"><i class="fas fa-trash"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                    @php
+                                    $no = 1;
+                                    @endphp
+                                    @foreach($sosmed as $val)
+                                    <tr>
+                                        <td>{{ $no++; }}</td>
+                                        <td>{{ $val->facebook }}</td>
+                                        <td>{{ $val->whatsapp }}</td>
+                                        <td>{{ $val->instagram }}</td>
+                                        <td>{{ $val->tiktok }}</td>
+                                        <td>
+                                            <button class="btn btn-icon btn-warning edit" data-id="{{ $val->id }}"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-icon btn-danger delete-btn" data-id="{{ $val->id }}"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -113,33 +109,38 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Tambah Akun Sosial Media</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('sosial-media/insert/') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" name="id" class="form-control" value="{{ ($val->id)+1 }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Whatsapp</label>
+                            <input type="text" name="whatsapp" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Instagram</label>
+                            <input type="text" name="instagram" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook</label>
+                            <input type="text" name="facebook" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Tiktok</label>
+                            <input type="text" name="tiktok" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
+                    </div>
+                    <br>
+                </div>
+            </form>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ url('sosial-media/insert') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group">
-                        <label>ID</label>
-                        <input type="text" name="id" class="form-control" value="{{ ($val->id)+1 }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Whatsapp</label>
-                        <input type="text" name="whatsapp" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Instagram</label>
-                        <input type="text" name="instagram" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Facebook</label>
-                        <input type="text" name="facebook" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Tiktok</label>
-                        <input type="text" name="tiktok" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
-                </form>
             </div>
         </div>
     </div>
@@ -183,10 +184,10 @@
                {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
                function(html){
                 $(".data").html(html);
+            }   
             }
             );
         });
-    });
 </script>
 
 {{-- Js Hapus --}}
@@ -195,6 +196,30 @@
         const deleteButtons = document.querySelectorAll('.delete-btn');
 
         deleteButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const id = this.getAttribute('data-id');
+                if (confirm('Anda Yakin menghapus data ini?')) {
+                    fetch(`{{ url('/sosial-media/delete/') }}/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Data berhasil dihapus');
+                            location.reload();
+                        } else {
+                            throw new Error('Gagal menghapus data');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        location.reload();
+                    });
+                }
             button.addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
                 const deleteForm = document.getElementById('deleteForm');
@@ -203,8 +228,9 @@
         });
     });
 </script>
-
 <style>
+    .popup {
+        display: none; /* Awalnya disembunyikan */
     .popup {
         display: none;
         position: fixed;
@@ -218,10 +244,11 @@
         color: white;
     }
     .popup.success {
-        background-color: #4CAF50;
+        background-color: #4CAF50; /* Warna hijau untuk sukses */
     }
     .popup.error {
-        background-color: #f44336;
+        background-color: #f44336; /* Warna merah untuk error */
     }
+    
 </style>
 @endsection

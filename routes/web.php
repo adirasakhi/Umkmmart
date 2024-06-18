@@ -8,8 +8,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SocialmediaController;
 
-
-
 Route::get('/dashboard', function () {
     return view('pages.dashboard.content-dashboard');
 })->name('dashboard');
@@ -65,14 +63,12 @@ Route::post('/products/edit', [ProductController::class, 'edit'])->name('product
 Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-
 // Sosmed Routes
 Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');
 Route::post('/sosial-media/insert', [SocialmediaController::class, "store"])->name('sosial-media.insert');
 Route::post('/sosial-media/edit', [SocialmediaController::class, "edit"])->name('sosial-media.edit');
 Route::post('/sosial-media/update/{id}', [SocialmediaController::class, "update"])->name('sosial-media.update');
 Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destroy"])->name('sosial-media.delete');
-
 
 // katalog Routes
 Route::get('/shop', [KatalogController::class, 'katalog'])->name('katalog.index');

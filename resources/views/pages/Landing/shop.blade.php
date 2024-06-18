@@ -141,7 +141,7 @@
                                         <div class="rounded position-relative fruite-item d-flex flex-column"
                                             style="height: 500px;">
                                             <div class="fruite-img">
-                                                <img src="{{ asset ('storage/'.$product->image)}}"
+                                                <img src="{{ asset ('/'.$product->image)}}"
                                                     class="img-fluid w-100 rounded-top" alt=""
                                                     style="height:200px">
                                             </div>

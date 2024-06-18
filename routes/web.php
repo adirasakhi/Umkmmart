@@ -58,7 +58,6 @@ Route::post('/products/edit', [ProductController::class, 'edit'])->name('product
 Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-
 // Sosmed Routes
 Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');
 Route::post('/sosial-media/insert', [SocialmediaController::class, "store"])->name('sosial-media.insert');

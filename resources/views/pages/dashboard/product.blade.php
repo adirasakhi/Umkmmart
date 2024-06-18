@@ -1,4 +1,7 @@
 @extends('layouts.dashboard')
+
+@section('title', '|| Produk')
+
 @section('content')
 
 @if(session('success'))
@@ -207,8 +210,8 @@
             e.preventDefault();
             $("#myModalEdit").modal('show');
             $.post('{{ route("products.edit") }}',
-             {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
-             function(html){
+                {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
+                function(html){
                 $(".data").html(html);
             }
             );

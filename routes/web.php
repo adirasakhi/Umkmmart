@@ -10,7 +10,7 @@ use App\Http\Controllers\SocialmediaController;
 
 Route::get('/dashboard', function () {
     return view('pages.dashboard.content-dashboard');
-});
+})->name('dashboard');
 // Route::get('/produk', function () {
 //     return view('pages.dashboard.product');
 // });
@@ -45,11 +45,16 @@ Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('u
 
 
 // Auth routes
-Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('register', [AuthController::class, 'register']);
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+// Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+// Route::post('register', [AuthController::class, 'register']);
+// Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+// Route::post('login', [AuthController::class, 'login']);
+// Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/register', [AuthController::class, 'index'])->name('register');
+Route::post('/action-register', [AuthController::class, 'registerAction'])->name('registerAction'); // disini ada coding untuk save user
+Route::post('/action-login', [AuthController::class, 'loginAction'])->name('loginAction'); // disini ada coding untuk check user
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // product Routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

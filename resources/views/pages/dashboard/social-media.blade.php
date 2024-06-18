@@ -1,5 +1,10 @@
 @extends('layouts.dashboard')
+
+@section('title', '|| Social Media ')
+
 @section('content')
+
+
 @if(session('success'))
 <div id="successPopup" class="popup success">
     {{ session('success') }}

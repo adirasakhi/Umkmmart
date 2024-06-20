@@ -22,7 +22,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet"  href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet"  href="{{ asset('assets/css/components.css') }}">
-  <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+  <link rel="stylesheet"  href="{{ asset('assets/css/all.min.css') }}">
 
   <!-- Start GA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -37,6 +37,11 @@
   <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- End SweetAlert2 -->
+  <style >
+    .sorting-form {
+        display: none;
+    }
+</style>
 </head>
 
   <body>
@@ -93,6 +98,7 @@
     {{-- Modal --}}
     <script src="{{ asset('assets/modal/bootstrap.bundle.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     {{-- sweatallert script --}}
     <script>
         @if(session('success'))

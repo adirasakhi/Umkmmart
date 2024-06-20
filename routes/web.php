@@ -36,6 +36,7 @@ Route::post('/kategori/edit', [CategoryController::class, "edit"])->name('katego
 Route::post('/kategori/update/{id}', [CategoryController::class, "update"])->name('kategori.update');
 Route::delete('/kategori/delete/{id}', [CategoryController::class, "destroy"])->name('category.delete');
 
+
 // User routes
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
@@ -71,5 +72,6 @@ Route::post('/sosial-media/update/{id}', [SocialmediaController::class, "update"
 Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destroy"])->name('sosial-media.delete');
 
 // katalog Routes
-Route::get('/shop', [KatalogController::class, 'katalog'])->name('katalog.index');
+Route::get('/shop', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
+Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');

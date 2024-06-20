@@ -77,8 +77,9 @@ Route::post('/sosial-media/update/{id}', [SocialmediaController::class, "update"
 Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destroy"])->name('sosial-media.delete');
 
 // katalog Routes
-Route::get('/shop', [KatalogController::class, 'katalog'])->name('katalog.index');
+Route::get('/shop', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
+Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
 
 
 Route::middleware('auth', 'role:1')->group(function(){

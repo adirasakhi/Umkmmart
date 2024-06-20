@@ -22,16 +22,13 @@
                         </div>
                         <div class="col-6 d-none d-lg-block"></div>
                         <div class="col-md-6 col-lg-3">
-                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                <label for="fruits">Default Sorting:</label>
-                                <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                    form="fruitform">
-                                    <option value="volvo">Nothing</option>
-                                    <option value="saab">Popularity</option>
-                                    <option value="opel">Organic</option>
-                                    <option value="audi">Fantastic</option>
-                                </select>
-                            </div>
+                            <div class="sorting-form bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4 " style="display:none;">
+                            <form class="sorting-form-inner d-flex justify-content-between align-items-center">
+                                <input type="text" placeholder="Min" name="min" value="" class="form-control input-sx me-2">
+                                <input type="text" placeholder="Max" name="max" value="" class="form-control input-sx me-2">
+                                <button type="submit" class="btn btn-primary me-3">Sort</button>
+                            </form>
+                        </div>
                         </div>
                     </div>
                     <div class="row g-4">
@@ -44,7 +41,7 @@
                                             @foreach ($categories as $category)
                                                 <li>
                                                     <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i
+                                                        <a href="{{ route('katalog.index', ['id' => $category->id]) }}"><i
                                                                 class="fas fa-apple-alt me-2"></i>{{ $category->category }}</a>
                                                         <span>({{ $category->products_count }})</span>
                                                     </div>
@@ -60,7 +57,7 @@
                                 @foreach ($products as $product)
                                     <div class="col-6 col-md-4 col-lg-3">
                                         <div class="card h-100">
-                                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top"
+                                            <img src="{{ asset('/' . $product->image) }}" class="card-img-top"
                                                 style="height: 150px" alt="...">
                                             <div class="card-body">
                                                 <a href="{{ route('katalog.detail', ['id' => $product->id]) }}">

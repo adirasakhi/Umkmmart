@@ -15,9 +15,9 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone');
             $table->string('photo')->nullable();
+            $table->enum('status',['active','inactive'])->default('inactive');
             $table->unsignedBigInteger('social_media_id')->nullable();
-            $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('role')->onDelete('cascade');
+            $table->foreignId('role_id')->constrained('role')->onDelete('cascade');
             $table->foreign('social_media_id')->references('id')->on('social_media')->onDelete('set null');
         });
     }

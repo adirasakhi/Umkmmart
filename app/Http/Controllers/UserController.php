@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where(['status' => 'active', 'role_id' => 2])->get();
         return view('pages.dashboard.user', ['users' => $users]);
     }
 
@@ -107,6 +107,12 @@ class UserController extends Controller
         } else {
             return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
         }
+    }
+
+    public function registered()
+    {
+        $registeredUser = User::where(['status' => 'inactive', 'role_id' => 2])->get();
+        return view('pages.dashboard.registered-user', ['registeredUser' => $registeredUser]);
     }
 
     public function destroy($id)

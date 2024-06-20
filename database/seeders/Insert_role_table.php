@@ -13,19 +13,17 @@ class Insert_role_table extends Seeder
      */
     public function run(): void
     {
-               DB::table('role')->insert([
-             [
-                'id'=>1,
-                'role'=> 'Admin',
+        $role = [
+            'admin',
+            'penyewa',
+        ];
+
+        foreach ($role as $roles) {
+            DB::table('role')->insert([
+                'role' => $roles,
                 'created_at' => now(),
-                'updated_at'=> now()
-            ],
-            [
-                'id'=>2,
-                'role'=> 'Penjual',
-                'created_at' => now(),
-                'updated_at'=> now()
-            ],
-        ]);
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

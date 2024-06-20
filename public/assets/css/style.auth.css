@@ -214,8 +214,16 @@ body {
 }
 
 .alert-danger {
+    color: red;
+    font-size: 0.675em;
+    margin-top: 3px;
+    font-size: 0.700em;
+    line-height: 1.4;
+}
+
+.alert-success {
     color: #721c24;
-    background-color: #f6e1e3;
+    background-color: #e2f3d6;
     border-color: #f5c6cb;
     padding: 8px;
     border-radius: 4px;
@@ -223,4 +231,11 @@ body {
     margin-top: 5px;
     font-size: 14px;
     line-height: 1.4;
+}
+
+.alert-succes {
+    color: rgba(81, 169, 33, 0.895);
+    font-size: 0.800em;
+    margin-top: 30px;
+    font-weight: 500;
 }

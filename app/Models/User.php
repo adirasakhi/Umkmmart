@@ -24,7 +24,8 @@ class User extends Authenticatable
         'phone',
         'photo',
         'social_media_id',
-        'role_id',
+        // 'role_id',
+        // 'status'
     ];
 
     /**
@@ -49,4 +50,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $attributes = [
+        'role_id' => 2,
+    ];
 }

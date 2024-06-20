@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('social_media_id')->nullable();
+            $table->text('status')->default('inactive');
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('role')->onDelete('cascade');
             $table->foreign('social_media_id')->references('id')->on('social_media')->onDelete('set null');
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->dropColumn('phone');
             $table->dropColumn('photo');
             $table->dropColumn('social_media_id');
+            $table->dropColumn('status');
             $table->dropColumn('role_id');
         });
     }

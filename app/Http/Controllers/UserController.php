@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where(['status' => 'active', 'role_id' => 2])->get();
         return view('pages.dashboard.user', ['users' => $users]);
     }
 
@@ -43,6 +43,8 @@ class UserController extends Controller
 
         if ($user) {
             return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        } else {
+            return redirect()->route('users.index')->with('error', 'Gagal menambahkan user');
         }
     }
 
@@ -58,7 +60,7 @@ class UserController extends Controller
         if ($user) {
             return view('pages.dashboard.user-edit', compact('user'));
         } else {
-            return response()->json(['message' => 'User tidak ditemukan'], 404);
+            return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
         }
     }
 
@@ -105,6 +107,12 @@ class UserController extends Controller
         } else {
             return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
         }
+    }
+
+    public function registered()
+    {
+        $registeredUser = User::where(['status' => 'inactive', 'role_id' => 2])->get();
+        return view('users.registered', ['registeredUser' => $registeredUser]);
     }
 
     public function destroy($id)

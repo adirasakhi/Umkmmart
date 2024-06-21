@@ -29,7 +29,7 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'category_id' => 'required|integer',
+            'category_id' => 'required|integer'
         ]);
 
         $imagePath = $request->file('image')->store('product_images', 'public');
@@ -40,7 +40,7 @@ class ProductController extends Controller
             'description' => $validatedData['description'],
             'image' => $imagePath,
             'category_id' => $validatedData['category_id'],
-            'seller_id' => 2,
+            'seller_id' => auth()->id()
         ]);
 
         if ($product) {

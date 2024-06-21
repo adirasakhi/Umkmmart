@@ -5,24 +5,30 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-// Example of how `dd()` might show `null` in AdminMiddleware.php
+    public function handle(Request $request, Closure $next)
+    {
+        $user = Auth::user();
 
-public function handle($request, Closure $next)
-{
-    $user = Auth::user();
-    dd($user); // Assuming $user is null at this point
+        if ($user && ($user->role_id == 1 || $user->role_id == 2)) {
+            return $next($request);
+        }
 
-    // Other middleware logic
-    return $next($request);
-}
+        // Redirect to 404 if user role_id is not 1 or 2
+        if ($user && $user->role_id != 1 && $user->role_id != 2) {
+            return abort(404); // Show 404 page for unauthorized access
+        }
 
+        // Redirect to dashboard if user is not authenticated or does not have the correct role
+        return redirect('/dashboard');
+    }
 }

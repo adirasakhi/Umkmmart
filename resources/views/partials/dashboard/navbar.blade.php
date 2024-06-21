@@ -18,7 +18,7 @@
           Logged in 5 minute
         </div>
         <a href="features-profile.html" class="dropdown-item has-icon">
-          <i class="far fa-user"></i> Profile
+          <a href="/users/profile"><i class="far fa-user"></i> Profile</a>
         </a>
         <div class="dropdown-divider"></div>
         <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger"

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\SocialMedia;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -126,5 +128,12 @@ class UserController extends Controller
 
         $user->delete();
         return redirect()->back()->with('success', 'User berhasil dihapus');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $sosmed = SocialMedia::where('user_id', $user->id)->get();
+        return view('pages.dashboard.profile', compact('user', 'sosmed'));
     }
 }

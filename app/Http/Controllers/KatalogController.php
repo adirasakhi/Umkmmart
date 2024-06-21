@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\SocialMedia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,14 +34,22 @@ class KatalogController extends Controller
     public function detail($id) {
         $product = Product::find($id);
         $categories = Category::all();
+        $user = User::all();
+        $social_media = SocialMedia::all();
+        $related_products = Product::where('category_id', $product->category_id) // Filter berdasarkan kategori yang sama
+    ->where('id', '!=', $product->id) // Kecualikan produk yang sedang ditampilkan
+    ->limit(3)
+    ->get();
+
 
         if (!$product) {
             // handle the case when product is not found
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
 
-        return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories]);
+        return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user'=>$user, 'social_media' => $social_media ,'related_products' => $related_products]);
     }
+
     /*public function sort($categoryId)
     {
         $category = Category::with('products')->find($categoryId);

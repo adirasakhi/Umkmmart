@@ -26,6 +26,26 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/shop', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
 Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
+Route::get('/katalog/filter', [KatalogController::class, 'filter'])->name('katalog.filter');
+Route::get('/katalog/search', [KatalogController::class, 'search'])->name('katalog.search');
+
+Route::middleware('auth', 'role')->group(function () {
+    // Dashboard Routes
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/weekly', [DashboardController::class, 'getWeeklyData'])->name('dashboard.weekly');
+    Route::get('/dashboard/monthly', [DashboardController::class, 'getMonthlyData'])->name('dashboard.monthly');
+    Route::get('/dashboard/yearly', [DashboardController::class, 'getYearlyData'])->name('dashboard.yearly');
+    Route::get('/dashboard/user/weekly', [DashboardController::class, 'getUserWeeklyData'])->name('dashboard.user.weekly');
+    Route::get('/dashboard/user/monthly', [DashboardController::class, 'getUserMonthlyData'])->name('dashboard.user.monthly');
+    Route::get('/dashboard/user/yearly', [DashboardController::class, 'getUserYearlyData'])->name('dashboard.user.yearly');
+
+    // Kategori Routes
+    Route::get('/kategori', [CategoryController::class, "index"])->name('kategori');
+    Route::post('/kategori/insert', [CategoryController::class, "store"])->name('kategori.add');
+    Route::post('/kategori/edit', [CategoryController::class, "edit"])->name('kategori.edit');
+    Route::post('/kategori/update/{id}', [CategoryController::class, "update"])->name('kategori.update');
+    Route::delete('/kategori/delete/{id}', [CategoryController::class, "destroy"])->name('category.delete');
+
 
 Route::middleware('auth', 'role')->group(function () {
     // Dashboard Routes
@@ -47,6 +67,8 @@ Route::middleware('auth', 'role')->group(function () {
     // User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/profile', [UserController::class, 'profile'])->name('users.profile');
+    Route::post('/users/profile/update/{id}', [UserController::class, 'profileUpdate'])->name('users.profile.update');
+
     Route::get('/users/registered', [UserController::class, 'registered'])->name('users.registered');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::post('/users/edit', [UserController::class, 'edit'])->name('users.edit');

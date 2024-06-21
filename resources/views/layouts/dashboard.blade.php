@@ -17,6 +17,11 @@
   <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- End SweetAlert2 -->
+  <style >
+    .sorting-form {
+        display: none;
+    }
+</style>
 </head>
 
   <body>
@@ -68,6 +73,7 @@
     {{-- Modal --}}
     <script src="{{ asset('assets/modal/bootstrap.bundle.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     {{-- sweatallert script --}}
     <script>
         @if(session('success'))

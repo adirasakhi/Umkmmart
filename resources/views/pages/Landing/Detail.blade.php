@@ -106,35 +106,38 @@
                             {{ \Carbon\Carbon::parse($product->seller->created_at)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}
                         </p>
                         <hr>
-                        <p><strong>Media Sosial :</strong></p>
-                        @if ($product->seller->social)
-                            <p><i class="fab fa-facebook-square"></i> Facebook :
+                        <p><strong>Media Sosial</strong></p>
+                        <div>
+                            @if ($product->seller->social)
                                 @if ($product->seller->social->facebook)
                                     <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}"
-                                        target="_blank">{{ $product->seller->social->facebook }}</a>
-                                @else
-                                    Tidak ada
+                                        style="display: inline-block; margin-right: 10px;">
+                                        <span class="badge bg-primary text-white"
+                                            style="padding: 10px; border-radius: 5px;">
+                                            <i class="bi bi-facebook text-white"></i> Facebook
+                                        </span>
+                                    </a>
                                 @endif
-                            </p>
-                            <p><i class="fab fa-instagram"></i> Instagram :
                                 @if ($product->seller->social->instagram)
                                     <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
-                                        target="_blank">{{ $product->seller->social->instagram }}</a>
-                                @else
-                                    Tidak ada
+                                        style="display: inline-block; margin-right: 10px;">
+                                        <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                            <i class="bi bi-instagram text-white"></i> Instagram
+                                        </span>
+                                    </a>
                                 @endif
-                            </p>
-                            <p><i class="fab fa-tiktok"></i> Tiktok :
                                 @if ($product->seller->social->tiktok)
                                     <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
-                                        target="_blank">{{ $product->seller->social->tiktok }}</a>
-                                @else
-                                    Tidak ada
+                                        style="display: inline-block; margin-right: 10px;">
+                                        <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
+                                            <i class="bi bi-tiktok text-white"></i> TikTok
+                                        </span>
+                                    </a>
                                 @endif
-                            </p>
-                        @else
-                            <p>Tidak ada akun sosial media</p>
-                        @endif
+                            @else
+                                <p>Tidak ada akun sosial media</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

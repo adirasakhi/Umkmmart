@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SocialMedia extends Model
+class Role extends Model
 {
     use HasFactory;
-    protected $table='social_media';
-    protected $fillable=['id','user_id','facebook','whatsapp','instagram','tiktok'];
-
+    protected $table = 'role';
+    protected $fillable = [
+        'role',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);

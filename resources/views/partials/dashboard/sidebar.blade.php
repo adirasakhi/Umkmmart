@@ -11,20 +11,19 @@
         <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
           <a href="/dashboard" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
         </li>
-        <li class="{{ request()->is('products') ? 'active' : '' }}">
-          <a href="/products" class="nav-link"><i class="fas fa-th-large"></i><span>Management Produk</span></a>
+        @if (Auth::user()->role_id == 1)
+        <li class="{{ request()->is('users') ? 'active' : '' }}">
+          <a href="/users" class="nav-link"><i class="fas fa-user"></i><span>User</span></a>
         </li>
         <li class="{{ request()->is('kategori') ? 'active' : '' }}">
-          <a href="/kategori" class="nav-link"><i class="fas fa-th"></i><span>Management Category</span></a>
+          <a href="/kategori" class="nav-link"><i class="fas fa-th"></i><span>kategori</span></a>
         </li>
-        <li class="{{ request()->is('users') ? 'active' : '' }}">
-          <a href="/users" class="nav-link"><i class="fas fa-user"></i><span>Management User</span></a>
+        @endif
+        <li class="{{ request()->is('products') ? 'active' : '' }}">
+          <a href="/products" class="nav-link"><i class="fas fa-th-large"></i><span>Produk</span></a>
         </li>
         <li class="{{ request()->is('sosial-media') ? 'active' : '' }}">
-          <a href="/sosial-media" class="nav-link"><i class="fab fa-facebook"></i><span>Management Sosial Media</span></a>
-        </li>
-        <li class="{{ request()->is('statistik') ? 'active' : '' }}">
-          <a href="/statistik" class="nav-link"><i class="fas fa-chart-bar"></i><span>Management Statistik</span></a>
+          <a href="/sosial-media" class="nav-link"><i class="fab fa-facebook"></i><span>Sosial Media</span></a>
         </li>
       </ul>
     </aside>

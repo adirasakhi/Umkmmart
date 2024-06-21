@@ -4,18 +4,11 @@
 
 @section('content')
 
-
 @if(session('success'))
 <div id="successPopup" class="popup success">
     {{ session('success') }}
 </div>
 <script>
-    // JavaScript untuk menampilkan popup sukses
-    window.onload = function() {
-        var popup = document.getElementById('successPopup');
-        popup.style.display = 'block';
-
-                // Menghilangkan popup setelah beberapa detik (misalnya 3 detik)
     window.onload = function() {
         var popup = document.getElementById('successPopup');
         popup.style.display = 'block';
@@ -58,15 +51,14 @@
         <div class="section-body">
             <div class="row">
                 <div class="col d-flex justify-content-end">
-                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
-                    data-bs-target="#myModalCreate">Tambah Akun</button>
-                </div>
-            </div>
-            <div class="row">
-                <!-- dipake -->
+                    @if(auth()->user()->role_id == 1 || !$userHasSosmedData)
                     <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Akun</button>
+                    @else
+                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" disabled>Tambah Akun</button>
+                    @endif
                 </div>
             </div>
+            <!-- dipake -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -75,6 +67,7 @@
                                 <table class="table table-striped table-md" id="example">
                                     <thead>
                                         <th>No</th>
+                                        <th>Nama User</th>
                                         <th>Facebook</th>
                                         <th>Whatsapp</th>
                                         <th>Instagram</th>
@@ -86,7 +79,8 @@
                                     @endphp
                                     @foreach($sosmed as $val)
                                     <tr>
-                                        <td>{{ $no++; }}</td>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $val->user->name }}</td>
                                         <td>{{ $val->facebook }}</td>
                                         <td>{{ $val->whatsapp }}</td>
                                         <td>{{ $val->instagram }}</td>
@@ -108,51 +102,46 @@
     </section>
 </div>
 
-{{-- Modal Tambah --}}
+<!-- Modal Tambah -->
 <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Tambah Akun Sosial Media</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url('sosial-media/insert/') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" name="id" class="form-control" value="{{ ($val->id)+1 }}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Whatsapp</label>
-                            <input type="text" name="whatsapp" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Instagram</label>
-                            <input type="text" name="instagram" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Facebook</label>
-                            <input type="text" name="facebook" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Tiktok</label>
-                            <input type="text" name="tiktok" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
-                    </div>
-                    <br>
-                </div>
-            </form>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url('sosial-media/insert/') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" name="id" class="form-control" value="{{ ($val->id)+1 }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Whatsapp</label>
+                        <input type="text" name="whatsapp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram</label>
+                        <input type="text" name="instagram" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Facebook</label>
+                        <input type="text" name="facebook" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Tiktok</label>
+                        <input type="text" name="tiktok" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-{{-- end Tambah Modal --}}
+<!-- end Modal Tambah -->
 
-{{-- Modal Hapus --}}
+<!-- Modal Hapus -->
 <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -177,9 +166,9 @@
         </div>
     </div>
 </div>
-{{-- end Modal Hapus --}}
+<!-- end Modal Hapus -->
 
-{{-- Js Edit --}}
+<!-- Js Edit -->
 <script type="text/javascript">
     $(function(){
         $(document).on('click','.edit',function(e){
@@ -189,13 +178,13 @@
                {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
                function(html){
                 $(".data").html(html);
-            }   
             }
             );
         });
+    });
 </script>
 
-{{-- Js Hapus --}}
+<!-- Js Hapus -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.delete-btn');
@@ -225,6 +214,10 @@
                         location.reload();
                     });
                 }
+            });
+        });
+
+        deleteButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
                 const deleteForm = document.getElementById('deleteForm');
@@ -233,9 +226,8 @@
         });
     });
 </script>
+
 <style>
-    .popup {
-        display: none; /* Awalnya disembunyikan */
     .popup {
         display: none;
         position: fixed;
@@ -249,11 +241,10 @@
         color: white;
     }
     .popup.success {
-        background-color: #4CAF50; /* Warna hijau untuk sukses */
+        background-color: #4CAF50;
     }
     .popup.error {
-        background-color: #f44336; /* Warna merah untuk error */
+        background-color: #f44336;
     }
-    
 </style>
 @endsection

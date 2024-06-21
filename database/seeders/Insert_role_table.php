@@ -15,7 +15,7 @@ class Insert_role_table extends Seeder
     {
         $role = [
             'admin',
-            'penyewa',
+            'penjual',
         ];
 
         foreach ($role as $roles) {

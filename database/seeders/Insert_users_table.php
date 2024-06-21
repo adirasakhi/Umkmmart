@@ -16,7 +16,7 @@ class Insert_users_table extends Seeder
     public function run(): void
     {
         $adminRoleId = DB::table('role')->where('role', 'admin')->first()->id;
-        $penyewaRoleId = DB::table('role')->where('role', 'penyewa')->first()->id;
+        $penyewaRoleId = DB::table('role')->where('role', 'penjual')->first()->id;
         DB::table('users')->insert([
         [   'id'=>1,
             'name'=> 'Arka',
@@ -25,7 +25,6 @@ class Insert_users_table extends Seeder
             'address'=> 'Jl.Terusan BCA NO.28',
             'photo'=> '/assets/photo.jpeg',
             'phone'=> '08123456789',
-            'social_media_id'=>1,
             'role_id'=>$adminRoleId,
             'email_verified_at'=>now(),
             'remember_token'=>Hash::make('arka123'),
@@ -40,7 +39,6 @@ class Insert_users_table extends Seeder
             'address'=> 'Jl.Terusan BCA NO.12',
             'photo'=> '/assets/photo1.jpeg',
             'phone'=> '08234567891',
-            'social_media_id'=>2,
             'role'=>$penyewaRoleId,
             'email_verified_at'=>now(),
             'remember_token'=>Hash::make('enung123'),

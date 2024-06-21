@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('social_media', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('facebook');
             $table->string('whatsapp');
             $table->string('tiktok');

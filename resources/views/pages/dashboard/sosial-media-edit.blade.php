@@ -9,8 +9,8 @@
 @endif
 <form action="{{ url('sosial-media/update', $data->id) }}" method="POST" enctype="multipart/form-data">
 	@csrf
-	<label for="id" class="control-label">ID</label>
-	<input type="text" placeholder="ID" name="id" value="{{ $data->id }}" class="form-control input-sm" readonly>
+	<label for="id" class="control-label">Nama User</label>
+	<input type="text" placeholder="ID" name="id" value="{{ $data->user->name }}" class="form-control input-sm" readonly>
 	<label for="whatsapp" class="control-label">Whatsapp</label>
 	<input type="text" placeholder="Judul Buku" name="whatsapp" class="form-control input-sm" value="{{ $data->whatsapp }}">
 	<label for="facebook" class="control-label">Facebook</label>

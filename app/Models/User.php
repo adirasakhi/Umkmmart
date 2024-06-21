@@ -24,7 +24,6 @@ class User extends Authenticatable
         'phone',
         'photo',
         'status',
-        'social_media_id',
         'role_id',
     ];
  /**
@@ -48,5 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function socialMedia()
+    {
+        return $this->hasMany(SocialMedia::class);
+    }
+    public function role()
+    {
+        return $this->hasMany(Role::class);
     }
 }

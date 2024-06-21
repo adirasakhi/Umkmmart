@@ -94,6 +94,8 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('LandingPage/js/main.js') }}"></script>
+    
+</script>
 </body>
 
 </html>

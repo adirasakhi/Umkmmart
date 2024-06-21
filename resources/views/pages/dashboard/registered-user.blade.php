@@ -39,7 +39,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Detail Pengguna</h4>
+                    <h4 class="modal-title" id="myModalLabel">Edit Pengguna</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
@@ -67,7 +67,7 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col d-flex justify-content-end">
-                        <a href="/users/registered"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Active
+                        <a href="/users"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Inactive
                             User</a>
                     </div>
                 </div>
@@ -88,20 +88,15 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @foreach ($users as $user)
+                                            @foreach ($registeredUser as $user)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->phone }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
-                                                            <button class="btn btn-icon btn-primary edit"
-                                                                data-id="{{ $user->id }}"><i
-                                                                    class="bi bi-eye-fill"></i></button>
-                                                            <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                                data-id="{{ $user->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i
-                                                                    class="fas fa-trash"></i></button>
+                                                            Approve
+                                                            Rejected
                                                         </div>
                                                     </td>
                                                 </tr>

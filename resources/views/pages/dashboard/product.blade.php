@@ -4,7 +4,7 @@
 
 @section('content')
 
-@if(session('success'))
+@if (session('success'))
 <div id="successPopup" class="popup success">
     {{ session('success') }}
 </div>
@@ -19,7 +19,7 @@
 </script>
 @endif
 
-@if(session('error'))
+@if (session('error'))
 <div id="errorPopup" class="popup error">
     {{ session('error') }}
 </div>
@@ -40,7 +40,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Edit Produk</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="data"></div>
@@ -66,7 +67,8 @@
         <div class="section-body">
             <div class="row">
                 <div class="col d-flex justify-content-end">
-                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Produk</button>
+                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
+                        data-bs-target="#myModalCreate">Tambah Produk</button>
                 </div>
             </div>
             <div class="row">
@@ -89,19 +91,40 @@
                                     </thead>
                                     <tbody>
                                         @php $no = 1; @endphp
-                                        @foreach($products as $product)
+                                        @foreach ($products as $product)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->price }}</td>
-                                            <td>{{ $product->description }}</td>
-                                            <td><img src="{{ asset('storage/'.$product->image) }}" alt="product_image" class="img-fluid img-thumbnail" width="50"></td>
+                                            <td>
+                                                @php
+                                                $maxWords = 15; // Jumlah kata maksimum untuk deskripsi yang dipotong
+                                                $description = $product->description;
+                                                $words = explode(' ', $description);
+                                                $shortDescription = implode(' ', array_slice($words, 0, $maxWords));
+                                                $remainingWords = implode(' ', array_slice($words, $maxWords));
+                                                @endphp
+                                                <div class="description-container">
+                                                    <p class="description">{{ $shortDescription }}</p>
+                                                    @if (count($words) > $maxWords)
+                                                    <span class="remaining-words"
+                                                        style="display: none;">{{ $remainingWords }}</span>
+                                                    <button class="btn btn-sm btn-link see-more">See more</button>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td><img src="{{ asset('storage/' . $product->image) }}"
+                                                    alt="product_image" class="img-fluid img-thumbnail" width="50"></td>
                                             <td>{{ $product->category->category }}</td>
                                             <td>{{ $product->seller->name }}</td>
                                             <td>
                                                 <div class="d-flex justify-content-start align-items-center">
-                                                    <button class="btn btn-icon btn-warning edit mx-2" data-id="{{ $product->id }}"><i class="far fa-edit"></i></button>
-                                                    <button class="btn btn-icon btn-danger delete-btn mx-2" data-id="{{ $product->id }}" data-bs-toggle="modal" data-bs-target="#myModalDelete"><i class="fas fa-trash"></i></button>
+                                                    <button class="btn btn-icon btn-warning edit mx-2"
+                                                        data-id="{{ $product->id }}"><i
+                                                            class="far fa-edit"></i></button>
+                                                    <button class="btn btn-icon btn-danger delete-btn mx-2"
+                                                        data-id="{{ $product->id }}" data-bs-toggle="modal"
+                                                        data-bs-target="#myModalDelete"><i class="fas fa-trash"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -123,7 +146,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Tambah Produk</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
@@ -149,11 +173,6 @@
                         <textarea name="description" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="seller_id" class="control-label"
-                            value="{{ old('seller_id') }}">Seller</label>
-                        <textarea name="seller_id" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
                         <label for="image" class="control-label">Image</label>
                         <input type="file" name="image" class="form-control">
                     </div>
@@ -163,11 +182,12 @@
                         <select name="category_id" class="form-control">
                             <option value="">-- Pilih Jenis --</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->category }}</option>
+                            <option value="{{ $category->id }}">{{ $category->category }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
+                    <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
+                        Save</button>
                 </form>
 
             </div>
@@ -205,13 +225,15 @@
 
 {{-- Js Edit --}}
 <script type="text/javascript">
-    $(function(){
-        $(document).on('click','.edit',function(e){
+    $(function() {
+        $(document).on('click', '.edit', function(e) {
             e.preventDefault();
             $("#myModalEdit").modal('show');
-            $.post('{{ route("products.edit") }}',
-                {id: $(this).attr('data-id'), _token: '{{ csrf_token() }}'},
-                function(html){
+            $.post('{{ route('products.edit') }}', {
+                id: $(this).attr('data-id'),
+                _token: '{{ csrf_token() }}'
+            },
+            function(html) {
                 $(".data").html(html);
             }
             );
@@ -221,15 +243,33 @@
 
 {{-- Js Hapus --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.delete-btn');
 
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const deleteForm = document.getElementById('deleteForm');
                 deleteForm.action = `{{ url('/products/delete') }}/${id}`;
             });
+        });
+    });
+</script>
+
+{{-- Js See More --}}
+<script>
+    const seeMoreButtons = document.querySelectorAll('.see-more');
+    seeMoreButtons.forEach(seeMoreBtn => {
+        seeMoreBtn.addEventListener('click', function() {
+            const descriptionContainer = this.parentElement;
+            const description = descriptionContainer.querySelector('.description');
+            const moreContent = descriptionContainer.querySelector('.remaining-words');
+
+            moreContent.style.display === 'none' || moreContent.style.display === '' ?
+                moreContent.style.display = 'inline' :
+                moreContent.style.display = 'none';
+
+            this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
         });
     });
 </script>
@@ -247,9 +287,11 @@
         z-index: 1000;
         color: white;
     }
+
     .popup.success {
         background-color: #4CAF50;
     }
+
     .popup.error {
         background-color: #f44336;
     }

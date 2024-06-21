@@ -1,16 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SocialmediaController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard.content-dashboard');
-})->name('dashboard');
+
+// Route::get('/dashboard', function () {
+//     return view('pages.dashboard.content-dashboard');
+// })->name('dashboard');
 // Route::get('/produk', function () {
 //     return view('pages.dashboard.product');
 // });
@@ -30,6 +32,9 @@ Route::get('/testimoni', function () {
 Route::get('/contact', function () {
     return view('pages.Landing.contact');
 });
+// Dashboard Routes
+Route::get('/dashboard', [DashboardController::class, "index"])->name('dashboard');
+// Kategori Routes
 Route::get('/kategori', [CategoryController::class, "index"])->name('kategori');
 Route::post('/kategori/insert', [CategoryController::class, "store"])->name('kategori.add');
 Route::post('/kategori/edit', [CategoryController::class, "edit"])->name('kategori.edit');
@@ -39,6 +44,7 @@ Route::delete('/kategori/delete/{id}', [CategoryController::class, "destroy"])->
 
 // User routes
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/registered', [UserController::class, 'registered'])->name('users.registered');
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 Route::post('/users/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
@@ -74,4 +80,6 @@ Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destr
 // katalog Routes
 Route::get('/shop', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
-Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
+Route::get('/katalog/filter', [KatalogController::class, 'filter'])->name('katalog.filter');
+Route::get('/katalog/search', [KatalogController::class, 'search'])->name('katalog.search');
+

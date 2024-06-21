@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KatalogController extends Controller
 {
@@ -21,7 +22,7 @@ class KatalogController extends Controller
 
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories'));
+        return view('pages.Landing.shop', compact('products', 'categories', "categoryId"));
     }
     public function katalog() {
         $products = Product::all();
@@ -50,14 +51,52 @@ class KatalogController extends Controller
 
         return view('pages.dashboard.bykategori', compact('category'));
     }*/
+    public function filter(Request $request)
+    {
+
+        $categoryId = $request->input('category');
+        $minPrice = $request->input('min');
+        $maxPrice = $request->input('max');
+        $products = Product::where('category_id', $categoryId)
+        ->whereBetween('price', [$minPrice, $maxPrice])
+        ->get();
+        $categories = Category::withCount('products')->get();
+
+        return view('pages.Landing.shop', compact('products', 'categories', "categoryId"));
+    }
     public function search(Request $request)
     {
-        $query = $request->input('query');
-        $products = Product::where('name', 'LIKE', "%{$query}%")
-                           ->orWhere('description', 'LIKE', "%{$query}%")
-                           ->get();
+    // Ambil input dari request
+        $keywords = $request->input('keywords');
+        $categoryId = $request->input('category');
+        $minPrice = $request->input('min');
+        $maxPrice = $request->input('max');
 
-        return view('products.search', compact('products'));
+        $products = Product::query();
+
+        if ($categoryId) {
+            $products->where('category_id', $categoryId)
+            ->whereBetween('price', [$minPrice, $maxPrice]);
+        }
+
+        if (strtolower($keywords) && $minPrice && $maxPrice) {
+            $products->where('name', 'like', '%' . strtolower($keywords) . '%')
+            ->whereBetween('price', [$minPrice, $maxPrice]);
+        }
+        if(strtolower($keywords) ){
+            $keywordArray = explode(' ', $keywords);
+            foreach ($keywordArray as $keyword) {
+                $products = $products->Where('name', 'like', '%'.$keyword.'%');
+            }
+        }
+
+        $products = $products->get();
+
+        $categories = Category::withCount('products')->get();
+
+        return view('pages.Landing.shop', compact('products', 'keywords', 'categoryId', 'categories'));
     }
+
+
 
 }

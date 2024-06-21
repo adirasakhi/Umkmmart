@@ -1,25 +1,68 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.auth.css') }}">
     <title>Halaman Login Modern | AsmrProg</title>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.675em;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form action="{{ route('registerAction') }}" method="POST">
                 @csrf
                 <h1>Daftar Akun</h1>
-                <span>atau gunakan email Anda untuk mendaftar</span>
-                <input type="text" name="name" placeholder="Nama" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Kata Sandi" required>
-                <input type="password" name="password_confirmation" placeholder="Konfirmasi Kata Sandi" required>
-                <input type="text" name="address" placeholder="Alamat">
-                <input type="text" name="phone" placeholder="Telepon">
+                @if (session('status'))
+                    <div class="alert alert-succes">
+                        {{ session('message') }}
+                    </div>
+                @endif
+
+                <div class="error-message">
+                    <input type="text" name="name" placeholder="Nama" value="{{ old('name') }}">
+                    @if ($errors->has('name'))
+                        {{ $errors->first('name') }}
+                    @endif
+
+                    <input type="email" name="email" placeholder="Email"
+                        value="{{ session('action') == 'register' ? old('email') : '' }}">
+                    @if ($errors->has('email'))
+                        {{ $errors->first('email') }}
+                    @endif
+
+                    <input type="password" name="password" placeholder="Kata Sandi">
+                    @if ($errors->has('password'))
+                        {{ $errors->first('password') }}
+                    @endif
+
+                    <input type="password" name="password_confirmation" placeholder="Konfirmasi Kata Sandi"
+                        autocomplete="new-password">
+                    @if ($errors->has('password_confirmation'))
+                        {{ $errors->first('password_confirmation') }}
+                    @endif
+
+                    <input type="text" name="address" placeholder="Alamat" value="{{ old('address') }}">
+                    @if ($errors->has('address'))
+                        {{ $errors->first('address') }}
+                    @endif
+
+                    <input type="tel" name="phone" placeholder="Telepon" value="{{ old('phone') }}"
+                        pattern="[0-9]+" title="Masukkan hanya angka">
+                    @if ($errors->has('phone'))
+                        {{ $errors->first('phone') }}
+                    @endif
+                </div>
+
                 <button type="submit">Daftar</button>
             </form>
         </div>
@@ -27,12 +70,21 @@
             <form action="{{ route('loginAction') }}" method="POST">
                 @csrf
                 <h1>Masuk</h1>
-                @if ($errors->has('email'))
-                    <div class="alert alert-danger">
-                        {{ $errors->first('email') }}
+
+                @if (session('status-login'))
+                    <div class="alert alert-succes">
+                        {{ session('message') }}
                     </div>
                 @endif
-                <input type="email" name="email" placeholder="Email" required value="{{ old('email') }}">
+
+                @if ($errors->has('email-login'))
+                    <div class="alert alert-danger">
+                        {{ $errors->first('email-login') }}
+                    </div>
+                @endif
+
+                <input type="email" name="email" placeholder="Email" required
+                    value="{{ session('action') == 'login' ? old('email') : '' }}">
                 <input type="password" name="password" placeholder="Kata Sandi" required>
                 <a href="#">Lupa Kata Sandi Anda?</a>
                 <button type="submit">Masuk</button>
@@ -59,7 +111,7 @@
         const loginBtn = document.getElementById('login');
 
         // Check action from the server
-        const action = '{{ $action }}';
+        const action = '{{ session('action') }}';
         if (action === 'register') {
             container.classList.add("active");
             history.pushState(null, null, '/register');
@@ -77,6 +129,12 @@
             container.classList.remove("active");
             history.pushState(null, null, '/login');
         });
+
+        // Tambahkan event listener untuk mencegah input karakter non-angka
+        document.querySelector('input[name="phone"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
     </script>
 </body>
+
 </html>

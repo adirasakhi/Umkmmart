@@ -16,7 +16,8 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="{{ asset ('storage/'.$product->image)}}" class="img-fluid rounded" alt="Image" style="height: 300px">
+                                    <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
+                                        alt="Image" style="height: 300px">
 
                                 </a>
                             </div>
@@ -34,7 +35,8 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                <input type="text" class="form-control form-control-sm text-center border-0"
+                                    value="1">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
@@ -94,32 +96,38 @@
                         <h4 class="modal-title" id="myModalLabel">Informasi Toko</h4>
                     </div>
                     <div class="modal-body">
-                        <p><strong>Toko:</strong> {{ $product->seller->name }}</p>
-                        <p><strong>Lokasi:</strong> {{ $product->seller->address }}</p>
-                        <p><strong>Nomor Telepon:</strong> {{ $product->seller->phone }}</p>
-                        <p><strong>Tanggal Bergabung:</strong>
+                        <div class="row">
+                            <img src="{{ asset('storage/' . $product->seller->photo) }}" alt="">
+                            <p><strong>Toko :</strong> {{ $product->seller->name }}</p>
+                        </div>
+                        <p><strong>Lokasi :</strong> {{ $product->seller->address }}</p>
+                        <p><strong>Nomor Telepon :</strong> {{ $product->seller->phone }}</p>
+                        <p><strong>Tanggal Bergabung :</strong>
                             {{ \Carbon\Carbon::parse($product->seller->created_at)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}
                         </p>
                         <hr>
-                        <p><strong>Sosial Media:</strong></p>
-                        @if($product->seller->social)
+                        <p><strong>Media Sosial :</strong></p>
+                        @if ($product->seller->social)
                             <p><i class="fab fa-facebook-square"></i> Facebook :
-                                @if($product->seller->social->facebook)
-                                    <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}" target="_blank">{{ $product->seller->social->facebook }}</a>
+                                @if ($product->seller->social->facebook)
+                                    <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}"
+                                        target="_blank">{{ $product->seller->social->facebook }}</a>
                                 @else
                                     Tidak ada
                                 @endif
                             </p>
                             <p><i class="fab fa-instagram"></i> Instagram :
-                                @if($product->seller->social->instagram)
-                                    <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}" target="_blank">{{ $product->seller->social->instagram }}</a>
+                                @if ($product->seller->social->instagram)
+                                    <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
+                                        target="_blank">{{ $product->seller->social->instagram }}</a>
                                 @else
                                     Tidak ada
                                 @endif
                             </p>
                             <p><i class="fab fa-tiktok"></i> Tiktok :
-                                @if($product->seller->social->tiktok)
-                                    <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}" target="_blank">{{ $product->seller->social->tiktok }}</a>
+                                @if ($product->seller->social->tiktok)
+                                    <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
+                                        target="_blank">{{ $product->seller->social->tiktok }}</a>
                                 @else
                                     Tidak ada
                                 @endif
@@ -130,6 +138,6 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
         {{-- end Modal Info Toko  --}}
-@endsection
+    @endsection

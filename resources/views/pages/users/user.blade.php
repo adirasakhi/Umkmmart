@@ -39,7 +39,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Edit Pengguna</h4>
+                    <h4 class="modal-title" id="myModalLabel">Detail Pengguna</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
@@ -67,7 +67,7 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col d-flex justify-content-end">
-                        <a href="/users"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Inactive
+                        <a href="/users/registered"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Active
                             User</a>
                     </div>
                 </div>
@@ -88,15 +88,20 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @foreach ($registeredUser as $user)
+                                            @foreach ($users as $user)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->phone }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
-                                                            Approve
-                                                            Rejected
+                                                            <button class="btn btn-icon btn-primary edit"
+                                                                data-id="{{ $user->id }}"><i
+                                                                    class="bi bi-eye-fill"></i></button>
+                                                            <button class="btn btn-icon btn-danger delete-btn mx-2"
+                                                                data-id="{{ $user->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#myModalDelete"><i
+                                                                    class="fas fa-trash"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -113,7 +118,7 @@
     </div>
 
     {{-- Modal Tambah --}}
-    <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
+    {{-- <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -166,7 +171,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- end Tambah Modal --}}
 
     {{-- Modal Delete --}}
@@ -204,7 +209,7 @@
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $("#myModalEdit").modal('show');
-                $.post('{{ route('users.edit') }}', {
+                $.post('{{ route('showActive') }}', {
                         id: $(this).attr('data-id'),
                         _token: '{{ csrf_token() }}'
                     },

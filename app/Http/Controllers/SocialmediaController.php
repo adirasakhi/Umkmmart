@@ -17,7 +17,7 @@ class SocialmediaController extends Controller
         } else {
             $socialmedia = SocialMedia::where('user_id', $user->id)->get();
         }
-        return view('pages.dashboard.social-media', ['sosmed' => $socialmedia, 'userHasSosmedData' => $userHasSosmedData]);
+        return view('pages.sosmed.social-media', ['sosmed' => $socialmedia, 'userHasSosmedData' => $userHasSosmedData]);
     }
 
 
@@ -57,7 +57,7 @@ class SocialmediaController extends Controller
         $data = SocialMedia::find($id);
 
         if ($data) {
-            return view('pages.dashboard.sosial-media-edit', compact('data'));
+            return view('pages.sosmed.sosial-media-edit', compact('data'));
         }
     }
     public function update(Request $request, $id)

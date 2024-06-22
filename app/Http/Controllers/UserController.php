@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where(['status' => 'active', 'role_id' => 2])->get();
-        return view('pages.dashboard.user', ['users' => $users]);
+        return view('pages.users.user', ['users' => $users]);
     }
 
     public function store(Request $request)
@@ -50,7 +50,7 @@ class UserController extends Controller
         }
     }
 
-    public function edit(Request $request)
+    public function showActive(Request $request)
     {
         $request->validate([
             'id' => 'required|integer',
@@ -60,13 +60,82 @@ class UserController extends Controller
         $user = User::find($id);
 
         if ($user) {
-            return view('pages.dashboard.user-edit', compact('user'));
+            return view('pages.users.showActive', compact('user'));
         } else {
             return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
         }
     }
 
-    public function update(Request $request, $id)
+    public function update($id)
+    {
+
+        $user = User::find($id);
+
+        if ($user) {
+            if($user->status == "inactive"){
+            $dataToUpdate = [
+                'status' => 'active',
+            ];
+
+            $user->update($dataToUpdate);
+
+            return redirect()->route('users.index')->with('success', 'User berhasil diapprove');
+            }else{
+                $dataToUpdate = [
+                    'status' => 'inactive',
+                ];
+
+            $user->update($dataToUpdate);
+
+            return redirect()->route('users.index')->with('success', 'User berhasil diUnapprove');
+            }
+        } else {
+            return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
+        }
+    }
+
+
+    public function registered()
+    {
+        $registeredUser = User::where(['status' => 'inactive', 'role_id' => 2])->get();
+        return view('pages.users.registered', ['registeredUser' => $registeredUser]);
+    }
+
+    public function showInactive(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $id = $request->id;
+        $user = User::find($id);
+
+        if ($user) {
+            return view('pages.users.showInactive', compact('user'));
+        } else {
+            return redirect()->route('users.registered')->with('error', 'User tidak ditemukan');
+        }
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->photo) {
+            Storage::disk('public')->delete($user->photo);
+        }
+
+        $user->delete();
+        return redirect()->back()->with('success', 'User berhasil dihapus');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $sosmed = SocialMedia::where('user_id', $user->id)->get();
+        return view('pages.profile.profile', compact('user', 'sosmed'));
+    }
+    public function updateProfile(Request $request, $id)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -75,8 +144,6 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'social_media_id' => 'nullable|integer',
-            'role_id' => 'required|integer',
         ]);
 
         $user = User::find($id);
@@ -88,8 +155,6 @@ class UserController extends Controller
                 'password' => $validatedData['password'] ? Hash::make($validatedData['password']) : $user->password,
                 'address' => $validatedData['address'],
                 'phone' => $validatedData['phone'],
-                'social_media_id' => $validatedData['social_media_id'],
-                'role_id' => $validatedData['role_id'],
             ];
 
             if ($request->hasFile('photo')) {
@@ -105,35 +170,9 @@ class UserController extends Controller
 
             $user->update($dataToUpdate);
 
-            return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
+            return redirect()->route('users.profile')->with('success', 'User berhasil diupdate');
         } else {
-            return redirect()->route('users.index')->with('error', 'User tidak ditemukan');
+            return redirect()->route('users.profile')->with('error', 'User tidak ditemukan');
         }
-    }
-
-    public function registered()
-    {
-        $registeredUser = User::where(['status' => 'inactive', 'role_id' => 2])->get();
-        return view('pages.dashboard.registered-user', ['registeredUser' => $registeredUser]);
-    }
-
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-
-        // Delete the photo
-        if ($user->photo) {
-            Storage::disk('public')->delete($user->photo);
-        }
-
-        $user->delete();
-        return redirect()->back()->with('success', 'User berhasil dihapus');
-    }
-
-    public function profile()
-    {
-        $user = Auth::user();
-        $sosmed = SocialMedia::where('user_id', $user->id)->get();
-        return view('pages.dashboard.profile', compact('user', 'sosmed'));
     }
 }

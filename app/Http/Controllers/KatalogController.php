@@ -13,7 +13,7 @@ class KatalogController extends Controller
     public function index(Request $request)
     {
         $categoryId = $request->input('id');
-        
+
         if ($categoryId) {
             $products = Product::where('category_id', $categoryId)->get();
         } else {
@@ -41,16 +41,6 @@ class KatalogController extends Controller
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories]);
     }
-    /*public function sort($categoryId)
-    {
-        $category = Category::with('products')->find($categoryId);
-
-        if (!$category) {
-            return redirect()->route('categories.index')->with('error', 'Category not found');
-        }
-
-        return view('pages.dashboard.bykategori', compact('category'));
-    }*/
     public function filter(Request $request)
     {
 

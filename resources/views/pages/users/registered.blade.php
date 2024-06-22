@@ -39,7 +39,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Detail Pengguna</h4>
+                    <h4 class="modal-title" id="myModalLabel">Edit Pengguna</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
@@ -67,7 +67,7 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col d-flex justify-content-end">
-                        <a href="/users/registered"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Active
+                        <a href="/users"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Inactive
                             User</a>
                     </div>
                 </div>
@@ -88,20 +88,22 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @foreach ($users as $user)
+                                            @foreach ($registeredUser as $user)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->phone }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
-                                                            <button class="btn btn-icon btn-primary edit"
-                                                                data-id="{{ $user->id }}"><i
-                                                                    class="bi bi-eye-fill"></i></button>
-                                                            <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                                data-id="{{ $user->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i
-                                                                    class="fas fa-trash"></i></button>
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <button class="btn btn-icon btn-primary edit"
+                                                                    data-id="{{ $user->id }}"><i
+                                                                        class="bi bi-eye-fill"></i></button>
+                                                                {{-- <button class="btn btn-icon btn-danger delete-btn mx-2"
+                                                                    data-id="{{ $user->id }}" data-bs-toggle="modal"
+                                                                    data-bs-target="#myModalDelete"><i
+                                                                        class="fas fa-trash"></i></button> --}}
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -116,63 +118,6 @@
             </div>
         </section>
     </div>
-
-    {{-- Modal Tambah --}}
-    <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Tambah Pengguna</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="control-label">Email</label>
-                            <input type="email" name="email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="control-label">Password</label>
-                            <input type="password" name="password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password_confirmation" class="control-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="address" class="control-label">Address</label>
-                            <input type="text" name="address" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="control-label">Phone</label>
-                            <input type="text" name="phone" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="photo" class="control-label">Photo</label>
-                            <input type="file" name="photo" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="social_media_id" class="control-label">Social Media ID</label>
-                            <input type="number" name="social_media_id" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="role_id" class="control-label">Role ID</label>
-                            <input type="number" name="role_id" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
-                            Save</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- end Tambah Modal --}}
 
     {{-- Modal Delete --}}
     <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -209,7 +154,7 @@
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $("#myModalEdit").modal('show');
-                $.post('{{ route('users.edit') }}', {
+                $.post('{{ route('showInactive') }}', {
                         id: $(this).attr('data-id'),
                         _token: '{{ csrf_token() }}'
                     },
@@ -222,7 +167,7 @@
     </script>
 
     {{-- Js Hapus --}}
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-btn');
 
@@ -234,7 +179,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
     <style>
         .popup {

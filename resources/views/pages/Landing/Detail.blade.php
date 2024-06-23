@@ -1,3 +1,4 @@
+
 @extends('layouts.landingPage')
 @section('content')
     <!-- Single Page Header start -->
@@ -16,7 +17,8 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="{{ asset ('storage/'.$product->image)}}" class="img-fluid rounded" alt="Image" style="height: 300px">
+                                    <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
+                                        alt="Image" style="height: 300px">
 
                                 </a>
                             </div>
@@ -24,7 +26,9 @@
                         <div class="col-lg-6">
                             <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
                             <p class="mb-1">{{ $product->category->category }}</p>
-                            <p class="mb-5"><i class="fas fa-store"></i>{{ $product->seller->name }}</p>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#myModalSeller">
+                                <p class="mb-5"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
+                            </a>
                             <h5 class="fw-bold mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</h5>
                             <div class="input-group quantity mb-3" style="width: 100px;">
                                 <div class="input-group-btn">
@@ -32,15 +36,17 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                <input type="text" class="form-control form-control-sm text-center border-0"
+                                    value="1">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                                <i class="fa fa-shopping-bag me-2 text-primary"></i> Masukkan Ke Keranjang
+                            <a href="https://wa.me/{{ $product->seller->phone }}?text=Halo%2C%20saya%20tertarik%20dengan%20produk%20Anda."
+                                class="btn-custom">
+                                <i class="fa fa-phone me-2"></i> Hubungi Penjual
                             </a>
                         </div>
                         <div class="col-lg-12">
@@ -65,10 +71,79 @@
             <h1 class="fw-bold mb-0">Related products</h1>
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
-                    <!-- Related products items here -->
+                    @foreach ($related_products as $related_product)
+                        <div class="card h-100">
+                            <img src="{{ asset('storage/' . $related_product->image) }}" class="card-img-top"
+                                style="height: 150px; object-fit: cover;" alt="Image">
+                            <div class="card-body">
+                                <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
+                                    <h6 class="card-title">{{ $related_product->name }}</h6>
+                                </a>
+                                <h6><strong>Rp{{ number_format($related_product->price, 0, ',', '.') }}</strong></h6>
+                                <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller->name }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <!-- Single Product End -->
+
+        {{-- Modal Info Toko --}}
+        <div class="modal fade" id="myModalSeller" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Informasi Toko</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <img src="{{ asset('storage/' . $product->seller->photo) }}" alt="">
+                            <p><strong>Toko :</strong> {{ $product->seller->name }}</p>
+                        </div>
+                        <p><strong>Lokasi :</strong> {{ $product->seller->address }}</p>
+                        <p><strong>Nomor Telepon :</strong> {{ $product->seller->phone }}</p>
+                        <p><strong>Tanggal Bergabung :</strong>
+                            {{ \Carbon\Carbon::parse($product->seller->created_at)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}
+                        </p>
+                        <hr>
+                        <p><strong>Media Sosial</strong></p>
+                        <div>
+                            @if ($product->seller->social)
+                                @if ($product->seller->social->facebook)
+                                    <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}"
+                                        style="display: inline-block; margin-right: 10px;">
+                                        <span class="badge bg-primary text-white"
+                                            style="padding: 10px; border-radius: 5px;">
+                                            <i class="bi bi-facebook text-white"></i> Facebook
+                                        </span>
+                                    </a>
+                                @endif
+                                @if ($product->seller->social->instagram)
+                                    <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
+                                        style="display: inline-block; margin-right: 10px;">
+                                        <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                            <i class="bi bi-instagram text-white"></i> Instagram
+                                        </span>
+                                    </a>
+                                @endif
+                                @if ($product->seller->social->tiktok)
+                                    <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
+                                        style="display: inline-block; margin-right: 10px;">
+                                        <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
+                                            <img src="{{asset('storage/logo-tiktok-svgrepo-com (1).svg')}}" style="width: 12px" alt=""> TikTok
+                                        </span>
+                                    </a>
+                                @endif
+                            @else
+                                <p>Tidak ada akun sosial media</p>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Single Product End -->
-@endsection
+
+        {{-- end Modal Info Toko  --}}
+    @endsection

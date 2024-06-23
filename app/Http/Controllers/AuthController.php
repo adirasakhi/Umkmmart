@@ -26,7 +26,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
             'phone' => 'required',
-            'address' => 'required',
+            'support_documents' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
         ], [
             'name.required' => 'Nama harus diisi',
             'name.regex' => 'Nama hanya boleh mengandung huruf dan spasi',
@@ -39,8 +39,15 @@ class AuthController extends Controller
             'password_confirmation.required' => 'Konfirmasi Kata Sandi harus diisi',
             'password_confirmation.min' => 'Konfirmasi Kata Sandi minimal 8 huruf',
             'phone.required' => 'Telepon harus diisi',
-            'address.required' => 'Alamat harus diisi',
+            'support_documents.required' => 'Dokumen pendukung harus ada',
         ]);
+
+        // Handle file upload and save with hashed name
+        if ($request->hasFile('support_documents')) {
+            $file = $request->file('support_documents');
+            $filename = $file->hashName();
+            $file->storeAs('Document_users', $filename, 'public');
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -49,6 +56,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'role_id' => 2,
+            'support_document' => $filename ?? null, // Save filename in the database
         ]);
 
         Session::flash('status', 'success');
@@ -57,6 +65,7 @@ class AuthController extends Controller
         Session::put('action', 'register');  // Set session action
         return redirect()->route('register'); // Adjust the redirection as needed
     }
+
 
     public function loginAction(Request $request)
     {

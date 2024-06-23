@@ -23,7 +23,7 @@ Route::post('/action-login', [AuthController::class, 'loginAction'])->name('logi
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // katalog Routes
-Route::get('/shop', [KatalogController::class, 'index'])->name('katalog.index');
+Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
 Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
 Route::get('/katalog/filter', [KatalogController::class, 'filter'])->name('katalog.filter');

@@ -38,6 +38,13 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
+                <div class="d-flex flex-column text-start footer-item">
+                    <h4 class="text-light mb-3">Account</h4>
+                    <a class="btn-link" href="">My Account</a>
+                    <a class="btn-link" href="">Shop Details</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Contact</h4>
                     <p>Address: Jl. UMKM No.1, Jakarta</p>
@@ -51,7 +58,7 @@
 <!-- Footer End -->
 
 <!-- Copyright Start -->
-<div class="container-fluid copyright py-4" id="contact" style="background-color: #404040">
+<div class="container-fluid copyright py-4" style="background-color: #404040">
     <div class="container">
         <div class="row">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -63,5 +70,4 @@
         </div>
     </div>
 </div>
-
 <!-- Copyright End -->

@@ -80,12 +80,9 @@
                 </div>
                 <div class="modal-body d-flex align-items-center">
                     <div class="input-group w-75 mx-auto d-flex">
-                        <form action="{{ route('katalog.search') }}" class="w-100 d-flex align-items-stretch">
-                            <input type="search" class="form-control p-3 flex-grow-1 mx-2" name="keywords"
-                                placeholder="Cari Produk UMKM ..." aria-describedby="search-icon-1">
-                            <button type="submit" style="color: white" class="btn btn-primary p-3"
-                                id="searchButton"><i class="fa fa-search"></i></button>
-                        </form>
+                        <input type="search" class="form-control p-3" placeholder="keywords"
+                            aria-describedby="search-icon-1">
+                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                     </div>
                 </div>
             </div>

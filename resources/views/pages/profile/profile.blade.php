@@ -115,11 +115,11 @@
                                         @endif
                                     </div>
                                 @endforeach
+                                @if ($user->role_id == 2)
                                 <div class="buttons">
-
                                     <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate_{{  $user->id }}">Tambah Akun</button>
                                 </div>
-
+                                @endif
 
                             </div>
                         </div>

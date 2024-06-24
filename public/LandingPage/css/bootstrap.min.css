@@ -1,10 +1,13 @@
+file public/landingPage/css/bootstrap.min.css
+
+
 /*!
  * Bootstrap v5.0.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- :root {
+:root {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
     --bs-purple: #6f42c1;
@@ -3152,8 +3155,8 @@ fieldset:disabled .btn {
 .btn-check:focus+.btn-primary,
 .btn-primary:focus {
     color: #000;
-    background-color: #94cd2d;
-    border-color: #8eca21;
+    background-color: black;
+    border-color: black;
     box-shadow: 0 0 0 .25rem rgba(110, 167, 7, .5)
 }
 
@@ -3163,8 +3166,8 @@ fieldset:disabled .btn {
 .btn-primary.active,
 .show>.btn-primary.dropdown-toggle {
     color: #000;
-    background-color: #9ad039;
-    border-color: #8eca21
+    background-color: black;
+    border-color: black
 }
 
 .btn-check:checked+.btn-primary:focus,
@@ -6946,7 +6949,7 @@ fieldset:disabled .btn {
 
 .link-primary:hover,
 .link-primary:focus {
-    color: #9ad039
+    color: black
 }
 
 .link-secondary {

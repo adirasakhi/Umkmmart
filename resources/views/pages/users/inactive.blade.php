@@ -56,7 +56,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Kelola Pengguna</h1>
+                <h1>Pengguna Tidak Aktif</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Components</a></div>
@@ -67,8 +67,8 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col d-flex justify-content-end">
-                        <a href="/users/registered"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Active
-                            User</a>
+                        <a href="/users/active"class="btn btn-primary my-2" style="width: 180px; margin:20px"">Pengguna
+                            Aktif</a>
                     </div>
                 </div>
                 <div class="row">
@@ -88,20 +88,22 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @foreach ($users as $user)
+                                            @foreach ($inactiveUsers as $user)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->phone }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
-                                                            <button class="btn btn-icon btn-primary edit"
-                                                                data-id="{{ $user->id }}"><i
-                                                                    class="bi bi-eye-fill"></i></button>
-                                                            <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                                data-id="{{ $user->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i
-                                                                    class="fas fa-trash"></i></button>
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <button class="btn btn-icon btn-primary edit"
+                                                                    data-id="{{ $user->id }}"><i
+                                                                        class="bi bi-eye-fill"></i></button>
+                                                                {{-- <button class="btn btn-icon btn-danger delete-btn mx-2"
+                                                                    data-id="{{ $user->id }}" data-bs-toggle="modal"
+                                                                    data-bs-target="#myModalDelete"><i
+                                                                        class="fas fa-trash"></i></button> --}}
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -209,7 +211,7 @@
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $("#myModalEdit").modal('show');
-                $.post('{{ route('showActive') }}', {
+                $.post('{{ route('showInactive') }}', {
                         id: $(this).attr('data-id'),
                         _token: '{{ csrf_token() }}'
                     },
@@ -222,7 +224,7 @@
     </script>
 
     {{-- Js Hapus --}}
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-btn');
 
@@ -234,7 +236,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
     <style>
         .popup {

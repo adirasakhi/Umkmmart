@@ -48,13 +48,35 @@
         <button type="submit" name="action" value="approve" class="btn btn-primary mt-3 mr-2 col-6 text-light">
             <i class="bi bi-check-circle-fill"></i> Approve
         </button>
-        <a href="{{ route('users.destroy', $user->id) }}" class="btn btn-danger mt-3 col-6 text-light"
-            onclick="event.preventDefault(); if(confirm('Are you sure to reject?')) { document.getElementById('delete-form').submit(); }">
+        <button type="button" class="btn btn-danger mt-3 col-6 text-light" data-toggle="modal" data-target="#myModalReject">
             <i class="bi bi-x-circle-fill"></i> Reject
-        </a>
+        </button>
     </div>
 </form>
-<form id="delete-form" action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: none;">
-    @csrf
-    @method('DELETE')
-</form>
+
+<!-- Modal for Rejecting User -->
+<div class="modal fade" id="myModalReject" role="dialog" aria-labelledby="myModalLabelReject" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelReject">Tolak Pengguna</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menolak Pengguna ini?</p>
+                <form id="rejectForm" action="{{ route('users.action.reject', $user->id) }}" method="POST">
+                    @csrf
+                    <div class="row justify-content-end">
+                        <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
+                            <span class="fa fa-times"></span> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary col-2 mr-3">
+                            <span class="fa fa-check"></span> Yakin
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

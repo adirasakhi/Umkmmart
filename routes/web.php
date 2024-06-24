@@ -25,9 +25,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // katalog Routes
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
-Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
+// Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
 Route::get('/katalog/filter', [KatalogController::class, 'filter'])->name('katalog.filter');
 Route::get('/katalog/search', [KatalogController::class, 'search'])->name('katalog.search');
+
 
 
 Route::middleware('auth', 'role')->group(function () {
@@ -48,14 +49,22 @@ Route::middleware('auth', 'role')->group(function () {
     Route::delete('/kategori/delete/{id}', [CategoryController::class, "destroy"])->name('category.delete');
 
     // User routes
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
     Route::get('/users/profile', [UserController::class, 'profile'])->name('users.profile');
-    Route::post('/users/profile/update/{id}', [UserController::class, 'updateProfile'])->name('users.profile.update');
-    Route::get('/users/registered', [UserController::class, 'registered'])->name('users.registered');
+    Route::post('/users/profile/update/{id}', [UserController::class, 'profileUpdate'])->name('users.profile.update');
+
+    Route::get('/users/active', [UserController::class, 'active'])->name('users.active');
+    Route::get('/users/inactive', [UserController::class, 'inactive'])->name('users.inactive');
+    Route::get('/users/reject', [UserController::class, 'showReject'])->name('users.showReject');
+
+
     Route::post('/users/showActive', [UserController::class, 'showActive'])->name('showActive');
     Route::post('/users/showInactive', [UserController::class, 'showInactive'])->name('showInactive');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    // Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::post('/users/action-reject/{id}', [UserController::class, 'actionReject'])->name('users.action.reject');
+    Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
+    // Route::get('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
 
     // product Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');

@@ -38,7 +38,8 @@
         <label for="social_media_id" class="form-label">Social Media</label>
         <div>
             <span class="badge bg-primary text-white"><i class="bi bi-facebook text-white"></i> Facebook</span>
-            <span class="badge bg-success text-white"><i class="bi bi-whatsapp text-white"></i> WhatsApp</span>
+            <a href="https://api.whatsapp.com/send/?phone=628812248087"><span class="badge bg-success text-white"><i
+                        class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
             <span class="badge bg-dark text-white"><i class="bi bi-tiktok text-white"></i> TikTok</span>
             <span class="badge bg-danger text-white"><i class="bi bi-instagram text-white"></i> Instagram</span>
         </div>

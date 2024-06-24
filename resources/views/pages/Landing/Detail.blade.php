@@ -1,4 +1,3 @@
-
 @extends('layouts.landingPage')
 @section('content')
     <!-- Single Page Header start -->
@@ -144,6 +143,5 @@
             </div>
         </div>
     </div>
-
         {{-- end Modal Info Toko  --}}
     @endsection

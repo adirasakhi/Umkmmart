@@ -73,17 +73,31 @@ class KatalogController extends Controller
 
     public function filter(Request $request)
     {
+        // dd($request->all());
+        $categoryId = $request->input('id');
+        $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
         $query = Product::query();
 
-        if (!is_null($minPrice)) {
-            $query->where('price', '>=', $minPrice);
-        }
+    if (isset ($categoryId) && (($categoryId != null))) {
+        $query->where('category_id', $categoryId);
+    }
 
-        if (!is_null($maxPrice)) {
-            $query->where('price', '<=', $maxPrice);
+    if (isset ($minPrice) && ($minPrice != null)) {
+        $query->where('price', '>=', $minPrice);
+    }
+
+    if (isset ($maxPrice) && ($maxPrice != null)) {
+        $query->where('price', '<=', $maxPrice);
+    }
+
+    if(isset ($keywords) && ($keywords != null) ){
+        $keywordArray = explode(' ', $keywords);
+        foreach ($keywordArray as $keyword) {
+            $query = $query->Where('name', 'like', '%'.$keyword.'%');
         }
+    }
 
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();

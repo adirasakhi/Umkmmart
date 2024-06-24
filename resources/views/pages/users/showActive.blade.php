@@ -8,7 +8,7 @@
     </div>
 @endif
 
-<form action="{{ url('users/update', $user->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
@@ -38,18 +38,16 @@
         <label for="social_media_id" class="form-label">Social Media</label>
         <div>
             <span class="badge bg-primary text-white"><i class="bi bi-facebook text-white"></i> Facebook</span>
-            <a href="https://api.whatsapp.com/send/?phone={{ $user->phone }}"><span class="badge bg-success text-white"><i class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
+            <a href="https://api.whatsapp.com/send/?phone=628812248087"><span class="badge bg-success text-white"><i
+                        class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
             <span class="badge bg-dark text-white"><i class="bi bi-tiktok text-white"></i> TikTok</span>
             <span class="badge bg-danger text-white"><i class="bi bi-instagram text-white"></i> Instagram</span>
         </div>
     </div>
 
     <div class="d-flex justify-content-start align-items-center">
-        <button type="submit" class="btn btn-primary mt-3 mr-2 col-6 text-light"><i
-                class="bi bi-check-circle-fill"></i>
-            Approve</button>
-        <button type="submit" class="btn btn-danger mt-3 col-6 text-light"><i class="bi bi-x-circle-fill"></i></i>
-            Rejected</button>
+        <button type="submit" class="btn btn-danger mt-3 mr-2 col-12 text-light"><i class="bi bi-x-circle-fill"></i>
+            UnApprove</button>
     </div>
 
 </form>

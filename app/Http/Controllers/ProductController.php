@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,27 +13,33 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        if ($user->role_id == 1) {
+        if (Auth::user()->role_id == 1) {
             $products = Product::all();
         }else{
+            $user = Auth::user();
             $products = Product::where('seller_id', $user->id)->get();
         }
+        $user = User::where('role_id', '!=', 1)->get();
         $categories = Category::all();
-        return view('pages.dashboard.product', ['products' => $products,'categories' => $categories]);
+        return view('pages.product.product', ['products' => $products,'categories' => $categories,'user' => $user]);
     }
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'category_id' => 'required|integer'
+            'category_id' => 'required|integer',
+            'seller_id' => 'required_if:role_id,1|integer',
         ]);
 
         $imagePath = $request->file('image')->store('product_images', 'public');
+
+        $sellerId = ($user->role_id == 2) ? $user->id : $validatedData['seller_id'];
 
         $product = Product::create([
             'name' => $validatedData['name'],
@@ -40,7 +47,7 @@ class ProductController extends Controller
             'description' => $validatedData['description'],
             'image' => $imagePath,
             'category_id' => $validatedData['category_id'],
-            'seller_id' => auth()->id()
+            'seller_id' => $sellerId,
         ]);
 
         if ($product) {
@@ -49,6 +56,7 @@ class ProductController extends Controller
             return redirect()->route('products.index')->with('error', 'Product gagal ditambahkan');
         }
     }
+
 
     public function edit(Request $request)
     {
@@ -61,7 +69,7 @@ class ProductController extends Controller
         $categories = Category::all();
 
         if ($product) {
-            return view('pages.dashboard.product-edit', compact('product', 'categories'));
+            return view('pages.product.product-edit', compact('product', 'categories'));
         } else {
             return response()->json(['message' => 'Product tidak ditemukan'], 404);
         }
@@ -118,7 +126,7 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product berhasil dihapus');
     }
-    
+
 
 
 }

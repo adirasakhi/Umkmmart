@@ -1,3 +1,4 @@
+
 @extends('layouts.landingPage')
 @section('content')
     <!-- Single Page Header start -->
@@ -44,8 +45,8 @@
                                 </div>
                             </div>
                             <a href="https://wa.me/{{ $product->seller->phone }}?text=Halo%2C%20saya%20tertarik%20dengan%20produk%20Anda."
-                                class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                                <i class="fa fa-phone me-2 text-primary"></i> Hubungi Penjual
+                                class="btn-custom">
+                                <i class="fa fa-phone me-2"></i> Hubungi Penjual
                             </a>
                         </div>
                         <div class="col-lg-12">
@@ -130,7 +131,7 @@
                                     <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
                                         style="display: inline-block; margin-right: 10px;">
                                         <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
-                                            <i class="bi bi-tiktok text-white"></i> TikTok
+                                            <img src="{{asset('storage/logo-tiktok-svgrepo-com (1).svg')}}" style="width: 12px" alt=""> TikTok
                                         </span>
                                     </a>
                                 @endif
@@ -142,5 +143,7 @@
                 </div>
             </div>
         </div>
+    </div>
+
         {{-- end Modal Info Toko  --}}
     @endsection

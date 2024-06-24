@@ -186,6 +186,19 @@
                             @endforeach
                         </select>
                     </div>
+                    @if (Auth::user()->role_id == 1)
+                    <div class="form-group">
+                        <label for="seller_id" class="control-label"
+                            value="{{ old('seller_id') }}">Penjual</label>
+                        <select name="seller_id" class="form-control">
+                            <option value="">-- Pilih Penjual --</option>
+                            @foreach ($user as $users)
+                            <option value="{{ $users->id }}">{{ $users->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
+
                     <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
                         Save</button>
                 </form>
@@ -264,11 +277,11 @@
             const descriptionContainer = this.parentElement;
             const description = descriptionContainer.querySelector('.description');
             const moreContent = descriptionContainer.querySelector('.remaining-words');
-            
+
             moreContent.style.display === 'none' || moreContent.style.display === '' ?
                 moreContent.style.display = 'inline' :
                 moreContent.style.display = 'none';
-            
+
             this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
         });
     });

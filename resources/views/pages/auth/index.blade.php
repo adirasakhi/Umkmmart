@@ -19,52 +19,57 @@
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form action="{{ route('registerAction') }}" method="POST">
+            <form action="{{ route('registerAction') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <h1>Daftar Akun</h1>
                 @if (session('status'))
-                    <div class="alert alert-succes">
-                        {{ session('message') }}
+                    <div class="alert alert-success">
+                        {!! session('message') !!}
                     </div>
                 @endif
 
                 <div class="error-message">
                     <input type="text" name="name" placeholder="Nama" value="{{ old('name') }}">
                     @if ($errors->has('name'))
-                        {{ $errors->first('name') }}
+                        <div class="error">{{ $errors->first('name') }}</div>
                     @endif
 
                     <input type="email" name="email" placeholder="Email"
                         value="{{ session('action') == 'register' ? old('email') : '' }}">
                     @if ($errors->has('email'))
-                        {{ $errors->first('email') }}
+                        <div class="error">{{ $errors->first('email') }}</div>
                     @endif
 
                     <input type="password" name="password" placeholder="Kata Sandi">
                     @if ($errors->has('password'))
-                        {{ $errors->first('password') }}
+                        <div class="error">{{ $errors->first('password') }}</div>
                     @endif
 
                     <input type="password" name="password_confirmation" placeholder="Konfirmasi Kata Sandi"
                         autocomplete="new-password">
                     @if ($errors->has('password_confirmation'))
-                        {{ $errors->first('password_confirmation') }}
-                    @endif
-
-                    <input type="text" name="address" placeholder="Alamat" value="{{ old('address') }}">
-                    @if ($errors->has('address'))
-                        {{ $errors->first('address') }}
+                        <div class="error">{{ $errors->first('password_confirmation') }}</div>
                     @endif
 
                     <input type="tel" name="phone" placeholder="Telepon" value="{{ old('phone') }}"
                         pattern="[0-9]+" title="Masukkan hanya angka">
                     @if ($errors->has('phone'))
-                        {{ $errors->first('phone') }}
+                        <div class="error">{{ $errors->first('phone') }}</div>
+                    @endif
+
+                    <label for="support_documents">
+                        Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Kerja<br>
+                        <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
+                    </label>
+                    <input type="file" name="support_documents" id="support_documents" accept=".jpeg,.png,.jpg,.pdf">
+                    @if ($errors->has('support_documents'))
+                        <div class="error">{{ $errors->first('support_documents') }}</div>
                     @endif
                 </div>
 
                 <button type="submit">Daftar</button>
             </form>
+
         </div>
         <div class="form-container sign-in">
             <form action="{{ route('loginAction') }}" method="POST">

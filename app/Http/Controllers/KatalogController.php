@@ -14,98 +14,125 @@ class KatalogController extends Controller
     public function index(Request $request)
     {
         $categoryId = $request->input('id');
-        
-        if ($categoryId) {
-            $products = Product::where('category_id', $categoryId)->get();
-        } else {
-            $products = Product::all();
-        }
+        $minPrice = $request->input('min');
+        $maxPrice = $request->input('max');
+        $keywords = $request->input('keywords');
 
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories', "categoryId"));
+        $query = Product::query();
+
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        if (!is_null($minPrice)) {
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if (!is_null($maxPrice)) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        if (!empty($keywords)) {
+            $keywordArray = explode(' ', $keywords);
+            foreach ($keywordArray as $keyword) {
+                $query->where('name', 'like', '%' . strtolower($keyword) . '%');
+            }
+        }
+
+        $products = $query->paginate(10);
+
+        return view('pages.Landing.shop', compact('products', 'categories', 'categoryId', 'minPrice', 'maxPrice'));
     }
-    public function katalog() {
-        $products = Product::all();
+
+    public function katalog()
+    {
+        $products = Product::paginate(10);
         $categories = Category::withCount('products')->get();
         return view('pages.Landing.shop', ['products' => $products, 'categories' => $categories]);
     }
 
-    public function detail($id) {
+    public function detail($id)
+    {
         $product = Product::find($id);
         $categories = Category::all();
         $user = User::all();
         $social_media = SocialMedia::all();
-        $related_products = Product::where('category_id', $product->category_id) // Filter berdasarkan kategori yang sama
-    ->where('id', '!=', $product->id) // Kecualikan produk yang sedang ditampilkan
-    ->limit(3)
-    ->get();
-
+        $related_products = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit(3)
+            ->get();
 
         if (!$product) {
-            // handle the case when product is not found
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
 
-        return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user'=>$user, 'social_media' => $social_media ,'related_products' => $related_products]);
+        return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }
 
-    /*public function sort($categoryId)
-    {
-        $category = Category::with('products')->find($categoryId);
-
-        if (!$category) {
-            return redirect()->route('categories.index')->with('error', 'Category not found');
-        }
-
-        return view('pages.dashboard.bykategori', compact('category'));
-    }*/
     public function filter(Request $request)
     {
-
-        $categoryId = $request->input('category');
+        // dd($request->all());
+        $categoryId = $request->input('id');
+        $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
-        $products = Product::where('category_id', $categoryId)
-        ->whereBetween('price', [$minPrice, $maxPrice])
-        ->get();
+        $query = Product::query();
+
+    if (isset ($categoryId) && (($categoryId != null))) {
+        $query->where('category_id', $categoryId);
+    }
+
+    if (isset ($minPrice) && ($minPrice != null)) {
+        $query->where('price', '>=', $minPrice);
+    }
+
+    if (isset ($maxPrice) && ($maxPrice != null)) {
+        $query->where('price', '<=', $maxPrice);
+    }
+
+    if(isset ($keywords) && ($keywords != null) ){
+        $keywordArray = explode(' ', $keywords);
+        foreach ($keywordArray as $keyword) {
+            $query = $query->Where('name', 'like', '%'.$keyword.'%');
+        }
+    }
+
+        $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories', "categoryId"));
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice'));
     }
+
     public function search(Request $request)
     {
-    // Ambil input dari request
         $keywords = $request->input('keywords');
         $categoryId = $request->input('category');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
 
-        $products = Product::query();
+        $query = Product::query()
+            ->when($categoryId, function ($query, $categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
+            ->when(!is_null($minPrice), function ($query) use ($minPrice) {
+                return $query->where('price', '>=', $minPrice);
+            })
+            ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
+                return $query->where('price', '<=', $maxPrice);
+            });
 
-        if ($categoryId) {
-            $products->where('category_id', $categoryId)
-            ->whereBetween('price', [$minPrice, $maxPrice]);
-        }
-
-        if (strtolower($keywords) && $minPrice && $maxPrice) {
-            $products->where('name', 'like', '%' . strtolower($keywords) . '%')
-            ->whereBetween('price', [$minPrice, $maxPrice]);
-        }
-        if(strtolower($keywords) ){
+        if (!empty($keywords)) {
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
-                $products = $products->Where('name', 'like', '%'.$keyword.'%');
+                $query->where('name', 'like', '%' . strtolower($keyword) . '%');
             }
         }
 
-        $products = $products->get();
-
+        $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'keywords', 'categoryId', 'categories'));
+        return view('pages.Landing.result', compact('products', 'categories'));
     }
-
-
-
 }

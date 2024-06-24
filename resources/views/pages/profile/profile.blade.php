@@ -14,15 +14,27 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('users.profile.update', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label for="name" class="control-label">Name</label>
+                            <label for="name" class="control-label">Nama</label>
                             <input type="text" name="name" class="form-control" value="{{ $user->name }}">
                         </div>
                         <div class="form-group">
                             <label for="email" class="control-label">Email</label>
                             <input type="email" name="email" class="form-control" value="{{ $user->email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="control-label">Alamat</label>
+                            <input type="text" name="address" class="form-control" value="{{ $user->address }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="control-label">Nomor Telepon</label>
+                            <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo" class="control-label">Foto Profile</label>
+                            <input type="file" name="photo" class="form-control" value="">
                         </div>
                         <div class="form-group">
                             <label for="password" class="control-label">Password</label>
@@ -31,18 +43,6 @@
                         <div class="form-group">
                             <label for="password_confirmation" class="control-label">Confirm Password</label>
                             <input type="password" name="password_confirmation" class="form-control" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="address" class="control-label">Address</label>
-                            <input type="text" name="address" class="form-control" value="{{ $user->address }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="control-label">Phone</label>
-                            <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="photo" class="control-label">Photo</label>
-                            <input type="file" name="photo" class="form-control" value="">
                         </div>
                         <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
                             Save</button>

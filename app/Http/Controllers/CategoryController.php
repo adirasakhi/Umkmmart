@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $category = Category::all();
-        return view('pages.dashboard.category', ['category' => $category]);
+        return view('pages.category.category', ['category' => $category]);
     }
 
     public function store(Request $request)
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         $data = Category::find($id);
 
         if ($data) {
-            return view('pages.dashboard.category-edit', compact('data'));
+            return view('pages.category.category-edit', compact('data'));
         } else {
             return redirect()->route('kategori')->with('error', 'Kategori tidak ditemukan');
         }

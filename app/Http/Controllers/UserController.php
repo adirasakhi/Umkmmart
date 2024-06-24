@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialMedia;
 use App\Models\User;
+use App\Models\UserMistake;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -103,43 +104,69 @@ class UserController extends Controller
 
     public function showReject()
     {
-        $rejectedUsers = User::where(['status' => 'decined', 'role_id' => 2])->get();
+        $rejectedUsers = User::where(['status' => 'declined', 'role_id' => 2])->get();
         return view('pages.users.rejected', ['rejectedUsers' => $rejectedUsers]);
     }
 
-    public function actionReject($id)
+    public function actionReject(Request $request, $id)
     {
+        $request->validate([
+            'description' => 'required|string|max:255',
+        ]);
 
         $user = User::find($id);
 
-        if ($user) {
+        if ($user && $user->role_id == 2) {
+            // Check if there's already a mistake record for this user
+            $existingMistake = UserMistake::where('user_id', $user->id)->first();
+
+            if ($existingMistake) {
+                return redirect()->route('users.inactive')->with('error', 'Kesalahan untuk pengguna ini sudah dicatat sebelumnya');
+            }
+
             if($user->status == "inactive" || $user->status == "active"){
-            $dataToUpdate = [
-                'status' => 'decined',
-            ];
+                // Save the user mistake
+                UserMistake::create([
+                    'user_id' => $user->id,
+                    'curentStatus' => $user->status,
+                    'description' => $request->description,
+                ]);
 
-            $user->update($dataToUpdate);
+                // Update user status to declined
+                $user->update(['status' => 'declined']);
 
-            return redirect()->route('users.showReject')->with('success', 'Pengguna Berhasil Diblok');
+                return redirect()->route('users.showReject')->with('success', 'Pengguna Berhasil Diblok');
             }
         } else {
-            return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan');
+            return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan atau tidak memiliki role yang sesuai');
         }
     }
+
     public function restore($id)
     {
-
         $user = User::find($id);
 
         if ($user) {
-            if($user->status == "decined"){
-            $dataToUpdate = [
-                'status' => 'active',
-            ];
+            if ($user->status == "declined") {
+                // Find all UserMistake entries for the user
+                $userMistakes = UserMistake::where('user_id', $id)->get();
 
-            $user->update($dataToUpdate);
+                if ($userMistakes->isEmpty()) {
+                    return redirect()->route('users.showReject')->with('error', 'Tidak ada kesalahan yang dicatat untuk pengguna ini');
+                }
 
-            return redirect()->route('users.active')->with('success', 'Pengguna Berhasil Tidak Diblok');
+                // Use the currentStatus from the first UserMistake entry to restore the user's status
+                $currentStatus = $userMistakes->first()->curentStatus;
+
+                // Update user's status
+                $user->update(['status' => $currentStatus]);
+
+                // Delete all UserMistake entries for this user
+                UserMistake::where('user_id', $id)->delete();
+
+                return redirect()->route('users.active')->with('success', 'Pengguna berhasil direstorasi');
+            } else {
+                return redirect()->route('users.showReject')->with('error', 'Pengguna tidak dalam status declined');
             }
         } else {
             return redirect()->route('users.showReject')->with('error', 'User tidak ditemukan');

@@ -77,7 +77,7 @@
                 <h1>Masuk</h1>
 
                 @if (session('status-login'))
-                    <div class="alert alert-succes">
+                    <div class="alert alert-succes error-message">
                         {{ session('message') }}
                     </div>
                 @endif

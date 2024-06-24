@@ -60,13 +60,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabelReject">Tolak Pengguna</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <p>Apakah Anda yakin ingin menolak Pengguna ini?</p>
                 <form id="rejectForm" action="{{ route('users.action.reject', $user->id) }}" method="POST">
                     @csrf
+                    <div class="form-group">
+                        <label for="description" class="form-label">Deskripsi Kesalahan</label>
+                        <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+                    </div>
                     <div class="row justify-content-end">
                         <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
                             <span class="fa fa-times"></span> Batal
@@ -80,3 +83,4 @@
         </div>
     </div>
 </div>
+

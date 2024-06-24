@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserMistake;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -77,32 +78,41 @@ class AuthController extends Controller
 
         // Attempt untuk login
         if (Auth::attempt($request->only('email', 'password'))) {
-            // Regenerasi session untuk menghindari fixation attacks
-            if (Auth::user()->status != "active") {
+            $user = Auth::user();
 
+            // Regenerasi session untuk menghindari fixation attacks
+            if ($user->status != "active") {
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
 
-                Session::flash('status-login', 'failed');
-                Session::flash('message', 'Your account is not active yet. please contact admin!');
+                if ($user->status == "declined") {
+                    // Retrieve the user mistake description
+                    $userMistake = UserMistake::where('user_id', $user->id)->first();
+                    $errorMessage = 'Akun anda di tangguhkan karena "' . $userMistake->description . '"';
+
+                    Session::flash('status-login', 'failed');
+                    Session::flash('message', $errorMessage);
+                } else {
+                    Session::flash('status-login', 'failed');
+                    Session::flash('message', 'Your account is not active yet. please contact admin!');
+                }
+
                 return redirect('/login');
             }
 
             $request->session()->regenerate();
-            if (Auth::user()->role_id == 1) {
-                return redirect('dashboard');
-            }
-
-            if (Auth::user()->role_id == 2) {
+            if ($user->role_id == 1 || $user->role_id == 2) {
                 return redirect('dashboard');
             }
         }
+
         // Jika login gagal, kembalikan dengan pesan error
-        Session::put('action', 'login');  // Set session action
+        Session::put('action', 'login'); // Set session action
         return back()->withErrors([
-            'email-login' => 'login gagal. Silakan periksa email dan kata sandi Anda.',
+            'email-login' => 'Login gagal. Silakan periksa email dan kata sandi Anda.',
         ])->withInput($request->except('password'));
     }
+
 
     public function logout(Request $request)
     {

@@ -56,4 +56,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Role::class);
     }
+    public function userMistake()
+    {
+        return $this->hasMany(UserMistake::class);
+    }
 }

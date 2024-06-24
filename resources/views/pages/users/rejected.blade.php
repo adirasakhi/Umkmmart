@@ -91,9 +91,6 @@
                                                             <button class="btn btn-icon btn-primary edit"
                                                                 data-id="{{ $user->id }}"><i
                                                                     class="bi bi-eye-fill"></i></button>
-                                                            <button class="btn btn-icon btn-success delete-btn mx-2"
-                                                                data-id="{{ $user->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i class="fas fa-sync-alt"></i></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -130,20 +127,20 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-btn');
+            // const deleteButtons = document.querySelectorAll('.delete-btn');
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const deleteForm = document.getElementById('deleteForm');
-                    deleteForm.action = `{{ url('/users/restore') }}/${id}`;
-                });
-            });
+            // deleteButtons.forEach(button => {
+            //     button.addEventListener('click', function() {
+            //         const id = this.getAttribute('data-id');
+            //         const deleteForm = document.getElementById('deleteForm');
+            //         deleteForm.action = `{{ url('/users/restore') }}/${id}`;
+            //     });
+            // });
 
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $("#myModalEdit").modal('show');
-                $.post('{{ route('showActive') }}', {
+                $.post('{{ route('showRejected') }}', {
                     id: $(this).attr('data-id'),
                     _token: '{{ csrf_token() }}'
                 }, function(html) {

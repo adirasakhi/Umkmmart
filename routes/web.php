@@ -60,6 +60,7 @@ Route::middleware('auth', 'role')->group(function () {
 
     Route::post('/users/showActive', [UserController::class, 'showActive'])->name('showActive');
     Route::post('/users/showInactive', [UserController::class, 'showInactive'])->name('showInactive');
+    Route::post('/users/showReject', [UserController::class, 'showRejected'])->name('showRejected');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
     // Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/action-reject/{id}', [UserController::class, 'actionReject'])->name('users.action.reject');

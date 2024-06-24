@@ -57,11 +57,11 @@
                         <div class="error">{{ $errors->first('phone') }}</div>
                     @endif
 
-                    <label for="support_documents">
-                        Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Kerja<br>
+                    <input type="file" name="support_documents" id="support_documents" accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
+                    <label for="support_documents" style="color: #404040">
+                        Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
                         <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
                     </label>
-                    <input type="file" name="support_documents" id="support_documents" accept=".jpeg,.png,.jpg,.pdf">
                     @if ($errors->has('support_documents'))
                         <div class="error">{{ $errors->first('support_documents') }}</div>
                     @endif

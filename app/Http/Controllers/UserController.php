@@ -29,6 +29,22 @@ class UserController extends Controller
         }
     }
 
+    public function showRejected(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $id = $request->id;
+        $user = User::find($id);
+
+        if ($user) {
+            return view('pages.users.showReject', compact('user'));
+        } else {
+            return redirect()->route('users.active')->with('error', 'User tidak ditemukan');
+        }
+    }
+
     public function showInactive(Request $request)
     {
         $request->validate([

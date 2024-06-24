@@ -114,10 +114,6 @@
                 <form action="{{ url('sosial-media/insert/') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label>ID</label>
-                        <input type="text" name="id" class="form-control" value="{{ ($val->id)+1 }}" readonly>
-                    </div>
-                    <div class="form-group">
                         <label>Whatsapp</label>
                         <input type="text" name="whatsapp" class="form-control">
                     </div>

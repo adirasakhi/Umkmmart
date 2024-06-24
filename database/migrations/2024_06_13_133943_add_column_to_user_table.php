@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone');
             $table->string('photo')->nullable();
-            $table->enum('status',['active','inactive'])->default('inactive');
+            $table->enum('status',['active','inactive','decined'])->default('inactive');
             $table->foreignId('role_id')->constrained('role')->onDelete('cascade');
         });
     }

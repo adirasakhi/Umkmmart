@@ -72,8 +72,8 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col d-flex justify-content-end">
-                        <a href="/users/inactive" class="btn btn-primary my-2" style="width: 180px; margin:20px">Pengguna
-                            Tidak Aktif</a>
+                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
+                            data-bs-target="#myModalCreate">Tambah Pengguna</button>
                     </div>
                 </div>
                 <div class="row">
@@ -85,8 +85,8 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Name</th>
-                                                <th>Phone</th>
+                                                <th>Nama</th>
+                                                <th>Telepon</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -120,6 +120,83 @@
             </div>
         </section>
     </div>
+
+    {{-- Modal Tambah Pengguna --}}
+    <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Tambah Pengguna</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="name" class="control-label">Nama <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="Nama"
+                                value="{{ old('name') }}">
+                            @if ($errors->has('name'))
+                                <div class="error">{{ $errors->first('name') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="Email"
+                                value="{{ old('email') }}">
+                            @if ($errors->has('email'))
+                                <div class="error">{{ $errors->first('email') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="control-label">Kata Sandi <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control" placeholder="Kata Sandi">
+                        </div>
+                        <div class="form-group">
+                            <label for="password_confirmation" class="control-label">Konfirmasi Kata Sandi <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="password_confirmation" class="form-control"
+                                placeholder="Konfirmasi Kata Sandi">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="control-label">No. Telepon <span
+                                    class="text-danger">*</span></label>
+                            <input type="tel" name="phone" class="form-control" placeholder="No. Telepon"
+                                value="{{ old('phone') }}" pattern="[0-9]+" title="Masukkan hanya angka">
+                            @if ($errors->has('phone'))
+                                <div class="error">{{ $errors->first('phone') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="control-label">Alamat <span class="text-danger">*</span></label>
+                            <textarea name="address" class="form-control" id="address" placeholder="Alamat">{{ old('address') }}</textarea>
+                            @if ($errors->has('address'))
+                                <div class="error">{{ $errors->first('address') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <input type="file" name="support_documents" id="support_documents"
+                                accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
+                            <label for="support_documents" style="color: #404040">
+                                <span class="text-danger">*</span>
+                                Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
+                                <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
+                            </label>
+                            @if ($errors->has('support_documents'))
+                                <div class="error">{{ $errors->first('support_documents') }}</div>
+                            @endif
+                        </div>
+
+                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
+                            Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end Modal Tambah Pengguna --}}
 
     <script>
         window.onload = function() {
@@ -176,15 +253,16 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            color: white;
         }
 
         .popup.success {
-            background-color: #4CAF50;
+            background-color: #4caf50;
+            color: white;
         }
 
         .popup.error {
             background-color: #f44336;
+            color: white;
         }
     </style>
 

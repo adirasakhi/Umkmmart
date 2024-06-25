@@ -14,36 +14,45 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('users.profile.update', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('users.profile.update', ['id' => $user->id]) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label for="name" class="control-label">Nama</label>
-                            <input type="text" name="name" class="form-control" value="{{ $user->name }}">
+                            <label for="name" class="control-label">Nama <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="Nama"
+                                value="{{ $user->name }}">
                         </div>
                         <div class="form-group">
-                            <label for="email" class="control-label">Email</label>
-                            <input type="email" name="email" class="form-control" value="{{ $user->email }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="address" class="control-label">Alamat</label>
-                            <input type="text" name="address" class="form-control" value="{{ $user->address }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="control-label">Nomor Telepon</label>
-                            <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="photo" class="control-label">Foto Profile</label>
-                            <input type="file" name="photo" class="form-control" value="">
+                            <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="Email"
+                                value="{{ $user->email }}">
                         </div>
                         <div class="form-group">
                             <label for="password" class="control-label">Password</label>
-                            <input type="password" name="password" class="form-control" value="">
+                            <input type="password" name="password" class="form-control" placeholder="Kata Sandi"
+                                value="">
                         </div>
                         <div class="form-group">
                             <label for="password_confirmation" class="control-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" value="">
+                            <input type="password" name="password_confirmation" class="form-control"
+                                placeholder="Konfirmasi Kata Sandi" value="">
                         </div>
+                        <div class="form-group">
+                            <label for="address" class="control-label">Alamat <span class="text-danger">*</span></label>
+                            <textarea name="address" class="form-control" id="address" placeholder="Alamat">{{ $user->address }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="control-label">Nomor Telepon <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" name="phone" class="form-control" placeholder="No. Telepon"
+                                value="{{ $user->phone }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo" class="control-label">Foto Profile</label>
+                            <input type="file" name="photo" class="form-control" placeholder="Foto Profile"
+                                value="">
+                        </div>
+
                         <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
                             Save</button>
                     </form>
@@ -70,9 +79,16 @@
 
                         <div class="card p-3 py-4">
 
-                            <div class="text-center">
-                                <img src="https://i.imgur.com/bDLhJiP.jpg" width="100" class="rounded-circle">
-                            </div>
+                            @if ($user->photo != null)
+                                <div class="text-center">
+                                    <img src="{{ asset('storage/' . $user->photo) }}" width="100" class="rounded-circle">
+                                </div>
+                            @else
+                                <div class="text-center">
+                                    <img src="{{ asset('assets/img/avatar/avatar-1.png') }}" width="100"
+                                        class="rounded-circle">
+                                </div>
+                            @endif
 
                             <div class="text-center mt-3">
                                 <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
@@ -116,9 +132,11 @@
                                     </div>
                                 @endforeach
                                 @if ($user->role_id == 2)
-                                <div class="buttons">
-                                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate_{{  $user->id }}">Tambah Akun</button>
-                                </div>
+                                    <div class="buttons">
+                                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#myModalCreate_{{ $user->id }}">Edit Akun</button>
+                                    </div>
                                 @endif
 
                             </div>

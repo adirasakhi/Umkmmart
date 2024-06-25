@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -68,22 +69,22 @@ class UserController extends Controller
         $user = User::find($id);
 
         if ($user) {
-            if($user->status == "inactive"){
-            $dataToUpdate = [
-                'status' => 'active',
-            ];
+            if ($user->status == "inactive") {
+                $dataToUpdate = [
+                    'status' => 'active',
+                ];
 
-            $user->update($dataToUpdate);
+                $user->update($dataToUpdate);
 
-            return redirect()->route('users.active')->with('success', 'User berhasil diapprove');
-            }else{
+                return redirect()->route('users.active')->with('success', 'User berhasil diapprove');
+            } else {
                 $dataToUpdate = [
                     'status' => 'inactive',
                 ];
 
-            $user->update($dataToUpdate);
+                $user->update($dataToUpdate);
 
-            return redirect()->route('users.inactive')->with('success', 'User berhasil diUnapprove');
+                return redirect()->route('users.inactive')->with('success', 'User berhasil diUnapprove');
             }
         } else {
             return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan');
@@ -124,7 +125,7 @@ class UserController extends Controller
                 return redirect()->route('users.inactive')->with('error', 'Kesalahan untuk pengguna ini sudah dicatat sebelumnya');
             }
 
-            if($user->status == "inactive" || $user->status == "active"){
+            if ($user->status == "inactive" || $user->status == "active") {
                 // Save the user mistake
                 UserMistake::create([
                     'user_id' => $user->id,
@@ -217,5 +218,50 @@ class UserController extends Controller
         } else {
             return redirect()->route('users.profile')->with('error', 'User tidak ditemukan');
         }
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string|min:8',
+            'address' => 'required',
+            'phone' => 'required',
+            'support_documents' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048'
+        ], [
+            'name.required' => 'Nama harus diisi',
+            'name.regex' => 'Nama hanya boleh mengandung huruf dan spasi',
+            'name.min' => 'Nama minimal 3 huruf',
+            'email.required' => 'Email harus diisi',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.required' => 'Kata Sandi harus diisi',
+            'password.min' => 'Kata Sandi minimal 8 huruf',
+            'password.confirmed' => 'Kata Sandi dan Konfirmasi Kata Sandi tidak cocok',
+            'password_confirmation.required' => 'Konfirmasi Kata Sandi harus diisi',
+            'password_confirmation.min' => 'Konfirmasi Kata Sandi minimal 8 huruf',
+            'phone.required' => 'Telepon harus diisi',
+            'support_documents.required' => 'Dokumen pendukung harus ada',
+        ]);
+
+        if ($request->hasFile('support_documents')) {
+            $file = $request->file('support_documents');
+            $filename = $file->hashName();
+            $path = $file->storeAs('Document_users', $filename, 'public');
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'status' => 'active',
+            'address' => $request->address,
+            'role_id' => 2,
+            'support_document' => $path ?? null, // Save filename in the database
+        ]);
+
+        return redirect()->back()->with('success', 'Pengguna berhasil ditambahkan.');
     }
 }

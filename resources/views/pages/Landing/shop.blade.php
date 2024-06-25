@@ -106,19 +106,4 @@
     </div>
     </div>
     <!-- Fruits Shop End-->
-
-    <script>
-        function search_data(search_value) {
-            $.ajax({
-                url: '{{ route('katalog.search') }}',
-                method: 'GET',
-                data: {
-                    keywords: search_value
-                },
-                success: function(response) {
-                    $('#result').html(response);
-                }
-            });
-        }
-    </script>
 @endsection

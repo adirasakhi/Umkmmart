@@ -103,6 +103,7 @@ class KatalogController extends Controller
         $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
+        $sort = $request->input('sort','asc','desc');
         $query = Product::query();
 
         if (isset ($categoryId) && (($categoryId != null))) {
@@ -124,10 +125,15 @@ class KatalogController extends Controller
             }
         }
 
+    if(!in_array($sort, ['asc','desc'])){
+        $sort = 'asc';
+    }
+    $query->orderBy('price', $sort);
+
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice'));
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice','sort'));
     }
 
     /*public function search(Request $request)

@@ -108,7 +108,7 @@ class KatalogController extends Controller
     public function search(Request $request)
     {
         $keywords = $request->input('keywords');
-        $categoryId = $request->input('category');
+        $categoryId = $request->input('id');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
 
@@ -133,6 +133,6 @@ class KatalogController extends Controller
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.result', compact('products', 'categories'));
+        return view('pages.Landing.shop', compact('products', 'categories'));
     }
 }

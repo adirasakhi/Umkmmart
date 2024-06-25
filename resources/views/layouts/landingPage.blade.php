@@ -52,6 +52,12 @@
             color: white;
             margin-right: 0.5rem;
         }
+        .fixed-top {
+            width: 100%;
+            background-color: white;
+            z-index: 1030;
+            /* Ensure it stays above other content */
+        }
     </style>
 </head>
 
@@ -63,11 +69,6 @@
         <div class="spinner-grow text-primary" role="status"></div>
     </div>
     <!-- Spinner End -->
-
-
-    <!-- Navbar start -->
-    @include('partials.Landing.navbar')
-    <!-- Navbar End -->
 
 
     <!-- Modal Search Start -->
@@ -89,7 +90,9 @@
         </div>
     </div>
     <!-- Modal Search End -->
-
+    <!-- Navbar start -->
+    @include('partials.Landing.navbar')
+    <!-- Navbar End -->
     <!-- Content Start -->
     <div class="container">
         @yield('content')

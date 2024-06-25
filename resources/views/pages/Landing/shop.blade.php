@@ -121,5 +121,4 @@
     </div>
     </div>
     <!-- Fruits Shop End-->
-
 @endsection

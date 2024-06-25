@@ -16,6 +16,7 @@
                         <a href="#contact" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="d-flex m-3 me-0">
+
                         <a href="#" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
                             <span

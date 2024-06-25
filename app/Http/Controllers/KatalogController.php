@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\SocialMedia;
 use App\Models\User;
+use App\Models\ProductClick;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class KatalogController extends Controller
@@ -60,13 +62,35 @@ class KatalogController extends Controller
         $user = User::all();
         $social_media = SocialMedia::all();
         $related_products = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->limit(3)
-            ->get();
+        ->where('id', '!=', $product->id)
+        ->limit(3)
+        ->get();
 
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
+
+        /*product click*/
+         $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
+
+         $existingClick = ProductClick::where('product_id', $id)
+         ->where('device_id', $deviceId)
+         ->whereDate('clicked_at', Carbon::today())
+         ->first();
+
+         if ($existingClick) {
+            // Jika sudah ada, tambahkan jumlah klik
+            $existingClick->increment('click_count');
+         } else {
+            // Jika belum ada, buat entri baru dengan click_count = 1
+            ProductClick::create([
+                'product_id' => $id,
+                'device_id' => $deviceId,
+                'clicked_at' => Carbon::now(),
+                'click_count' => 1,
+            ]);
+        }
+        /*end product click*/
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }
@@ -74,30 +98,31 @@ class KatalogController extends Controller
     public function filter(Request $request)
     {
         // dd($request->all());
+        $keyword = $request->input('keyword');
         $categoryId = $request->input('id');
         $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
         $query = Product::query();
 
-    if (isset ($categoryId) && (($categoryId != null))) {
-        $query->where('category_id', $categoryId);
-    }
-
-    if (isset ($minPrice) && ($minPrice != null)) {
-        $query->where('price', '>=', $minPrice);
-    }
-
-    if (isset ($maxPrice) && ($maxPrice != null)) {
-        $query->where('price', '<=', $maxPrice);
-    }
-
-    if(isset ($keywords) && ($keywords != null) ){
-        $keywordArray = explode(' ', $keywords);
-        foreach ($keywordArray as $keyword) {
-            $query = $query->Where('name', 'like', '%'.$keyword.'%');
+        if (isset ($categoryId) && (($categoryId != null))) {
+            $query->where('category_id', $categoryId);
         }
-    }
+
+        if (isset ($minPrice) && ($minPrice != null)) {
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if (isset ($maxPrice) && ($maxPrice != null)) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        if(isset ($keywords) && ($keywords != null) ){
+            $keywordArray = explode(' ', $keywords);
+            foreach ($keywordArray as $keyword) {
+                $query = $query->Where('name', 'like', '%'.$keyword.'%');
+            }
+        }
 
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
@@ -105,7 +130,7 @@ class KatalogController extends Controller
         return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice'));
     }
 
-    public function search(Request $request)
+    /*public function search(Request $request)
     {
         $keywords = $request->input('keywords');
         $categoryId = $request->input('id');
@@ -133,6 +158,63 @@ class KatalogController extends Controller
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories'));
+
+        return view('pages.Landing.result', compact('products', 'categories'));
+    }*/
+    public function search(Request $request)
+    {
+        $keywords = $request->input('keywords');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $categoryIds = $request->input('category_ids');
+
+        $query = Product::query();
+
+        if ($keywords) {
+            $query->where('name', 'LIKE', "%{$keywords}%");
+        }
+
+        if ($minPrice && $maxPrice) {
+            $query->whereBetween('price', [(float)$minPrice, (float)$maxPrice]);
+        } elseif ($minPrice) {
+            $query->where('price', '>=', (float)$minPrice);
+        } elseif ($maxPrice) {
+            $query->where('price', '<=', (float)$maxPrice);
+        }
+
+        if ($categoryIds) {
+            $query->whereIn('category_id', $categoryIds);
+        }
+
+        $products = $query->get();
+
+        // Kembalikan hasil sebagai response untuk Ajax
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice'));
+    }
+
+    public function getPopularProduct()
+    {
+        $popularProduct = Product::select(
+            'product.id', 
+            'product.name', 
+            'product.price', 
+            'product.image', 
+            DB::raw('COUNT(product_clicks.id) as click_count')
+        )
+        ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
+        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30)) 
+        ->groupBy(
+            'product.id', 
+            'product.name', 
+            'product.price', 
+            'product.image'
+        )
+        ->orderByDesc('click_count')
+        ->take(3) 
+        ->with('seller')
+        ->get();
+
+        return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
+
     }
 }

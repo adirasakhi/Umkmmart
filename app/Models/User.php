@@ -23,6 +23,7 @@ class User extends Authenticatable
         'address',
         'phone',
         'photo',
+        'support_document',
         'status',
         'role_id',
     ];

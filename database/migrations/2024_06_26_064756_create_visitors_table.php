@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('social_media', function (Blueprint $table) {
+        Schema::create('visitors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('facebook')->nullable();
-            $table->string('whatsapp')->nullable();
-            $table->string('tiktok')->nullable();
-            $table->string('instagram')->nullable();
+            $table->string('ip_address');
+            $table->timestamp('visited_at')->useCurrent();
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('social_media');
+        Schema::dropIfExists('visitors');
     }
 };

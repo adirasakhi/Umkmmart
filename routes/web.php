@@ -12,35 +12,24 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('pages.Landing.index');
+
+Route::middleware(['visitor'])->group(function () {
+    Route::get('/', [KatalogController::class, 'getPopularProduct']);
+    Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
 });
-// Auth routes
+
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::get('/register', [AuthController::class, 'index'])->name('register');
-Route::post('/action-register', [AuthController::class, 'registerAction'])->name('registerAction'); // disini ada coding untuk save user
-Route::post('/action-login', [AuthController::class, 'loginAction'])->name('loginAction'); // disini ada coding untuk check user
+Route::post('/action-register', [AuthController::class, 'registerAction'])->name('registerAction');
+Route::post('/action-login', [AuthController::class, 'loginAction'])->name('loginAction');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// katalog Routes
-Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
 Route::get('/detail/{id}', [KatalogController::class, 'detail'])->name('katalog.detail');
-// Route::get('/katalog/search', [KatalogController::class, "search"])->name('katalog.search');
 Route::get('/katalog/filter', [KatalogController::class, 'filter'])->name('katalog.filter');
 Route::get('/katalog/search', [KatalogController::class, 'search'])->name('katalog.search');
-
-
-
 Route::middleware('auth', 'role')->group(function () {
     // Dashboard Routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/weekly', [DashboardController::class, 'getWeeklyData'])->name('dashboard.weekly');
-    Route::get('/dashboard/monthly', [DashboardController::class, 'getMonthlyData'])->name('dashboard.monthly');
-    Route::get('/dashboard/yearly', [DashboardController::class, 'getYearlyData'])->name('dashboard.yearly');
-    Route::get('/dashboard/user/weekly', [DashboardController::class, 'getUserWeeklyData'])->name('dashboard.user.weekly');
-    Route::get('/dashboard/user/monthly', [DashboardController::class, 'getUserMonthlyData'])->name('dashboard.user.monthly');
-    Route::get('/dashboard/user/yearly', [DashboardController::class, 'getUserYearlyData'])->name('dashboard.user.yearly');
-
     // Kategori Routes
     Route::get('/kategori', [CategoryController::class, "index"])->name('kategori');
     Route::post('/kategori/insert', [CategoryController::class, "store"])->name('kategori.add');
@@ -57,15 +46,14 @@ Route::middleware('auth', 'role')->group(function () {
     Route::get('/users/inactive', [UserController::class, 'inactive'])->name('users.inactive');
     Route::get('/users/reject', [UserController::class, 'showReject'])->name('users.showReject');
 
-
     Route::post('/users/showActive', [UserController::class, 'showActive'])->name('showActive');
     Route::post('/users/showInactive', [UserController::class, 'showInactive'])->name('showInactive');
     Route::post('/users/showReject', [UserController::class, 'showRejected'])->name('showRejected');
+
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-    // Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/action-reject/{id}', [UserController::class, 'actionReject'])->name('users.action.reject');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
-    // Route::get('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 
     // product Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -75,9 +63,9 @@ Route::middleware('auth', 'role')->group(function () {
     Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // Sosmed Routes
-    Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');
-    Route::post('/sosial-media/insert', [SocialmediaController::class, "store"])->name('sosial-media.insert');
-    Route::post('/sosial-media/edit', [SocialmediaController::class, "edit"])->name('sosial-media.edit');
-    Route::post('/sosial-media/update/{id}', [SocialmediaController::class, "update"])->name('sosial-media.update');
-    Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destroy"])->name('sosial-media.delete');
+    // Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');
+    // Route::post('/sosial-media/insert', [SocialmediaController::class, "store"])->name('sosial-media.insert');
+    // Route::post('/sosial-media/edit', [SocialmediaController::class, "edit"])->name('sosial-media.edit');
+    // Route::post('/sosial-media/update/{id}', [SocialmediaController::class, "update"])->name('sosial-media.update');
+    // Route::delete('/sosial-media/delete/{id}', [SocialmediaController::class, "destroy"])->name('sosial-media.delete');
 });

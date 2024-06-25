@@ -51,11 +51,6 @@
                     <i class="fas fa-th-large"></i><span>Produk</span>
                 </a>
             </li>
-            <li class="{{ request()->is('sosial-media') ? 'active' : '' }}">
-                <a href="/sosial-media" class="nav-link">
-                    <i class="fab fa-facebook"></i><span>Sosial Media</span>
-                </a>
-            </li>
         </ul>
 
     </aside>

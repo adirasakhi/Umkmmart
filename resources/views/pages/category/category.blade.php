@@ -59,26 +59,20 @@ aria-hidden="true">
 <!-- Main Content -->
 <div class="main-content">
     <section class="section">
-        <div class="section-header">
-            <h1>Kelola Kategori</h1>
-            <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Components</a></div>
-                <div class="breadcrumb-item">Table</div>
-            </div>
-        </div>
-
         <div class="section-body">
-            <div class="row">
-                <div class="col d-flex justify-content-end">
-                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
-                    data-bs-target="#myModalCreate">Tambah Kategori</button>
-                </div>
-            </div>
             <div class="row">
                 <!-- dipake -->
                 <div class="col-12">
                     <div class="card">
+                        <div class="section-header">
+                            <h1>Kelola Kategori</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col d-flex justify-content-end">
+                                <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
+                                data-bs-target="#myModalCreate">Tambah Kategori</button>
+                            </div>
+                        </div>
                         <div class="card-body p-3">
                             <div class="table-responsive">
                                 <table class="table table-striped table-md" id="example">
@@ -128,10 +122,6 @@ aria-hidden="true">
                 <div class="modal-body">
                     <form action="{{ url('kategori/insert/') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group">
-                            <label>No</label>
-                            <input type="text" name="id" class="form-control" value="{{ ($val->id)+1 }}" readonly>
-                        </div>
                         <div class="form-group">
                             <label>Kategori</label>
                             <input type="text" name="category" class="form-control">

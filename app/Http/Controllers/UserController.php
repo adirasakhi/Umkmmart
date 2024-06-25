@@ -185,12 +185,14 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8|confirmed',
             'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|regex:/[0-9]{11,13}$/',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $user = User::find($id);
-
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
         if ($user) {
             $dataToUpdate = [
                 'name' => $validatedData['name'],
@@ -217,5 +219,51 @@ class UserController extends Controller
         } else {
             return redirect()->route('users.profile')->with('error', 'User tidak ditemukan');
         }
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string|min:8',
+            'address' => 'required',
+            'phone' => 'required|string|regex:/^62[0-9]{11,13}$/',
+            'support_documents' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048'
+        ], [
+            'name.required' => 'Nama harus diisi',
+            'name.regex' => 'Nama hanya boleh mengandung huruf dan spasi',
+            'name.min' => 'Nama minimal 3 huruf',
+            'email.required' => 'Email harus diisi',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.required' => 'Kata Sandi harus diisi',
+            'password.min' => 'Kata Sandi minimal 8 huruf',
+            'password.confirmed' => 'Kata Sandi dan Konfirmasi Kata Sandi tidak cocok',
+            'password_confirmation.required' => 'Konfirmasi Kata Sandi harus diisi',
+            'password_confirmation.min' => 'Konfirmasi Kata Sandi minimal 8 huruf',
+            'phone.required' => 'Telepon harus diisi',
+            'support_documents.required' => 'Dokumen pendukung harus ada',
+        ]);
+
+        if ($request->hasFile('support_documents')) {
+            $file = $request->file('support_documents');
+            $filename = $file->hashName();
+            $path = $file->storeAs('Document_users', $filename, 'public');
+        }
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'status' => 'active',
+            'address' => $request->address,
+            'role_id' => 2,
+            'support_document' => $path ?? null, // Save filename in the database
+        ]);
+
+        return redirect()->back()->with('success', 'Pengguna berhasil ditambahkan.');
     }
 }

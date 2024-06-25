@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductClick;
 use App\Models\SocialMedia;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -60,13 +62,35 @@ class KatalogController extends Controller
         $user = User::all();
         $social_media = SocialMedia::all();
         $related_products = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->limit(3)
-            ->get();
+        ->where('id', '!=', $product->id)
+        ->limit(3)
+        ->get();
 
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
+
+        /*product click*/
+         $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
+
+         $existingClick = ProductClick::where('product_id', $id)
+         ->where('device_id', $deviceId)
+         ->whereDate('clicked_at', Carbon::today())
+         ->first();
+
+         if ($existingClick) {
+            // Jika sudah ada, tambahkan jumlah klik
+            $existingClick->increment('click_count');
+         } else {
+            // Jika belum ada, buat entri baru dengan click_count = 1
+            ProductClick::create([
+                'product_id' => $id,
+                'device_id' => $deviceId,
+                'clicked_at' => Carbon::now(),
+                'click_count' => 1,
+            ]);
+        }
+        /*end product click*/
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }
@@ -78,6 +102,7 @@ class KatalogController extends Controller
         $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
+        $sort = $request->input('sort','asc','desc');
         $query = Product::query();
 
     if (isset ($categoryId) && (($categoryId != null))) {
@@ -99,10 +124,15 @@ class KatalogController extends Controller
         }
     }
 
+    if(!in_array($sort, ['asc','desc'])){
+        $sort = 'asc';
+    }
+    $query->orderBy('price', $sort);
+
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice'));
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice','sort'));
     }
 
     public function search(Request $request)
@@ -135,4 +165,33 @@ class KatalogController extends Controller
 
         return view('pages.Landing.shop', compact('products', 'categories'));
     }
+    public function getPopularProduct()
+    {
+        $popularProduct = Product::select(
+            'product.id',
+            'product.name',
+            'product.price',
+            'product.description',
+            'product.image',
+            DB::raw('COUNT(product_clicks.id) as click_count'),
+            'users.name as seller_name'
+        )
+        ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
+        ->join('users', 'product.seller_id', '=', 'users.id') // Join dengan tabel users untuk mendapatkan nama seller
+        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
+        ->groupBy(
+            'product.id',
+            'product.name',
+            'product.description',
+            'product.price',
+            'product.image',
+            'users.name'
+        )
+        ->orderByDesc('click_count')
+        ->take(3)
+        ->get();
+
+        return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
+    }
+
 }

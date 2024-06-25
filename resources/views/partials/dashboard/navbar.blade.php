@@ -19,7 +19,14 @@
     <ul class="navbar-nav navbar-right">
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                @php
+                    $user = Auth::user()
+                @endphp
+                @if($user->photo != null )
+                <img alt="User Avatar" src="{{ asset('storage/'. $user->photo) }}" class="rounded-circle mr-1 img-fluid" width="50" height="50">
+                @elseif ($user->photo == null && $user->role_id == 1)
                 <img alt="User Avatar" src="{{ asset('assets/img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
+                @endif
                 <div class="d-sm-none d-lg-inline-block">
                     Hi, @auth {{ Auth::user()->name }} @endauth
                 </div>

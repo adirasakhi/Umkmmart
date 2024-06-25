@@ -1,7 +1,7 @@
 <!-- Navbar start -->
-<div class="container-fluid fixed-top">
+<div class="container-fluid fixed-top bg-white" style="background-color: white;">
     <div class="container pt-4 top-link">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl align-items-center">
             <a href="/" class="navbar-brand">
                 <h1 class="text-primary display-6">UMKMart.id</h1>
             </a>
@@ -10,19 +10,22 @@
                 <span class="fa fa-bars text-primary"></span>
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                <div class="navbar-nav mx-auto" style="font-weight: bold; color: black; font-family: ;">
-                    <a href="/" class="nav-item nav-link active">Home</a>
-                    <a href="/katalog" class="nav-item nav-link">Shop</a>
-                    <a href="#contact" class="nav-item nav-link">Contact</a>
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <a href="#" class="my-auto">
-                        <i class="fas fa-user fa-2x"></i>
-                    </a>
+                <div class="ms-auto d-flex align-items-center">
+                    <div class="navbar-nav" style="font-weight: bold; color: black;">
+                        <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
+                        <a href="/katalog"
+                            class="nav-item nav-link {{ Request::is('katalog') ? 'active' : '' }}">Shop</a>
+                        <a href="#contact"
+                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>
+                        <a href="/login"
+                            class="nav-item nav-link d-xl-none">Masuk</a>
+                        <a href="#" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">
+                            <i class="fas fa-user fa-2x"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
     </div>
 </div>
-
 <!-- Navbar End -->

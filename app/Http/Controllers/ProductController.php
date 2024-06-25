@@ -37,7 +37,7 @@ class ProductController extends Controller
             'seller_id' => 'required_if:role_id,1|integer',
         ]);
 
-        $imagePath = $request->file('image')->store('product_images', 'public');
+        $imagePath = $request->file('image')->store('product_image', 'public');
 
         $sellerId = ($user->role_id == 2) ? $user->id : $validatedData['seller_id'];
 
@@ -102,7 +102,7 @@ class ProductController extends Controller
                 }
 
                 // Store new image
-                $imagePath = $request->file('image')->store('product_images', 'public');
+                $imagePath = $request->file('image')->store('product_image', 'public');
                 $dataToUpdate['image'] = $imagePath;
             }
 

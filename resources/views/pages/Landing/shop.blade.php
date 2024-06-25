@@ -239,7 +239,6 @@
             </div>
         </div>
     </div>
-
     <script>
         function toggleAdditionalCategories() {
             var additionalCategories = document.getElementById("additionalCategories");
@@ -254,4 +253,6 @@
             }
         }
     </script>
+    </div>
+    <!-- Fruits Shop End-->
 @endsection

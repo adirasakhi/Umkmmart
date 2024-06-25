@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('pages.Landing.index');
-});
+});*/
+Route::get('/', [KatalogController::class, 'getPopularProduct']);
+
 // Auth routes
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::get('/register', [AuthController::class, 'index'])->name('register');

@@ -1,3 +1,4 @@
+
 <!-- Navbar start -->
 <div class="container-fluid fixed-top bg-white" style="background-color: white;">
     <div class="container pt-4 top-link">
@@ -24,8 +25,9 @@
                         </a>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </div>
+
 </div>
 <!-- Navbar End -->

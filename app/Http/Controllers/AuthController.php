@@ -88,7 +88,7 @@ class AuthController extends Controller
                 if ($user->status == "declined") {
                     // Retrieve the user mistake description
                     $userMistake = UserMistake::where('user_id', $user->id)->first();
-                    $errorMessage = 'Akun anda di tangguhkan karena "' . $userMistake->description . '"';
+                    $errorMessage = 'Akun anda di tangguhkan';
 
                     Session::flash('status-login', 'failed');
                     Session::flash('message', $errorMessage);

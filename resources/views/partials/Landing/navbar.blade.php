@@ -20,7 +20,7 @@
                             class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>
                         <a href="/login"
                             class="nav-item nav-link d-xl-none">Masuk</a>
-                        <a href="#" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">
+                        <a href="/login" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">
                             <i class="fas fa-user fa-2x"></i>
                         </a>
                     </div>

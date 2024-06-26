@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductClick;
 use App\Models\SocialMedia;
 use App\Models\User;
-use App\Models\ProductClick;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class KatalogController extends Controller
@@ -69,20 +69,19 @@ class KatalogController extends Controller
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
+        $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
 
-        /*product click*/
-         $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
+        // Cari klik yang sudah ada dari perangkat yang sama pada hari yang sama
+        $existingClick = ProductClick::where('product_id', $id)
+        ->where('device_id', $deviceId)
+        ->whereDate('clicked_at', Carbon::today())
+        ->first();
 
-         $existingClick = ProductClick::where('product_id', $id)
-         ->where('device_id', $deviceId)
-         ->whereDate('clicked_at', Carbon::today())
-         ->first();
-
-         if ($existingClick) {
-            // Jika sudah ada, tambahkan jumlah klik
+        if ($existingClick) {
+        // Jika sudah ada, tambahkan jumlah klik
             $existingClick->increment('click_count');
-         } else {
-            // Jika belum ada, buat entri baru dengan click_count = 1
+        } else {
+        // Jika belum ada, buat entri baru dengan click_count = 1
             ProductClick::create([
                 'product_id' => $id,
                 'device_id' => $deviceId,
@@ -90,7 +89,6 @@ class KatalogController extends Controller
                 'click_count' => 1,
             ]);
         }
-        /*end product click*/
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }
@@ -98,7 +96,6 @@ class KatalogController extends Controller
     public function filter(Request $request)
     {
         // dd($request->all());
-        $keyword = $request->input('keyword');
         $categoryId = $request->input('id');
         $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
@@ -125,10 +122,10 @@ class KatalogController extends Controller
             }
         }
 
-    if(!in_array($sort, ['asc','desc'])){
-        $sort = 'asc';
-    }
-    $query->orderBy('price', $sort);
+        if(!in_array($sort, ['asc','desc'])){
+            $sort = 'asc';
+        }
+        $query->orderBy('price', $sort);
 
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
@@ -136,7 +133,7 @@ class KatalogController extends Controller
         return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice','sort'));
     }
 
-    /*public function search(Request $request)
+    public function search(Request $request)
     {
         $keywords = $request->input('keywords');
         $categoryId = $request->input('id');
@@ -144,15 +141,15 @@ class KatalogController extends Controller
         $maxPrice = $request->input('max');
 
         $query = Product::query()
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
-            })
-            ->when(!is_null($minPrice), function ($query) use ($minPrice) {
-                return $query->where('price', '>=', $minPrice);
-            })
-            ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
-                return $query->where('price', '<=', $maxPrice);
-            });
+        ->when($categoryId, function ($query, $categoryId) {
+            return $query->where('category_id', $categoryId);
+        })
+        ->when(!is_null($minPrice), function ($query) use ($minPrice) {
+            return $query->where('price', '>=', $minPrice);
+        })
+        ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
+            return $query->where('price', '<=', $maxPrice);
+        });
 
         if (!empty($keywords)) {
             $keywordArray = explode(' ', $keywords);
@@ -164,60 +161,31 @@ class KatalogController extends Controller
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 
-
-        return view('pages.Landing.result', compact('products', 'categories'));
-    }*/
-    public function search(Request $request)
-    {
-        $keywords = $request->input('keywords');
-        $minPrice = $request->input('min_price');
-        $maxPrice = $request->input('max_price');
-        $categoryIds = $request->input('category_ids');
-
-        $query = Product::query();
-
-        if ($keywords) {
-            $query->where('name', 'LIKE', "%{$keywords}%");
-        }
-
-        if ($minPrice && $maxPrice) {
-            $query->whereBetween('price', [(float)$minPrice, (float)$maxPrice]);
-        } elseif ($minPrice) {
-            $query->where('price', '>=', (float)$minPrice);
-        } elseif ($maxPrice) {
-            $query->where('price', '<=', (float)$maxPrice);
-        }
-
-        if ($categoryIds) {
-            $query->whereIn('category_id', $categoryIds);
-        }
-
-        $products = $query->get();
-
-        // Kembalikan hasil sebagai response untuk Ajax
-        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice'));
+        return view('pages.Landing.shop', compact('products', 'categories'));
     }
-
     public function getPopularProduct()
     {
+        $user = User::all();
         $popularProduct = Product::select(
-            'product.id', 
-            'product.name', 
-            'product.price', 
-            'product.image', 
+            'product.id',
+            'product.name',
+            'product.price',
+            'product.image',
+            'users.name as saller_name',
             DB::raw('COUNT(product_clicks.id) as click_count')
         )
         ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30)) 
+         ->join('users', 'product.seller_id', '=', 'users.id')
+        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
         ->groupBy(
-            'product.id', 
-            'product.name', 
-            'product.price', 
-            'product.image'
+            'product.id',
+            'product.name',
+            'product.price',
+            'product.image',
+            'users.name'
         )
         ->orderByDesc('click_count')
-        ->take(3) 
-        ->with('seller')
+        ->take(10)
         ->get();
 
         return view('pages.Landing.index', ['popularProduct' => $popularProduct]);

@@ -32,7 +32,8 @@
     </div>
     <div class="mb-3">
         <label for="photo" class="form-label">Photo</label>
-        <img src="{{ asset('LandingPage/img/ktp.jpg') }}" class="img-fluid rounded mb-2 img-thumbnail" alt="">
+        <img src="{{ asset('storage/' . $user->support_document) }}" class="img-fluid rounded mb-2 img-thumbnail"
+            alt="">
     </div>
     <div class="mb-3">
         <label for="social_media_id" class="form-label">Social Media</label>

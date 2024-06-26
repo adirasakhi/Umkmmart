@@ -76,12 +76,12 @@ class DashboardController extends Controller
                 $dailyProducts = Product::where('seller_id', $user->id)->whereDate('created_at', Carbon::today())->count();
                 $weeklyProducts = Product::where('seller_id', $user->id)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
                 $monthlyProducts = Product::where('seller_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->count();
-                $yearlyProducts = Product::whereYear('created_at', Carbon::now()->year)->count();
+                $yearlyProducts = Product::where('seller_id', $user->id)->whereYear('created_at', Carbon::now()->year)->count();
 
                 $previousDailyProducts = Product::where('seller_id', $user->id)->whereDate('created_at', Carbon::yesterday())->count();
                 $previousWeeklyProducts = Product::where('seller_id', $user->id)->whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
                 $previousMonthlyProducts = Product::where('seller_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
-                $previousYearlyProducts = Product::whereYear('created_at', Carbon::now()->subYear()->year)->count();
+                $previousYearlyProducts = Product::where('seller_id', $user->id)->whereYear('created_at', Carbon::now()->subYear()->year)->count();
 
                 $dailyUsers = User::whereDate('created_at', Carbon::today())->count();
                 $weeklyUsers = User::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
@@ -121,32 +121,32 @@ class DashboardController extends Controller
                 ],
             ];
 
-                $detailUsers = [
-                    [
-                        'change' => $dailyUsers >= $previousDailyUsers ? 'up' : 'down',
-                        'plus' => $dailyUsers >= $previousDailyUsers ? $dailyUsers - $previousDailyUsers : '-',
-                        'value' => $dailyUsers,
-                        'label' => "User Per Hari Ini"
-                    ],
-                    [
-                        'change' => $weeklyUsers >= $previousWeeklyUsers ? 'up' : 'down',
-                        'plus' => $weeklyUsers >= $previousWeeklyUsers ? $weeklyUsers - $previousWeeklyUsers : '-',
-                        'value' => $weeklyUsers,
-                        'label' => "User Per Minggu Ini"
-                    ],
-                    [
-                        'change' => $monthlyUsers >= $previousMonthlyUsers ? 'up' : 'down',
-                        'plus' => $monthlyUsers >= $previousMonthlyUsers ? $monthlyUsers - $previousMonthlyUsers : '-',
-                        'value' => $monthlyUsers,
-                        'label' => "User Per Bulan Ini"
-                    ],
-                    [
-                        'change' => $yearlyUsers >= $previousYearlyUsers ? 'up' : 'down',
-                        'plus' => $yearlyUsers >= $previousYearlyUsers ? $yearlyUsers - $previousYearlyUsers : '-',
-                        'value' => $yearlyUsers,
-                        'label' => "User Per Tahun Ini"
-                    ],
-                ];
+            $detailUsers = [
+                [
+                    'change' => $dailyUsers >= $previousDailyUsers ? 'up' : 'down',
+                    'plus' => $dailyUsers >= $previousDailyUsers ? $dailyUsers - $previousDailyUsers : '-',
+                    'value' => $dailyUsers,
+                    'label' => "User Per Hari Ini"
+                ],
+                [
+                    'change' => $weeklyUsers >= $previousWeeklyUsers ? 'up' : 'down',
+                    'plus' => $weeklyUsers >= $previousWeeklyUsers ? $weeklyUsers - $previousWeeklyUsers : '-',
+                    'value' => $weeklyUsers,
+                    'label' => "User Per Minggu Ini"
+                ],
+                [
+                    'change' => $monthlyUsers >= $previousMonthlyUsers ? 'up' : 'down',
+                    'plus' => $monthlyUsers >= $previousMonthlyUsers ? $monthlyUsers - $previousMonthlyUsers : '-',
+                    'value' => $monthlyUsers,
+                    'label' => "User Per Bulan Ini"
+                ],
+                [
+                    'change' => $yearlyUsers >= $previousYearlyUsers ? 'up' : 'down',
+                    'plus' => $yearlyUsers >= $previousYearlyUsers ? $yearlyUsers - $previousYearlyUsers : '-',
+                    'value' => $yearlyUsers,
+                    'label' => "User Per Tahun Ini"
+                ],
+            ];
 
             return view('pages.dashboard.content-dashboard', compact('usersCount', 'categoryCount', 'productCount', 'labels', 'data', 'detailProducts', 'detailUsers'));
         } else {

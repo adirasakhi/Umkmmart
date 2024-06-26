@@ -32,7 +32,8 @@
     </div>
     <div class="mb-3">
         <label for="photo" class="form-label">Photo</label>
-        <img src="{{ asset('LandingPage/img/ktp.jpg') }}" class="img-fluid rounded mb-2 img-thumbnail" alt="">
+        <img src="{{ asset('storage/' . $user->support_document) }}" class="img-fluid rounded mb-2 img-thumbnail"
+            alt="">
     </div>
     <div class="mb-3">
         <label for="social_media_id" class="form-label">Social Media</label>
@@ -48,7 +49,8 @@
         <button type="submit" name="action" value="approve" class="btn btn-primary mt-3 mr-2 col-6 text-light">
             <i class="bi bi-check-circle-fill"></i> Approve
         </button>
-        <button type="button" class="btn btn-danger mt-3 col-6 text-light" data-toggle="modal" data-target="#myModalReject">
+        <button type="button" class="btn btn-danger mt-3 col-6 text-light" data-toggle="modal"
+            data-target="#myModalReject">
             <i class="bi bi-x-circle-fill"></i> Reject
         </button>
     </div>
@@ -60,7 +62,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabelReject">Tolak Pengguna</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <p>Apakah Anda yakin ingin menolak Pengguna ini?</p>
@@ -83,4 +86,3 @@
         </div>
     </div>
 </div>
-

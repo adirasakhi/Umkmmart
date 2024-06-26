@@ -32,53 +32,58 @@
         </div>
     </div>
 
-    <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Blokir Pengguna</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin Memblokir Pengguna ini?</p>
-                    <form id="deleteForm" action="" method="POST">
-                        @csrf
-                        <div class="row justify-content-end">
-                            <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
-                                <span class="fa fa-times"></span> Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary col-2 mr-3">
-                                <span class="fa fa-check"></span> Yakin
-                            </button>
-                        </div>
-                    </form>
+    @foreach ($users as $user)
+        <div class="modal fade" id="myModalDelete_{{ $user->id }}" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabelReject">Tolak Pengguna</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>Apakah Anda yakin ingin menolak Pengguna ini?</p>
+                        <form id="rejectForm" action="{{ route('users.action.reject', $user->id) }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="description" class="form-label">Deskripsi Kesalahan</label>
+                                <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="row justify-content-end">
+                                <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
+                                    <span class="fa fa-times"></span> Batal
+                                </button>
+                                <button type="submit" class="btn btn-primary col-2 mr-3">
+                                    <span class="fa fa-check"></span> Yakin
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
+
 
     <div class="main-content">
         <section class="section">
-            <div class="section-header">
-                <h1>Pengguna Aktif</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Components</a></div>
-                    <div class="breadcrumb-item">Table</div>
-                </div>
-            </div>
+
 
             <div class="section-body">
                 <div class="row">
-                    <div class="col d-flex justify-content-end">
-                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal"
-                            data-bs-target="#myModalCreate">Tambah Pengguna</button>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="section-header">
+                                <h1>Pengguna Aktif</h1>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-end">
+                                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px"
+                                        data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Pengguna</button>
+                                </div>
+                            </div>
                             <div class="card-body p-3">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-md" id="example">
@@ -104,7 +109,7 @@
                                                                     class="bi bi-eye-fill"></i></button>
                                                             <button class="btn btn-icon btn-danger delete-btn mx-2"
                                                                 data-id="{{ $user->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i
+                                                                data-bs-target="#myModalDelete_{{ $user->id }}"><i
                                                                     class="fas fa-trash"></i></button>
                                                         </div>
                                                     </td>

@@ -19,12 +19,12 @@
                         @csrf
                         <div class="form-group">
                             <label for="name" class="control-label">Nama <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control" placeholder="Nama"
+                            <input type="text" name="name" class="form-control" placeholder="Nama" required
                                 value="{{ $user->name }}">
                         </div>
                         <div class="form-group">
                             <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" class="form-control" placeholder="Email"
+                            <input type="email" name="email" class="form-control" placeholder="Email" required
                                 value="{{ $user->email }}">
                         </div>
                         <div class="form-group">
@@ -39,12 +39,12 @@
                         </div>
                         <div class="form-group">
                             <label for="address" class="control-label">Alamat <span class="text-danger">*</span></label>
-                            <textarea name="address" class="form-control" id="address" placeholder="Alamat">{{ $user->address }}</textarea>
+                            <textarea name="address" class="form-control" id="address" placeholder="Alamat" required>{{ $user->address }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="phone" class="control-label">Nomor Telepon <span
                                     class="text-danger">*</span></label>
-                            <input type="text" name="phone" class="form-control" placeholder="No. Telepon"
+                            <input type="text" name="phone" class="form-control" placeholder="No. Telepon" required
                                 value="{{ $user->phone }}">
                         </div>
                         <div class="form-group">
@@ -63,22 +63,16 @@
     {{-- end Tambah Modal --}}
     <div class="main-content">
         <section class="section">
-            <div class="section-header">
-                <h1>Kelola Produk</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Components</a></div>
-                    <div class="breadcrumb-item">Table</div>
-                </div>
-            </div>
             <div class="container mt-5">
 
                 <div class="row d-flex justify-content-center">
 
-                    <div class="col-md-7">
+                    <div class="col-12">
 
                         <div class="card p-3 py-4">
-
+                            <div class="section-header">
+                                <h1>Kelola Produk</h1>
+                            </div>
                             @if ($user->photo != null)
                                 <div class="text-center">
                                     <img src="{{ asset('storage/' . $user->photo) }}" width="100" class="rounded-circle">
@@ -91,9 +85,7 @@
                             @endif
 
                             <div class="text-center mt-3">
-                                <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
-                                <h5 class="mt-2 mb-0">{{ $user->name }}</h5>
-                                <span>
+                                <span class="bg-secondary p-1 px-4 rounded text-white">
                                     @if ($user->role_id == 1)
                                         Admin
                                     @elseif ($user->role_id == 2)
@@ -102,7 +94,7 @@
                                         Pengguna
                                     @endif
                                 </span>
-
+                                <h5 class="mt-2 mb-0">{{ $user->name }}</h5>
                                 <div class="px-4 mt-1">
                                     <p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                                         labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation

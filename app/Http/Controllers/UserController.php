@@ -213,7 +213,6 @@ class UserController extends Controller
             }
 
             $user->update($dataToUpdate);
-
             return redirect()->route('users.profile')->with('success', 'User berhasil diupdate');
         } else {
             return redirect()->route('users.profile')->with('error', 'User tidak ditemukan');

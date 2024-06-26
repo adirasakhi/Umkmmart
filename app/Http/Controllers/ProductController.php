@@ -13,15 +13,16 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $user = null;
         if (Auth::user()->role_id == 1) {
+            $user = User::where('role_id', '!=', 1)->get();
             $products = Product::all();
-        }else{
+        } else {
             $user = Auth::user();
             $products = Product::where('seller_id', $user->id)->get();
         }
-        $user = User::where('role_id', '!=', 1)->get();
         $categories = Category::all();
-        return view('pages.product.product', ['products' => $products,'categories' => $categories,'user' => $user]);
+        return view('pages.product.product', ['products' => $products, 'categories' => $categories, 'user' => $user]);
     }
 
     public function store(Request $request)
@@ -126,7 +127,4 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product berhasil dihapus');
     }
-
-
-
 }

@@ -45,7 +45,8 @@
     </div>
 
     <div class="d-flex justify-content-start align-items-center">
-        <button type="button" class="btn btn-success mt-3 mr-2 col-12 text-light" data-toggle="modal" data-target="#myModalrestore">
+        <button type="button" class="btn btn-primary mt-3 mr-2 col-12 text-light" data-toggle="modal"
+            data-target="#myModalrestore">
             <i class="fas fa-sync-alt"></i> restore
         </button>
     </div>

@@ -47,7 +47,7 @@ class AuthController extends Controller
         if ($request->hasFile('support_documents')) {
             $file = $request->file('support_documents');
             $filename = $file->hashName();
-            $file->storeAs('Document_users', $filename, 'public');
+            $path =  $file->storeAs('Document_users', $filename, 'public');
         }
 
         $user = User::create([
@@ -57,7 +57,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'role_id' => 2,
-            'support_document' => $filename ?? null, // Save filename in the database
+            'support_document' => $path ?? null, // Save filename in the database
         ]);
 
         Session::flash('status', 'success');

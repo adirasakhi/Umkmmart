@@ -69,21 +69,25 @@
             </div>
             <h1 class="fw-bold mb-0">Related products</h1>
             <div class="vesitable">
-                <div class="owl-carousel vegetable-carousel justify-content-center">
-                    @foreach ($related_products as $related_product)
-                        <div class="card h-100">
-                            <img src="{{ asset('storage/' . $related_product->image) }}" class="card-img-top"
-                                style="height: 150px; object-fit: cover;" alt="Image">
-                            <div class="card-body">
-                                <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
-                                    <h6 class="card-title">{{ $related_product->name }}</h6>
-                                </a>
-                                <h6><strong>Rp{{ number_format($related_product->price, 0, ',', '.') }}</strong></h6>
-                                <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller->name }}</p>
+                @if ($related_products->isEmpty())
+                    <p>No related products found.</p>
+                @else
+                    <div class="owl-carousel vegetable-carousel justify-content-center">
+                        @foreach ($related_products as $related_product)
+                            <div class="card h-100">
+                                <img src="{{ asset('storage/' . $related_product->image) }}" class="card-img-top"
+                                    style="height: 150px; object-fit: cover;" alt="Image">
+                                <div class="card-body">
+                                    <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
+                                        <h6 class="card-title">{{ $related_product->name }}</h6>
+                                    </a>
+                                    <h6><strong>Rp{{ number_format($related_product->price, 0, ',', '.') }}</strong></h6>
+                                    <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller->name }}</p>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
         <!-- Single Product End -->
@@ -130,7 +134,8 @@
                                     <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
                                         style="display: inline-block; margin-right: 10px;">
                                         <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
-                                            <img src="{{asset('storage/logo-tiktok-svgrepo-com (1).svg')}}" style="width: 12px" alt=""> TikTok
+                                            <img src="{{ asset('storage/logo-tiktok-svgrepo-com (1).svg') }}"
+                                                style="width: 12px" alt=""> TikTok
                                         </span>
                                     </a>
                                 @endif
@@ -143,5 +148,5 @@
             </div>
         </div>
     </div>
-        {{-- end Modal Info Toko  --}}
-    @endsection
+    {{-- end Modal Info Toko  --}}
+@endsection

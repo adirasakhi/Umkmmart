@@ -61,13 +61,35 @@ class KatalogController extends Controller
         $user = User::all();
         $social_media = SocialMedia::all();
         $related_products = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->limit(3)
-            ->get();
+        ->where('id', '!=', $product->id)
+        ->limit(3)
+        ->get();
 
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
+
+        /*product click*/
+         $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
+
+         $existingClick = ProductClick::where('product_id', $id)
+         ->where('device_id', $deviceId)
+         ->whereDate('clicked_at', Carbon::today())
+         ->first();
+
+         if ($existingClick) {
+            // Jika sudah ada, tambahkan jumlah klik
+            $existingClick->increment('click_count');
+         } else {
+            // Jika belum ada, buat entri baru dengan click_count = 1
+            ProductClick::create([
+                'product_id' => $id,
+                'device_id' => $deviceId,
+                'clicked_at' => Carbon::now(),
+                'click_count' => 1,
+            ]);
+        }
+        /*end product click*/
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }

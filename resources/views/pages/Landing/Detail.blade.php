@@ -1,9 +1,7 @@
 @extends('layouts.landingPage')
 @section('content')
     <!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop Detail</h1>
-    </div>
+
     <!-- Single Page Header End -->
 
 
@@ -11,16 +9,11 @@
     <div class="container-fluid py-5 mt-5">
         <div class="container py-5">
             <div class="row g-4 mb-5">
-                <div class="col-lg-8 col-xl-9">
+                <div class="col-lg-8 col-xl-12">
                     <div class="row g-4">
-                        <div class="col-lg-6">
-                            <div class="border rounded">
-                                <a href="#">
-                                    <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
-                                        alt="Image" style="height: 300px">
-
-                                </a>
-                            </div>
+                        <div class="col-lg-4">
+                            <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded" alt="Image"
+                                style="height: 300px; object-fit:cover;">
                         </div>
                         <div class="col-lg-6">
                             <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
@@ -53,7 +46,7 @@
                                 <div class="nav nav-tabs mb-3">
                                     <button class="nav-link active border-white border-bottom-0" type="button"
                                         role="tab" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
-                                        aria-controls="nav-about" aria-selected="true">Description</button>
+                                        aria-controls="nav-about" aria-selected="true">Deskripsi</button>
                                 </div>
                             </nav>
                             <div class="tab-content mb-5">
@@ -67,23 +60,27 @@
                     </div>
                 </div>
             </div>
-            <h1 class="fw-bold mb-0">Related products</h1>
+            <h1 class="fw-bold mb-0">Produk Terkait</h1>
             <div class="vesitable">
-                <div class="owl-carousel vegetable-carousel justify-content-center">
-                    @foreach ($related_products as $related_product)
-                        <div class="card h-100">
-                            <img src="{{ asset('storage/' . $related_product->image) }}" class="card-img-top"
-                                style="height: 150px; object-fit: cover;" alt="Image">
-                            <div class="card-body">
-                                <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
-                                    <h6 class="card-title">{{ $related_product->name }}</h6>
-                                </a>
-                                <h6><strong>Rp{{ number_format($related_product->price, 0, ',', '.') }}</strong></h6>
-                                <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller->name }}</p>
+                @if ($related_products->isEmpty())
+                    <p>Tidak ada produk terkait.</p>
+                @else
+                    <div class="owl-carousel vegetable-carousel justify-content-center">
+                        @foreach ($related_products as $related_product)
+                            <div class="card h-100">
+                                <img src="{{ asset('storage/' . $related_product->image) }}" class="card-img-top"
+                                    style="height: 150px; object-fit: cover;" alt="Image">
+                                <div class="card-body">
+                                    <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
+                                        <h6 class="card-title">{{ $related_product->name }}</h6>
+                                    </a>
+                                    <h6><strong>Rp{{ number_format($related_product->price, 0, ',', '.') }}</strong></h6>
+                                    <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller->name }}</p>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
         <!-- Single Product End -->
@@ -130,7 +127,8 @@
                                     <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
                                         style="display: inline-block; margin-right: 10px;">
                                         <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
-                                            <img src="{{asset('storage/logo-tiktok-svgrepo-com (1).svg')}}" style="width: 12px" alt=""> TikTok
+                                            <img src="{{ asset('storage/logo-tiktok-svgrepo-com (1).svg') }}"
+                                                style="width: 12px" alt=""> TikTok
                                         </span>
                                     </a>
                                 @endif
@@ -143,5 +141,5 @@
             </div>
         </div>
     </div>
-        {{-- end Modal Info Toko  --}}
-    @endsection
+    {{-- end Modal Info Toko  --}}
+@endsection

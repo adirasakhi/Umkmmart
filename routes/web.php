@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 /*Route::get('/', function () {
     return view('pages.Landing.index');
 });*/
+
 Route::get('/', [KatalogController::class, 'getPopularProduct']);
 
 // Auth routes

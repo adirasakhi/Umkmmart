@@ -96,6 +96,7 @@
             margin-top: 0;
         }
 
+
         .custom-checkbox {
             border-radius: 3px;
             width: 18px;
@@ -124,6 +125,7 @@
         .custom-checkbox:hover {
             border-color: black;
         }
+
     </style>
 </head>
 

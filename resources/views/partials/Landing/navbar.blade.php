@@ -1,4 +1,3 @@
-
 <!-- Navbar start -->
 <div class="container-fluid fixed-top bg-white" style="background-color: white;">
     <div class="container pt-4 top-link">
@@ -18,16 +17,15 @@
                             class="nav-item nav-link {{ Request::is('katalog') ? 'active' : '' }}">Shop</a>
                         <a href="#contact"
                             class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>
-                        <a href="/login"
-                            class="nav-item nav-link d-xl-none">Masuk</a>
-                        <a href="#" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">
+                        <a href="/login" class="nav-item nav-link d-xl-none">Masuk</a>
+                        <a href="/login" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">
                             <i class="fas fa-user fa-2x"></i>
                         </a>
                     </div>
                 </div>
-            </nav>
-        </div>
+        </nav>
     </div>
+</div>
 
 </div>
 <!-- Navbar End -->

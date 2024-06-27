@@ -25,7 +25,6 @@
                             'title' => 'Total Produk',
                             'value' => $productCount,
                         ],
-                        ['bg' => 'success', 'icon' => 'fas fa-circle', 'title' => 'Online Users', 'value' => 47], // Static value, can be updated dynamically if needed
                     ];
                 @endphp
 
@@ -58,8 +57,10 @@
                             <h4>Statistics</h4>
                             <div class="card-header-action">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary active" data-type="weekProducts">Week</button>
-                                    <button type="button" class="btn btn-secondary" data-type="monthProducts">Month</button>
+                                    <button type="button" class="btn btn-primary active"
+                                        data-type="weekProducts">Week</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-type="monthProducts">Month</button>
                                     <button type="button" class="btn btn-secondary" data-type="yearProducts">Year</button>
                                 </div>
                             </div>
@@ -87,40 +88,42 @@
                     </div>
                 </div>
                 @if (Auth::user()->role_id == 1)
-                <div class="col-lg-6 col-md-12 col-12 col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>User Statistics</h4>
-                            <div class="card-header-action">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary active" data-type="weekUser">Week</button>
-                                    <button type="button" class="btn btn-secondary" data-type="monthUser">Month</button>
-                                    <button type="button" class="btn btn-secondary" data-type="yearUser">Year</button>
+                    <div class="col-lg-6 col-md-12 col-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>User Statistics</h4>
+                                <div class="card-header-action">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary active"
+                                            data-type="weekUser">Week</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-type="monthUser">Month</button>
+                                        <button type="button" class="btn btn-secondary" data-type="yearUser">Year</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- Membungkus canvas dengan div yang memiliki lebar tertentu -->
+                                <div style="width: 100%; margin: 0 auto;">
+                                    <canvas id="myChartUser" height="182"></canvas>
+                                </div>
+                                <div class="statistic-details mt-sm-4">
+                                    @foreach ($detailUsers as $detail)
+                                        <div class="statistic-details-item">
+                                            <span class="text-muted">
+                                                <span class="text-{{ $detail['change'] == 'up' ? 'primary' : 'danger' }}">
+                                                    <i class="fas fa-caret-{{ $detail['change'] }}"></i>
+                                                </span>
+                                                {{ $detail['plus'] != '-' ? '+' . $detail['plus'] : $detail['plus'] }}
+                                            </span>
+                                            <div class="detail-value">{{ number_format($detail['value']) }}</div>
+                                            <div class="detail-name">{{ $detail['label'] }}</div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <!-- Membungkus canvas dengan div yang memiliki lebar tertentu -->
-                            <div style="width: 100%; margin: 0 auto;">
-                                <canvas id="myChartUser" height="182"></canvas>
-                            </div>
-                            <div class="statistic-details mt-sm-4">
-                                @foreach ($detailUsers as $detail)
-                                    <div class="statistic-details-item">
-                                        <span class="text-muted">
-                                            <span class="text-{{ $detail['change'] == 'up' ? 'primary' : 'danger' }}">
-                                                <i class="fas fa-caret-{{ $detail['change'] }}"></i>
-                                            </span>
-                                            {{ $detail['plus'] != '-' ? '+' . $detail['plus'] : $detail['plus'] }}
-                                        </span>
-                                        <div class="detail-value">{{ number_format($detail['value']) }}</div>
-                                        <div class="detail-name">{{ $detail['label'] }}</div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
                     </div>
-                </div>
                 @endif
             </div>
         </section>

@@ -58,6 +58,7 @@
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                                 <p style="text-align: justify">{{ $product->description }} </p>
                                 <div class="px-2">
+
                                 </div>
                             </div>
                         </div>
@@ -160,3 +161,4 @@
     });
 </script>
 @endsection
+

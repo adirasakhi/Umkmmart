@@ -31,62 +31,66 @@
             </div>
         </div>
     </div>
+    @foreach ($users as $user)
+        <div class="modal fade" id="myModalDelete_{{ $user->id }}" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabelReject">Tolak Pengguna</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
 
-    <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Blokir Pengguna</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin Memblokir Pengguna ini?</p>
-                    <form id="deleteForm" action="" method="POST">
-                        @csrf
-                        <div class="row justify-content-end">
-                            <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
-                                <span class="fa fa-times"></span> Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary col-2 mr-3">
-                                <span class="fa fa-check"></span> Yakin
-                            </button>
-                        </div>
-                    </form>
+                    <div class="modal-body">
+                        <p>Apakah Anda yakin ingin menolak Pengguna ini?</p>
+                        <form id="rejectForm" action="{{ route('users.action.reject', $user->id) }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="description" class="form-label">Deskripsi Kesalahan</label>
+                                <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="row justify-content-end">
+                                <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
+                                    <span class="fa fa-times"></span> Batal
+                                </button>
+                                <button type="submit" class="btn btn-primary col-2 mr-3">
+                                    <span class="fa fa-check"></span> Yakin
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
+
 
     <div class="main-content">
         <section class="section">
-            <div class="section-header">
-                <h1>Pengguna Aktif</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Components</a></div>
-                    <div class="breadcrumb-item">Table</div>
-                </div>
-            </div>
-
             <div class="section-body">
-                <div class="row">
-                    <div class="col d-flex justify-content-end">
-                        <a href="/users/inactive" class="btn btn-primary my-2" style="width: 180px; margin:20px">Pengguna
-                            Tidak Aktif</a>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="section-header">
+                                <h1>Pengguna Aktif</h1>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-end">
+                                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px"
+                                        data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Pengguna</button>
+                                </div>
+                            </div>
                             <div class="card-body p-3">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-md" id="example">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Name</th>
-                                                <th>Phone</th>
+                                                <th>Nama</th>
+                                                <th>Email</th>
+                                                <th>No. Telepon</th>
+                                                <th>Dokumen Pendukung</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -96,7 +100,11 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
+                                                    <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phone }}</td>
+                                                    <td><a href="{{ asset('storage/'. $user->support_document) }}">
+                                                        <img src="{{ asset('storage/'. $user->support_document) }}" alt="Dokumen Pendukung" class="img-fluid img-thumbnail" width="100">
+                                                    </a></td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <button class="btn btn-icon btn-primary edit"
@@ -104,7 +112,7 @@
                                                                     class="bi bi-eye-fill"></i></button>
                                                             <button class="btn btn-icon btn-danger delete-btn mx-2"
                                                                 data-id="{{ $user->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i
+                                                                data-bs-target="#myModalDelete_{{ $user->id }}"><i
                                                                     class="fas fa-trash"></i></button>
                                                         </div>
                                                     </td>
@@ -120,6 +128,114 @@
             </div>
         </section>
     </div>
+
+    {{-- Modal Tambah Pengguna --}}
+    <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Tambah Pengguna</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="name" class="control-label">Nama <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="Nama"
+                                value="{{ old('name') }}" required>
+                            @if ($errors->has('name'))
+                                <div class="error">{{ $errors->first('name') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="Email"
+                                value="{{ old('email') }}" required>
+                            @if ($errors->has('email'))
+                                <div class="error">{{ $errors->first('email') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="control-label">Kata Sandi <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control" placeholder="Kata Sandi">
+                        </div>
+                        <div class="form-group">
+                            <label for="password_confirmation" class="control-label">Konfirmasi Kata Sandi <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="password_confirmation" class="form-control"
+                                placeholder="Konfirmasi Kata Sandi">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="control-label">No. Telepon <span
+                                    class="text-danger">*</span></label>
+                            <div style="display: flex; align-items: center;">
+                                <span
+                                    style="padding: 10px; border: 1px solid #e4e6fc; background-color: #fdfdff; border-radius: 7px 0 0 7px; color: grey">+62</span>
+                                <input type="tel" name="phone" placeholder="No. Telepon"
+                                    value="{{ old('phone') ? substr(old('phone'), 3) : '' }}" pattern="[0-9]+"
+                                    title="Masukkan hanya angka" class="form-control"
+                                    style="border-radius: 0 7px 7px 0;">
+                            </div>
+                            @if ($errors->has('phone'))
+                                <div class="error">{{ $errors->first('phone') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="control-label">Alamat <span class="text-danger">*</span></label>
+                            <textarea name="address" class="form-control" id="address" placeholder="Alamat" required>{{ old('address') }}</textarea>
+                            @if ($errors->has('address'))
+                                <div class="error">{{ $errors->first('address') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="support_documents" style="color: #404040">
+                                <span class="text-danger">*</span>
+                                Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
+                                <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
+                            </label>
+                            <input type="file" name="support_documents" id="support_documents"
+                                accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
+                            @if ($errors->has('support_documents'))
+                                <div class="error">{{ $errors->first('support_documents') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="facebook" class="control-label">Facebook</label>
+                            <input type="text" name="facebook" class="form-control" placeholder="Facebook"
+                                value="{{ old('facebook') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="whatsapp" class="control-label">WhatsApp</label>
+                            <div class="input-group">
+                                <span class="input-group-text">+62</span>
+                                <input type="tel" name="whatsapp" placeholder="WhatsApp"
+                                    value="{{ old('whatsapp') ? (substr(old('whatsapp'), 0, 1) === '0' ? '62' . substr(old('whatsapp'), 1) : old('whatsapp')) : '' }}"
+                                    pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tiktok" class="control-label">Tiktok</label>
+                            <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+                                value="{{ old('tiktok') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="instagram" class="control-label">Instagram</label>
+                            <input type="text" name="instagram" class="form-control" placeholder="Instagram"
+                                value="{{ old('instagram') }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
+                            Save</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end Modal Tambah Pengguna --}}
 
     <script>
         window.onload = function() {
@@ -142,16 +258,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-btn');
-
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const deleteForm = document.getElementById('deleteForm');
-                    deleteForm.action = `{{ url('/users/action-reject') }}/${id}`;
-                });
-            });
-
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $("#myModalEdit").modal('show');
@@ -176,15 +282,16 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            color: white;
         }
 
         .popup.success {
-            background-color: #4CAF50;
+            background-color: #4caf50;
+            color: white;
         }
 
         .popup.error {
             background-color: #f44336;
+            color: white;
         }
     </style>
 

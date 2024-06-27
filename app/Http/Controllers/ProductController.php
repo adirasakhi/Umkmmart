@@ -8,20 +8,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
     public function index()
     {
+        $user = null;
         if (Auth::user()->role_id == 1) {
+            $user = User::where('role_id', '!=', 1)->get();
             $products = Product::all();
-        }else{
+        } else {
             $user = Auth::user();
             $products = Product::where('seller_id', $user->id)->get();
         }
-        $user = User::where('role_id', '!=', 1)->get();
         $categories = Category::all();
-        return view('pages.product.product', ['products' => $products,'categories' => $categories,'user' => $user]);
+        return view('pages.product.product', ['products' => $products, 'categories' => $categories, 'user' => $user]);
     }
 
     public function store(Request $request)
@@ -37,6 +39,8 @@ class ProductController extends Controller
             'seller_id' => 'required_if:role_id,1|integer',
         ]);
         $imagePath = $request->file('image')->store('product_image', 'public');
+        $image = Image::make(Storage::disk('public')->path($imagePath));
+        $image->resize(1080, 1351)->save();
 
         $sellerId = ($user->role_id == 2) ? $user->id : $validatedData['seller_id'];
 
@@ -100,8 +104,11 @@ class ProductController extends Controller
                     Storage::disk('public')->delete($product->image);
                 }
 
-                // Store new image
+                // Store new image and resize
                 $imagePath = $request->file('image')->store('product_image', 'public');
+                $image = Image::make(Storage::disk('public')->path($imagePath));
+                $image->resize(1080, 1351)->save(); // Adjust size as needed
+
                 $dataToUpdate['image'] = $imagePath;
             }
 
@@ -125,7 +132,4 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product berhasil dihapus');
     }
-
-
-
 }

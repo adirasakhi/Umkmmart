@@ -21,12 +21,17 @@ class AuthController extends Controller
 
     public function registerAction(Request $request)
     {
+        // Modify the phone number before validation
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255|min:3|regex:/^[a-zA-Z\s]*$/',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
-            'phone' => 'required',
+            'phone' => 'required|string|regex:/[0-9]{11,13}$/',
             'support_documents' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
         ], [
             'name.required' => 'Nama harus diisi',
@@ -40,6 +45,7 @@ class AuthController extends Controller
             'password_confirmation.required' => 'Konfirmasi Kata Sandi harus diisi',
             'password_confirmation.min' => 'Konfirmasi Kata Sandi minimal 8 huruf',
             'phone.required' => 'Telepon harus diisi',
+            'phone.regex' => 'Telepon harus dimulai dengan 62 dan terdiri dari 9 hingga 13 digit',
             'support_documents.required' => 'Dokumen pendukung harus ada',
         ]);
 
@@ -47,9 +53,11 @@ class AuthController extends Controller
         if ($request->hasFile('support_documents')) {
             $file = $request->file('support_documents');
             $filename = $file->hashName();
-            $file->storeAs('Document_users', $filename, 'public');
+            $path = $file->storeAs('Document_users', $filename, 'public');
         }
-
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -57,15 +65,16 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'role_id' => 2,
-            'support_document' => $filename ?? null, // Save filename in the database
+            'support_document' => $path ?? null, // Save filename in the database
         ]);
 
         Session::flash('status', 'success');
         $message = 'Register Success <i class="bi bi-check-circle-fill"></i> Wait admin for approval !';
         Session::flash('message', new HtmlString($message));
         Session::put('action', 'register');  // Set session action
-        return redirect()->route('register'); // Adjust the redirection as needed
+        return redirect()->route('register'); // Adjust the redirection as needed
     }
+
 
 
     public function loginAction(Request $request)
@@ -88,7 +97,7 @@ class AuthController extends Controller
                 if ($user->status == "declined") {
                     // Retrieve the user mistake description
                     $userMistake = UserMistake::where('user_id', $user->id)->first();
-                    $errorMessage = 'Akun anda di tangguhkan karena "' . $userMistake->description . '"';
+                    $errorMessage = 'Akun anda di tangguhkan';
 
                     Session::flash('status-login', 'failed');
                     Session::flash('message', $errorMessage);

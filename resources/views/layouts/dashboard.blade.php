@@ -88,6 +88,8 @@
 
     <!-- Chart JS -->
     <script src="{{ asset('assets/modules/chart.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
 
     <!-- Template JS -->
     <script src="{{ asset('assets/js/scripts.js') }}"></script>

@@ -89,9 +89,17 @@
             <div class="container mt-5">
                 <div class="row d-flex justify-content-center">
                     <div class="col-12">
-                        <div class="card p-3 py-4">
+                        <div class="card">
                             <div class="section-header">
-                                <h1>Kelola Produk</h1>
+                                <h1>Profile</h1>
+                            </div>
+                            <div class="text-center">
+                                @if ($user->photo != null)
+                                <img src="{{ asset ('storage/'. $user->photo) }}" class="img-fluid img-thumbnail" width="100">
+                                @else
+                                <img src="{{ asset('assets/img/avatar/avatar-1.png') }}"width="100" class="rounded-circle">
+                                @endif
+
                             </div>
                             @if ($user->photo != null)
                                 <div class="text-center">
@@ -106,27 +114,23 @@
                             @endif
 
                             <div class="text-center mt-3">
-                                <span class="bg-secondary p-1 px-4 rounded text-white">
-                                    @if ($user->role_id == 1)
-                                        Admin
-                                    @elseif ($user->role_id == 2)
-                                        Penjual
-                                    @else
-                                        Pengguna
-                                    @endif
-                                </span>
+
+                                <span class="bg-secondary p-1 px-4 rounded text-white">                                    @if ($user->role_id == 1)
+                                    Admin
+                                @elseif ($user->role_id == 2)
+                                    penjual
+                                @else
+                                    Pengguna
+                                @endif</span>
                                 <h5 class="mt-2 mb-0">{{ $user->name }}</h5>
-                                <div class="px-4 mt-1">
-                                    <p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                        ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                </div>
+                                <p class="mt-2 mb-0">{{ $user->address }}</p>
+                                @if($user->role_id ==2)
                                 @foreach ($sosmed as $val)
                                     <div class="m-3">
                                         @if ($val->facebook != null)
-                                            <a href="https://www.facebook.com/{{ $val->facebook }}"><span
-                                                    class="badge bg-primary text-white"><i
-                                                        class="bi bi-facebook text-white"></i> Facebook</span></a>
+                                        <a href="https://facebook.com/{{ $val->facebook }}"><span class="badge bg-primary text-white"><i
+                                                    class="bi bi-facebook text-white"></i> Facebook</span></a>
+
                                         @endif
                                         @if ($val->whatsapp != null)
                                             <a href="https://api.whatsapp.com/send/?phone={{ $val->whatsapp }}"><span
@@ -134,23 +138,24 @@
                                                         class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
                                         @endif
                                         @if ($val->tiktok != null)
-                                            <a href="https://www.tiktok.com/{{ $val->tiktok }}"><span
-                                                    class="badge bg-dark text-white"><i
-                                                        class="bi bi-tiktok text-white"></i> Tiktok</span></a>
-                                        @endif
+                                        <a href="https://tiktok.com/{{ $val->tiktok }}">
+                                            <span class="badge bg-dark text-white">
+                                                <i class="bi bi-tiktok text-white"></i> TikTok
+                                            </span>
+                                        </a>
+                                    @endif
                                         @if ($val->instagram != null)
-                                            <a href="https://www.instagram.com/{{ $val->instagram }}"><span
-                                                    class="badge bg-danger text-white"><i
-                                                        class="bi bi-instagram text-white"></i> Instagram</span></a>
+                                        <a href="https://instagram.com/{{ $val->instagram }}"><span class="badge bg-danger text-white"><i
+                                                    class="bi bi-instagram text-white"></i> Instagram</span></a>
                                         @endif
                                     </div>
                                 @endforeach
+                                @endif
+
                                 @if ($user->role_id == 2)
-                                    <div class="buttons">
-                                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#myModalCreate_{{ $user->id }}">Edit Akun</button>
-                                    </div>
+                                <div class="buttons">
+                                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate_{{  $user->id }}">Edit Profile</button>
+                                </div>
                                 @endif
                             </div>
                         </div>

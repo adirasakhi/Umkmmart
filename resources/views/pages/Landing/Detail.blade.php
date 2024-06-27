@@ -28,16 +28,14 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0"
-                                    value="1">
+                                <input type="text" id="productQuantity" class="form-control form-control-sm text-center border-0" value="1">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
-                            <a href="https://wa.me/{{ $product->seller->phone }}?text=Halo%2C%20saya%20tertarik%20dengan%20produk%20Anda."
-                                class="btn-custom">
+                            <a href="#" id="contactSellerBtn" class="btn-custom" target="_blank">
                                 <i class="fa fa-phone me-2"></i> Hubungi Penjual
                             </a>
                         </div>
@@ -141,5 +139,31 @@
             </div>
         </div>
     </div>
+
+        {{-- end Modal Info Toko  --}}
+        <script>
+            document.getElementById('contactSellerBtn').addEventListener('click', function(event) {
+                event.preventDefault();
+                var quantity = document.getElementById('productQuantity').value;
+                var productName = "{{ $product->name }}";
+                var productPrice = {{ $product->price }};
+                var totalPrice = productPrice * quantity;
+                var sellerPhone = "{{ $product->seller->phone }}";
+                var productImage = "{{ asset('storage/'. $product->image) }}"; // Replace with actual image path
+                var message = `Halo, saya tertarik dengan produk Anda.
+        Nama produk: ${productName}
+        Harga produk: Rp${productPrice.toLocaleString('id-ID')}
+        Jumlah produk yang dibeli: ${quantity}
+        Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
+        Gambar produk: ${productImage}`;
+
+                var whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+        </script>
+
+    @endsection
+
     {{-- end Modal Info Toko  --}}
 @endsection
+

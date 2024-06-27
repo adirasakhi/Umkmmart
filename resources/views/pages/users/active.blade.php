@@ -31,7 +31,6 @@
             </div>
         </div>
     </div>
-
     @foreach ($users as $user)
         <div class="modal fade" id="myModalDelete_{{ $user->id }}" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
@@ -69,8 +68,6 @@
 
     <div class="main-content">
         <section class="section">
-
-
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
@@ -91,7 +88,9 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Nama</th>
-                                                <th>Telepon</th>
+                                                <th>Email</th>
+                                                <th>No. Telepon</th>
+                                                <th>Dokumen Pendukung</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -101,7 +100,11 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
+                                                    <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phone }}</td>
+                                                    <td><a href="{{ asset('storage/'. $user->support_document) }}">
+                                                        <img src="{{ asset('storage/'. $user->support_document) }}" alt="Dokumen Pendukung" class="img-fluid img-thumbnail" width="100">
+                                                    </a></td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <button class="btn btn-icon btn-primary edit"
@@ -255,16 +258,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-btn');
-
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const deleteForm = document.getElementById('deleteForm');
-                    deleteForm.action = `{{ url('/users/action-reject') }}/${id}`;
-                });
-            });
-
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $("#myModalEdit").modal('show');

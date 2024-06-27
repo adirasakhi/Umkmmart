@@ -140,7 +140,7 @@
             history.pushState(null, null, '/login');
         });
 
-        // Tambahkan event listener untuk mencegah input karakter non-angka
+        // Prevent non-numeric input for phone
         document.querySelector('input[name="phone"]').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });

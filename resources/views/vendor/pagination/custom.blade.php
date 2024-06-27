@@ -43,11 +43,24 @@
             @endif
         </ul>
     </nav>
+@else
+    <nav>
+        <ul class="pagination d-flex justify-content-center mt-5">
+            <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
+                <span class="page-link rounded" aria-hidden="true">&laquo;</span>
+            </li>
+            <li class="page-item disabled" aria-disabled="true"><span class="page-link rounded">1</span></li>
+            <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
+                <span class="page-link rounded" aria-hidden="true">&raquo;</span>
+            </li>
+        </ul>
+    </nav>
 @endif
 
 
+
 <style>
-    .page-link {
+.page-link {
     color: #404040;
     text-decoration: none;
     background-color: #fff;

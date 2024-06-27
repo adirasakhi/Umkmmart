@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductClick;
-use App\Models\Category;
 use App\Models\SocialMedia;
-use App\Models\ProductClick;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -108,24 +108,25 @@ class KatalogController extends Controller
         $sort = $request->input('sort', 'asc', 'desc');
         $query = Product::query();
 
-        if (isset($categoryId) && (($categoryId != null))) {
-            $query->where('category_id', $categoryId);
-        }
+    if (isset ($categoryId) && (($categoryId != null))) {
+        $query->where('category_id', $categoryId);
+    }
 
-        if (isset($minPrice) && ($minPrice != null)) {
-            $query->where('price', '>=', $minPrice);
-        }
+    if (isset ($minPrice) && ($minPrice != null)) {
+        $query->where('price', '>=', $minPrice);
+    }
 
-        if (isset($maxPrice) && ($maxPrice != null)) {
-            $query->where('price', '<=', $maxPrice);
-        }
+    if (isset ($maxPrice) && ($maxPrice != null)) {
+        $query->where('price', '<=', $maxPrice);
+    }
 
-        if (isset($keywords) && ($keywords != null)) {
-            $keywordArray = explode(' ', $keywords);
-            foreach ($keywordArray as $keyword) {
-                $query = $query->Where('name', 'like', '%' . $keyword . '%');
-            }
+    if(isset ($keywords) && ($keywords != null) ){
+        $keywordArray = explode(' ', $keywords);
+        foreach ($keywordArray as $keyword) {
+            $query = $query->Where('name', 'like', '%'.$keyword.'%');
+
         }
+    }
 
         if (!in_array($sort, ['asc', 'desc'])) {
             $sort = 'asc';
@@ -174,22 +175,28 @@ class KatalogController extends Controller
             'product.id',
             'product.name',
             'product.price',
+            'product.description',
             'product.image',
-            DB::raw('COUNT(product_clicks.id) as click_count')
+            DB::raw('COUNT(product_clicks.id) as click_count'),
+            'users.name as seller_name'
         )
-            ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-            ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
-            ->groupBy(
-                'product.id',
-                'product.name',
-                'product.price',
-                'product.image'
-            )
-            ->orderByDesc('click_count')
-            ->take(3)
-            ->with('seller')
-            ->get();
+        ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
+        ->join('users', 'product.seller_id', '=', 'users.id') // Join dengan tabel users untuk mendapatkan nama seller
+        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
+        ->groupBy(
+            'product.id',
+            'product.name',
+            'product.description',
+            'product.price',
+            'product.image',
+            'users.name'
+        )
+        ->orderByDesc('click_count')
+        ->take(3)
+        ->get();
+
 
         return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
     }
+
 }

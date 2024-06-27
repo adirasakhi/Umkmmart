@@ -1,6 +1,7 @@
 @extends('layouts.landingPage')
 
 @section('content')
+
     <!-- Single Page Header start -->
     
     <!-- Single Page Header End -->
@@ -122,11 +123,11 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-
                 {{-- Konten Produk --}}
                 <div class="col-lg-9">
                     <div class="mb-6">
@@ -159,6 +160,7 @@
             </div>
         </div>
     </div>
+    <!-- Fruits Shop End -->
 
     {{-- Modal Filter Mobile --}}
     <div class="modal fade" id="filterModal" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">

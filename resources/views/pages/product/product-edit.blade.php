@@ -22,16 +22,25 @@
         <input type="text" class="form-control currency mb-3" name="price" id="price" value="{{ $product->price }}">
     </div>
     <label for="description" class="control-label">Description</label>
-    <textarea name="description" class="form-control mb-3">{{ $product->description }}</textarea>
+    <textarea name="description" class="summernote-simple">{{ $product->description }}</textarea>
     <label for="image" class="control-label">Image</label>
     <input type="file" name="image" class="form-control mb-3">
     <label for="category_id" class="control-label">Category</label>
     <select name="category_id" class="form-control mb-3">
         @foreach ($categories as $category)
-            <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
-                {{ $category->category }}
-            </option>
+        <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+            {{ $category->category }}
+        </option>
         @endforeach
     </select>
     <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
 </form>
+<script>
+    $(document).ready(function() {
+        $('.summernote-simple').summernote({
+            placeholder: 'Enter description here...',
+            tabsize: 2,
+            height: 100
+        });
+    });
+</script>

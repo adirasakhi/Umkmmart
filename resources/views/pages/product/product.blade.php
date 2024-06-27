@@ -105,10 +105,10 @@
                                                 $remainingWords = implode(' ', array_slice($words, $maxWords));
                                                 @endphp
                                                 <div class="description-container">
-                                                    <p class="description">{{ $shortDescription }}</p>
+                                                    <p class="description">{!! $shortDescription !!}</p>
                                                     @if (count($words) > $maxWords)
                                                     <span class="remaining-words"
-                                                        style="display: none;">{{ $remainingWords }}</span>
+                                                        style="display: none;">{!! $remainingWords !!}</span>
                                                     <button class="btn btn-sm btn-link see-more">See more</button>
                                                     @endif
                                                 </div>
@@ -170,7 +170,7 @@
                     <div class="form-group">
                         <label for="description" class="control-label"
                             value="{{ old('description') }}">Description</label>
-                        <textarea name="description" class="form-control"></textarea>
+                         <textarea name="description" class="summernote-simple"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="image" class="control-label">Image</label>
@@ -309,5 +309,14 @@
         background-color: #f44336;
     }
 </style>
+<script>
+    $(document).ready(function() {
+        $('.summernote-simple').summernote({
+            placeholder: 'Enter description here...',
+            tabsize: 2,
+            height: 100
+        });
+    });
+</script>
 
 @endsection

@@ -36,7 +36,6 @@ class ProductController extends Controller
             'category_id' => 'required|integer',
             'seller_id' => 'required_if:role_id,1|integer',
         ]);
-
         $imagePath = $request->file('image')->store('product_image', 'public');
 
         $sellerId = ($user->role_id == 2) ? $user->id : $validatedData['seller_id'];

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -39,6 +40,8 @@ class ProductController extends Controller
         ]);
 
         $imagePath = $request->file('image')->store('product_image', 'public');
+        $image = Image::make(Storage::disk('public')->path($imagePath));
+        $image->resize(1080, 1351)->save();
 
         $sellerId = ($user->role_id == 2) ? $user->id : $validatedData['seller_id'];
 
@@ -102,8 +105,11 @@ class ProductController extends Controller
                     Storage::disk('public')->delete($product->image);
                 }
 
-                // Store new image
+                // Store new image and resize
                 $imagePath = $request->file('image')->store('product_image', 'public');
+                $image = Image::make(Storage::disk('public')->path($imagePath));
+                $image->resize(1080, 1351)->save(); // Adjust size as needed
+
                 $dataToUpdate['image'] = $imagePath;
             }
 

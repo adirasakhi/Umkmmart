@@ -56,7 +56,6 @@
             value="{{ $sosmed->first()->instagram ?? '' }}" style="background-color: #e9ecef; cursor: default"
             readonly>
     </div>
-
     <div class="d-flex justify-content-start align-items-center">
         <button type="submit" class="btn btn-danger mt-3 mr-2 col-12 text-light"><i class="bi bi-x-circle-fill"></i>
             Non Aktifkan</button>

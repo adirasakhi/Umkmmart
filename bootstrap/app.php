@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\LogVisitor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
         'auth.custom' => AuthMiddleware::class,
         'role' => AdminMiddleware::class,
+        'visitor' => LogVisitor::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

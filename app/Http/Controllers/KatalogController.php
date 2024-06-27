@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductClick;
 use App\Models\SocialMedia;
-<<<<<<< HEAD
-=======
 use App\Models\User;
 use Carbon\Carbon;
->>>>>>> a62edf65c7642e020c4006a0668a77dc39a56560
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -142,7 +138,7 @@ class KatalogController extends Controller
 
         return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
     }
-
+    }}
     public function search(Request $request)
     {
         $keywords = $request->input('keywords');

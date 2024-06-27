@@ -198,6 +198,6 @@ class KatalogController extends Controller
 
         return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
     }
-
+    }
 
 }

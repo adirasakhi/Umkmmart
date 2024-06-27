@@ -74,20 +74,19 @@ class KatalogController extends Controller
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
-
-        /*product click*/
         $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
 
+        // Cari klik yang sudah ada dari perangkat yang sama pada hari yang sama
         $existingClick = ProductClick::where('product_id', $id)
-            ->where('device_id', $deviceId)
-            ->whereDate('clicked_at', Carbon::today())
-            ->first();
+        ->where('device_id', $deviceId)
+        ->whereDate('clicked_at', Carbon::today())
+        ->first();
 
         if ($existingClick) {
-            // Jika sudah ada, tambahkan jumlah klik
+        // Jika sudah ada, tambahkan jumlah klik
             $existingClick->increment('click_count');
         } else {
-            // Jika belum ada, buat entri baru dengan click_count = 1
+        // Jika belum ada, buat entri baru dengan click_count = 1
             ProductClick::create([
                 'product_id' => $id,
                 'device_id' => $deviceId,
@@ -95,7 +94,6 @@ class KatalogController extends Controller
                 'click_count' => 1,
             ]);
         }
-        /*end product click*/
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }
@@ -128,8 +126,11 @@ class KatalogController extends Controller
         foreach ($keywordArray as $keyword) {
             $query = $query->Where('name', 'like', '%'.$keyword.'%');
 
+        if(!in_array($sort, ['asc','desc'])){
+            $sort = 'asc';
         }
-    }
+        $query->orderBy('price', $sort);
+
 
         if (!in_array($sort, ['asc', 'desc'])) {
             $sort = 'asc';
@@ -150,15 +151,15 @@ class KatalogController extends Controller
         $maxPrice = $request->input('max');
 
         $query = Product::query()
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
-            })
-            ->when(!is_null($minPrice), function ($query) use ($minPrice) {
-                return $query->where('price', '>=', $minPrice);
-            })
-            ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
-                return $query->where('price', '<=', $maxPrice);
-            });
+        ->when($categoryId, function ($query, $categoryId) {
+            return $query->where('category_id', $categoryId);
+        })
+        ->when(!is_null($minPrice), function ($query) use ($minPrice) {
+            return $query->where('price', '>=', $minPrice);
+        })
+        ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
+            return $query->where('price', '<=', $maxPrice);
+        });
 
         if (!empty($keywords)) {
             $keywordArray = explode(' ', $keywords);
@@ -174,32 +175,33 @@ class KatalogController extends Controller
     }
     public function getPopularProduct()
     {
+        $user = User::all();
         $popularProduct = Product::select(
             'product.id',
             'product.name',
             'product.price',
-            'product.description',
             'product.image',
-            DB::raw('COUNT(product_clicks.id) as click_count'),
-            'users.name as seller_name'
+            'users.name as saller_name',
+            DB::raw('COUNT(product_clicks.id) as click_count')
         )
         ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-        ->join('users', 'product.seller_id', '=', 'users.id') // Join dengan tabel users untuk mendapatkan nama seller
+         ->join('users', 'product.seller_id', '=', 'users.id')
+
         ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
         ->groupBy(
             'product.id',
             'product.name',
-            'product.description',
             'product.price',
             'product.image',
             'users.name'
         )
         ->orderByDesc('click_count')
-        ->take(3)
+        ->take(10)
         ->get();
 
 
         return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
     }
+
 
 }

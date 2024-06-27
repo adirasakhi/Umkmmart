@@ -101,10 +101,10 @@
                                                 $remainingWords = implode(' ', array_slice($words, $maxWords));
                                                 @endphp
                                                 <div class="description-container">
-                                                    <p class="description">{{ $shortDescription }}</p>
+                                                    <p class="description">{!! $shortDescription !!}</p>
                                                     @if (count($words) > $maxWords)
                                                     <span class="remaining-words"
-                                                        style="display: none;">{{ $remainingWords }}</span>
+                                                        style="display: none;">{!! $remainingWords !!}</span>
                                                     <button class="btn btn-sm btn-link see-more">See more</button>
                                                     @endif
                                                 </div>
@@ -167,8 +167,9 @@
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label"
-                            value="{{ old('description') }}">Deskripsi</label>
-                        <textarea name="description" class="form-control"></textarea>
+                            value="{{ old('description') }}">Description</label>
+                         <textarea name="description" class="summernote-simple"></textarea>
+
                     </div>
                     <div class="form-group">
                         <label for="image" class="control-label">Foto Produk</label>
@@ -373,9 +374,37 @@
         function removeFormatBeforeSubmit() {
             var priceInput = document.getElementById('price');
 
-            // Call removeFormat function to clean thousand separators
-            removeFormat(priceInput);
-        }
-    </script>
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        color: white;
+    }
+
+    .popup.success {
+        background-color: #4CAF50;
+    }
+
+    .popup.error {
+        background-color: #f44336;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        $('.summernote-simple').summernote({
+            placeholder: 'Enter description here...',
+            tabsize: 2,
+            height: 100
+        });
+    });
+</script>
+
 
 @endsection

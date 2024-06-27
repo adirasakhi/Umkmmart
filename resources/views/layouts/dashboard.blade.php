@@ -23,6 +23,13 @@
 
     <!-- jQuery -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    
+    {{-- RTE --}}
+    <link rel="stylesheet" href="{{ asset('assets/modules/summernote/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/codemirror/lib/codemirror.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/codemirror/theme/duotone-dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/jquery-selectric/selectric.css') }}">
+
 
     <!-- Custom CSS -->
     <style>
@@ -30,6 +37,14 @@
             display: none;
         }
     </style>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-94034622-3');
+  </script>
+
 </head>
 
 <body>
@@ -83,26 +98,32 @@
     <!-- Modal JS -->
     <script src="{{ asset('assets/modal/bootstrap.bundle.min.js') }}"></script>
 
+    {{-- RTE --}}
+    <script src="{{ asset('assets/modules/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('assets/modules/codemirror/lib/codemirror.js') }}"></script>
+    <script src="{{ asset('assets/modules/codemirror/mode/javascript/javascript.js') }}"></script>
+
+
     <!-- SweetAlert2 Script -->
     <script>
         @if (session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: '{{ session('success') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('success') }}',
+            timer: 3000,
+            showConfirmButton: false
+        });
         @endif
 
         @if (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '{{ session('error') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            timer: 3000,
+            showConfirmButton: false
+        });
         @endif
     </script>
 </body>

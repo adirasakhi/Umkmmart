@@ -1338,6 +1338,7 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2024-06-25T19:33:56+00:00"
+
         },
         {
             "name": "laravel/prompts",
@@ -6075,6 +6076,7 @@
                 "source": "https://github.com/laravel/sail"
             },
             "time": "2024-06-18T17:36:56+00:00"
+
         },
         {
             "name": "mockery/mockery",

@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
+/*Route::get('/', function () {
+    return view('pages.Landing.index');
+});*/
+
+Route::get('/', [KatalogController::class, 'getPopularProduct']);
+
 Route::middleware(['visitor'])->group(function () {
     Route::get('/', [KatalogController::class, 'getPopularProduct']);
     Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
@@ -40,7 +46,8 @@ Route::middleware('auth', 'role')->group(function () {
     // User routes
 
     Route::get('/users/profile', [UserController::class, 'profile'])->name('users.profile');
-    Route::post('/users/profile/update/{id}', [UserController::class, 'profileUpdate'])->name('users.profile.update');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/profile/update/{id}', [UserController::class, 'updateProfile'])->name('users.profile.update');
 
     Route::get('/users/active', [UserController::class, 'active'])->name('users.active');
     Route::get('/users/inactive', [UserController::class, 'inactive'])->name('users.inactive');

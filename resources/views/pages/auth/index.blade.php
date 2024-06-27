@@ -51,13 +51,19 @@
                         <div class="error">{{ $errors->first('password_confirmation') }}</div>
                     @endif
 
-                    <input type="tel" name="phone" placeholder="Telepon" value="{{ old('phone') }}"
-                        pattern="[0-9]+" title="Masukkan hanya angka">
+                    <div style="display: flex; align-items: center;">
+                        <span
+                            style="padding: 11px 0px 10px 11px;  background-color: #eee; border-radius: 7px 0 0 7px; color: grey">+62</span>
+                        <input type="tel" name="phone" placeholder="No. Telepon"
+                            value="{{ old('phone') ? substr(old('phone'), 3) : '' }}" pattern="[0-9]+"
+                            title="Masukkan hanya angka" style="flex: 1; padding: 10px; border-radius: 0 7px 7px 0;">
+                    </div>
                     @if ($errors->has('phone'))
                         <div class="error">{{ $errors->first('phone') }}</div>
                     @endif
 
-                    <input type="file" name="support_documents" id="support_documents" accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
+                    <input type="file" name="support_documents" id="support_documents" accept=".jpeg,.png,.jpg,.pdf"
+                        style="color: #404040">
                     <label for="support_documents" style="color: #404040">
                         Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
                         <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
@@ -69,7 +75,6 @@
 
                 <button type="submit">Daftar</button>
             </form>
-
         </div>
         <div class="form-container sign-in">
             <form action="{{ route('loginAction') }}" method="POST">
@@ -77,7 +82,7 @@
                 <h1>Masuk</h1>
 
                 @if (session('status-login'))
-                    <div class="alert alert-succes error-message">
+                    <div class="alert alert-success error-message">
                         {{ session('message') }}
                     </div>
                 @endif

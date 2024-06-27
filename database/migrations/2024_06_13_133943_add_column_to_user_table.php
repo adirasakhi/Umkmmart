@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('support_document')->nullable();
             $table->enum('status',['active','inactive','declined'])->default('inactive');
             $table->foreignId('role_id')->constrained('role')->onDelete('cascade');
+            $table->string('support_document')->nullable();
         });
     }
 
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->dropColumn('photo');
             $table->dropColumn('social_media_id');
             $table->dropColumn('role_id');
+            $table->dropColumn('support_document');
         });
     }
 };

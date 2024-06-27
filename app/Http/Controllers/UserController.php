@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -22,9 +23,10 @@ class UserController extends Controller
 
         $id = $request->id;
         $user = User::find($id);
+        $sosmed = SocialMedia::where('user_id', $user->id)->get();
 
         if ($user) {
-            return view('pages.users.showActive', compact('user'));
+            return view('pages.users.showActive', compact('user', 'sosmed'));
         } else {
             return redirect()->route('users.active')->with('error', 'User tidak ditemukan');
         }
@@ -38,9 +40,10 @@ class UserController extends Controller
 
         $id = $request->id;
         $user = User::find($id);
+        $sosmed = SocialMedia::where('user_id', $user->id)->get();
 
         if ($user) {
-            return view('pages.users.showReject', compact('user'));
+            return view('pages.users.showReject', compact('user', 'sosmed'));
         } else {
             return redirect()->route('users.active')->with('error', 'User tidak ditemukan');
         }
@@ -54,9 +57,11 @@ class UserController extends Controller
 
         $id = $request->id;
         $user = User::find($id);
+        $sosmed = SocialMedia::where('user_id', $user->id)->get();
+
 
         if ($user) {
-            return view('pages.users.showInactive', compact('user'));
+            return view('pages.users.showInactive', compact('user', 'sosmed'));
         } else {
             return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan');
         }
@@ -68,22 +73,22 @@ class UserController extends Controller
         $user = User::find($id);
 
         if ($user) {
-            if($user->status == "inactive"){
-            $dataToUpdate = [
-                'status' => 'active',
-            ];
+            if ($user->status == "inactive") {
+                $dataToUpdate = [
+                    'status' => 'active',
+                ];
 
-            $user->update($dataToUpdate);
+                $user->update($dataToUpdate);
 
-            return redirect()->route('users.active')->with('success', 'User berhasil diapprove');
-            }else{
+                return redirect()->route('users.active')->with('success', 'User berhasil diapprove');
+            } else {
                 $dataToUpdate = [
                     'status' => 'inactive',
                 ];
 
-            $user->update($dataToUpdate);
+                $user->update($dataToUpdate);
 
-            return redirect()->route('users.inactive')->with('success', 'User berhasil diUnapprove');
+                return redirect()->route('users.inactive')->with('success', 'User berhasil diUnapprove');
             }
         } else {
             return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan');
@@ -124,7 +129,7 @@ class UserController extends Controller
                 return redirect()->route('users.inactive')->with('error', 'Kesalahan untuk pengguna ini sudah dicatat sebelumnya');
             }
 
-            if($user->status == "inactive" || $user->status == "active"){
+            if ($user->status == "inactive" || $user->status == "active") {
                 // Save the user mistake
                 UserMistake::create([
                     'user_id' => $user->id,
@@ -172,14 +177,21 @@ class UserController extends Controller
             return redirect()->route('users.showReject')->with('error', 'User tidak ditemukan');
         }
     }
+
     public function profile()
     {
         $user = Auth::user();
         $sosmed = SocialMedia::where('user_id', $user->id)->get();
         return view('pages.profile.profile', compact('user', 'sosmed'));
     }
+
     public function updateProfile(Request $request, $id)
     {
+
+        if ($request->has('whatsapp') && substr($request->whatsapp, 0, 1) === '0') {
+            $request->merge(['whatsapp' => '62' . substr($request->whatsapp, 1)]);
+        }
+        // Validasi input pengguna
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
@@ -187,13 +199,20 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
             'phone' => 'required|string|regex:/[0-9]{11,13}$/',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Validasi input media sosial
+            'facebook' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'tiktok' => 'nullable|string|max:255',
+            'instagram' => 'nullable|string|max:255',
         ]);
 
+        // Temukan pengguna berdasarkan ID
         $user = User::find($id);
         if (substr($request->phone, 0, 1) === '0') {
             $request->merge(['phone' => '62' . substr($request->phone, 1)]);
         }
         if ($user) {
+            // Update data pengguna
             $dataToUpdate = [
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
@@ -202,18 +221,33 @@ class UserController extends Controller
                 'phone' => $validatedData['phone'],
             ];
 
+            // Update foto pengguna jika ada
             if ($request->hasFile('photo')) {
-                // Delete old photo
+                // Hapus foto lama
                 if ($user->photo) {
                     Storage::disk('public')->delete($user->photo);
                 }
 
-                // Store new photo
+                // Simpan foto baru
                 $photoPath = $request->file('photo')->store('photo_users', 'public');
                 $dataToUpdate['photo'] = $photoPath;
             }
 
+            // Perbarui data pengguna
             $user->update($dataToUpdate);
+
+            // Update atau buat data media sosial
+            $sosmedData = [
+                'facebook' => $validatedData['facebook'],
+                'whatsapp' => $validatedData['whatsapp'],
+                'tiktok' => $validatedData['tiktok'],
+                'instagram' => $validatedData['instagram'],
+            ];
+
+            SocialMedia::updateOrCreate(
+                ['user_id' => $user->id],
+                $sosmedData
+            );
 
             return redirect()->route('users.profile')->with('success', 'User berhasil diupdate');
         } else {
@@ -222,14 +256,27 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
+
+        if ($request->has('whatsapp') && substr($request->whatsapp, 0, 1) === '0') {
+            $request->merge(['whatsapp' => '62' . substr($request->whatsapp, 1)]);
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
             'address' => 'required',
-            'phone' => 'required|string|regex:/^62[0-9]{11,13}$/',
-            'support_documents' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048'
+
+            'phone' => 'required|string|regex:/[0-9]{8,12}$/',
+            'support_documents' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048',
+            // Validasi input media sosial
+            'facebook' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'tiktok' => 'nullable|string|max:255',
+            'instagram' => 'nullable|string|max:255',
         ], [
             'name.required' => 'Nama harus diisi',
             'name.regex' => 'Nama hanya boleh mengandung huruf dan spasi',
@@ -250,9 +297,6 @@ class UserController extends Controller
             $filename = $file->hashName();
             $path = $file->storeAs('Document_users', $filename, 'public');
         }
-        if (substr($request->phone, 0, 1) === '0') {
-            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
-        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -262,6 +306,15 @@ class UserController extends Controller
             'address' => $request->address,
             'role_id' => 2,
             'support_document' => $path ?? null, // Save filename in the database
+        ]);
+
+
+        // Simpan data sosial media
+        $user->socialMedia()->create([
+            'facebook' => $request->facebook,
+            'whatsapp' => $request->whatsapp,
+            'tiktok' => $request->tiktok,
+            'instagram' => $request->instagram,
         ]);
 
         return redirect()->back()->with('success', 'Pengguna berhasil ditambahkan.');

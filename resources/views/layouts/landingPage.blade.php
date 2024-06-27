@@ -52,6 +52,7 @@
             color: white;
             margin-right: 0.5rem;
         }
+
         .fixed-top {
             width: 100%;
             background-color: white;
@@ -60,13 +61,13 @@
         }
 
 
-        @media (min-width: 768px) {
+        @media (min-width: 853px) {
             #filterModalToggle {
                 display: none;
             }
         }
 
-        @media (max-width: 767px) {
+        @media (max-width: 853px) {
             #filterContainer {
                 display: none;
             }
@@ -93,6 +94,36 @@
 
         .additional-category {
             margin-top: 0;
+        }
+
+
+        .custom-checkbox {
+            border-radius: 3px;
+            width: 18px;
+            height: 18px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .custom-checkbox:checked::before {
+            content: "\2714";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: black;
+        }
+
+        .custom-checkbox:hover {
+            border-color: black;
         }
 
     </style>
@@ -163,8 +194,9 @@
     <!-- Template Javascript -->
     <script src="{{ asset('LandingPage/js/main.js') }}"></script>
 
-       <script>
-        $(document).ready(function(){
+    <script>
+        $(document).ready(function() {
+
             $(".owl-carousel").owlCarousel({
                 items: 3,
                 loop: true,

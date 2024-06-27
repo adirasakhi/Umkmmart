@@ -25,14 +25,16 @@ class User extends Authenticatable
         'photo',
         'support_document',
         'status',
+        'support_document',
         'role_id',
     ];
 
-    public function social(){
+    public function social()
+    {
         return $this->hasOne(SocialMedia::class);
     }
 
- /**
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>

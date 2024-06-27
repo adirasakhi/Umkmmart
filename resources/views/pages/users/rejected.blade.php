@@ -67,7 +67,7 @@
                             <div class="card-body p-3">
                                 <div class="section-header">
                                     <h1>Pengguna
-                                        Diblok</h1>
+                                        Diblokir</h1>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-md" id="example">

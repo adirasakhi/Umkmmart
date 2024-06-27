@@ -21,6 +21,11 @@ class AuthController extends Controller
 
     public function registerAction(Request $request)
     {
+        // Modify the phone number before validation
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255|min:3|regex:/^[a-zA-Z\s]*$/',
             'email' => 'required|string|email|max:255|unique:users',
@@ -67,7 +72,7 @@ class AuthController extends Controller
         $message = 'Register Success <i class="bi bi-check-circle-fill"></i> Wait admin for approval !';
         Session::flash('message', new HtmlString($message));
         Session::put('action', 'register');  // Set session action
-        return redirect()->route('register'); // Adjust the redirection as needed
+        return redirect()->route('register'); // Adjust the redirection as needed
     }
 
 
@@ -92,7 +97,7 @@ class AuthController extends Controller
                 if ($user->status == "declined") {
                     // Retrieve the user mistake description
                     $userMistake = UserMistake::where('user_id', $user->id)->first();
-                    $errorMessage = 'Akun anda di tangguhkan karena "' . $userMistake->description . '"';
+                    $errorMessage = 'Akun anda di tangguhkan';
 
                     Session::flash('status-login', 'failed');
                     Session::flash('message', $errorMessage);

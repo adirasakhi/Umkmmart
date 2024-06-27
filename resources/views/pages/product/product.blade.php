@@ -4,53 +4,53 @@
 
 @section('content')
 
-@if (session('success'))
-<div id="successPopup" class="popup success">
-    {{ session('success') }}
-</div>
-<script>
-    window.onload = function() {
-        var popup = document.getElementById('successPopup');
-        popup.style.display = 'block';
-        setTimeout(function() {
-            popup.style.display = 'none';
-        }, 3000);
-    }
-</script>
-@endif
+    @if (session('success'))
+        <div id="successPopup" class="popup success">
+            {{ session('success') }}
+        </div>
+        <script>
+            window.onload = function() {
+                var popup = document.getElementById('successPopup');
+                popup.style.display = 'block';
+                setTimeout(function() {
+                    popup.style.display = 'none';
+                }, 3000);
+            }
+        </script>
+    @endif
 
-@if (session('error'))
-<div id="errorPopup" class="popup error">
-    {{ session('error') }}
-</div>
-<script>
-    window.onload = function() {
-        var popup = document.getElementById('errorPopup');
-        popup.style.display = 'block';
-        setTimeout(function() {
-            popup.style.display = 'none';
-        }, 3000);
-    }
-</script>
-@endif
+    @if (session('error'))
+        <div id="errorPopup" class="popup error">
+            {{ session('error') }}
+        </div>
+        <script>
+            window.onload = function() {
+                var popup = document.getElementById('errorPopup');
+                popup.style.display = 'block';
+                setTimeout(function() {
+                    popup.style.display = 'none';
+                }, 3000);
+            }
+        </script>
+    @endif
 
-<!-- Modal Edit -->
-<div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Edit Produk</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Edit Produk</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="data"></div>
+                </div>
+                <div class="modal-footer"></div>
             </div>
-            <div class="modal-body">
-                <div class="data"></div>
-            </div>
-            <div class="modal-footer"></div>
         </div>
     </div>
-</div>
-<!-- end Edit Modal -->
+    <!-- end Edit Modal -->
 
 <!-- Main Content -->
 <div class="main-content">
@@ -134,9 +134,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 
 {{-- Modal Tambah --}}
 <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
@@ -161,8 +160,9 @@
                                 <div class="input-group-text">
                                     Rp
                                 </div>
+                                <input type="text" class="form-control currency" name="price" id="price"
+                                    onkeyup="formatNumber(this)">
                             </div>
-                            <input type="text" class="form-control currency" name="price" id="price">
                         </div>
                     </div>
                     <div class="form-group">
@@ -204,50 +204,50 @@
             </div>
         </div>
     </div>
-</div>
-{{-- end Tambah Modal --}}
+    {{-- end Tambah Modal --}}
 
-{{-- Modal delete --}}
-<div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Hapus Produk</h4>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda yakin ingin menghapus Produk ini?</p>
-                <form id="deleteForm" action="" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <div class="row justify-content-end">
-                        <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
-                            <span class="fa fa-times"></span> Batal
-                        </button>
-                        <button type="submit" class="btn btn-primary col-2 mr-3">
-                            <span class="fa fa-check"></span> Yakin
-                        </button>
-                    </div>
-                </form>
+    {{-- Modal delete --}}
+    <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Hapus Produk</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus Produk ini?</p>
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <div class="row justify-content-end">
+                            <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
+                                <span class="fa fa-times"></span> Batal
+                            </button>
+                            <button type="submit" class="btn btn-primary col-2 mr-3">
+                                <span class="fa fa-check"></span> Yakin
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{{-- end Modal delete  --}}
+    {{-- end Modal delete  --}}
 
-{{-- Js Edit --}}
-<script type="text/javascript">
-    $(function() {
-        $(document).on('click', '.edit', function(e) {
-            e.preventDefault();
-            $("#myModalEdit").modal('show');
-            $.post('{{ route('products.edit') }}', {
-                id: $(this).attr('data-id'),
-                _token: '{{ csrf_token() }}'
-            },
-            function(html) {
-                $(".data").html(html);
-            }
-            );
+    {{-- Js Edit --}}
+    <script type="text/javascript">
+        $(function() {
+            $(document).on('click', '.edit', function(e) {
+                e.preventDefault();
+                $("#myModalEdit").modal('show');
+                $.post('{{ route('products.edit') }}', {
+                        id: $(this).attr('data-id'),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    function(html) {
+                        $(".data").html(html);
+                    }
+                );
+            });
         });
     });
 </script>
@@ -298,55 +298,84 @@
     document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.delete-btn');
 
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const deleteForm = document.getElementById('deleteForm');
-                deleteForm.action = `{{ url('/products/delete') }}/${id}`;
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const deleteForm = document.getElementById('deleteForm');
+                    deleteForm.action = `{{ url('/products/delete') }}/${id}`;
+                });
             });
         });
-    });
-</script>
+    </script>
 
-{{-- Js See More --}}
-<script>
-    const seeMoreButtons = document.querySelectorAll('.see-more');
-    seeMoreButtons.forEach(seeMoreBtn => {
-        seeMoreBtn.addEventListener('click', function() {
-            const descriptionContainer = this.parentElement;
-            const description = descriptionContainer.querySelector('.description');
-            const moreContent = descriptionContainer.querySelector('.remaining-words');
+    {{-- Js See More --}}
+    <script>
+        const seeMoreButtons = document.querySelectorAll('.see-more');
+        seeMoreButtons.forEach(seeMoreBtn => {
+            seeMoreBtn.addEventListener('click', function() {
+                const descriptionContainer = this.parentElement;
+                const description = descriptionContainer.querySelector('.description');
+                const moreContent = descriptionContainer.querySelector('.remaining-words');
 
-            moreContent.style.display === 'none' || moreContent.style.display === '' ?
-                moreContent.style.display = 'inline' :
-                moreContent.style.display = 'none';
+                moreContent.style.display === 'none' || moreContent.style.display === '' ?
+                    moreContent.style.display = 'inline' :
+                    moreContent.style.display = 'none';
 
-            this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
+                this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
+            });
         });
-    });
-</script>
+    </script>
 
-<style>
-    .popup {
-        display: none;
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        color: white;
-    }
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            color: white;
+        }
 
-    .popup.success {
-        background-color: #4CAF50;
-    }
+        .popup.success {
+            background-color: #4CAF50;
+        }
 
-    .popup.error {
-        background-color: #f44336;
-    }
-</style>
+        .popup.error {
+            background-color: #f44336;
+        }
+    </style>
+
+    <script>
+        function formatNumber(input) {
+            // Remove non-numeric characters
+            var value = input.value.replace(/[^0-9]/g, '');
+
+            // Format the value with dots for thousands separator
+            var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Update the input value with the formatted value
+            input.value = formattedValue;
+        }
+
+        function removeFormat(input) {
+            // Remove non-numeric characters
+            var value = input.value.replace(/[^0-9]/g, '');
+
+            // Update the input value with the cleaned numeric value
+            input.value = value;
+        }
+
+        function removeFormatBeforeSubmit() {
+            var priceInput = document.getElementById('price');
+
+            // Call removeFormat function to clean thousand separators
+            removeFormat(priceInput);
+        }
+    </script>
 
 @endsection

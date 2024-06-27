@@ -16,6 +16,7 @@
                         ['bg' => 'danger', 'icon' => 'far fa-newspaper', 'title' => 'Total Kategori', 'value' => $categoryCount],
                         ['bg' => 'warning', 'icon' => 'far fa-file', 'title' => 'Total Produk', 'value' => $productCount],
                         ['bg' => 'success', 'icon' => 'fas fa-users', 'title' => 'Total Visitors', 'value' => $totalVisitors],
+
                     ];
                 @endphp
 

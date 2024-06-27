@@ -15,8 +15,11 @@
                         <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
                         <a href="/katalog"
                             class="nav-item nav-link {{ Request::is('katalog') ? 'active' : '' }}">Shop</a>
+                        <a href="#aboutus"
+                            class="nav-item nav-link {{ Request::is('aboutus') ? 'active' : '' }}">About Us</a>
                         <a href="#contact"
                             class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>
+
                         <a href="/login" class="nav-item nav-link d-xl-none">Masuk</a>
                         <a href="/login" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">
                             <i class="fas fa-user fa-2x"></i>

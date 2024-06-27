@@ -38,7 +38,6 @@ class ProductController extends Controller
             'category_id' => 'required|integer',
             'seller_id' => 'required_if:role_id,1|integer',
         ]);
-
         $imagePath = $request->file('image')->store('product_image', 'public');
         $image = Image::make(Storage::disk('public')->path($imagePath));
         $image->resize(1080, 1351)->save();

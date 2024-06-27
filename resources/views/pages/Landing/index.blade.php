@@ -10,38 +10,43 @@
                 <h1 class="mb-5 display-3 text-primary">Produk Unggulan UMKM</h1>
                 <div class="position-relative mx-auto">
                     <a href="{{ route('katalog.index') }}"
-                       class="btn btn-primary border-2 border-secondary py-3 px-4 rounded-pill text-white">Belanja Sekarang</a>
-                </div>
+                    class="btn btn-primary border-2 border-secondary py-3 px-4 rounded-pill text-white">Belanja
+                Sekarang</a>
             </div>
-            <div class="col-md-12 col-lg-5">
-                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
-                        <div class="carousel-item active rounded">
-                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}"
-                                 class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Kerajinan</a>
-                        </div>
-                        <div class="carousel-item rounded">
-                            <img src="{{ asset('LandingPage/img/gula.jpg') }}"
-                                 class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Olahan Makanan</a>
-                        </div>
-                        <div class="carousel-item rounded">
-                            <img src="{{ asset('LandingPage/img/gula.jpg') }}"
-                                 class="img-fluid w-100 h-100 rounded" alt="Third slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Sembako</a>
-                        </div>
+        </div>
+        <div class="col-md-12 col-lg-5">
+            <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active rounded">
+                        <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}"
+                        class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                        <a href="#" class="btn px-4 py-2 text-white rounded">Kerajinan</a>
+                    </div>
+                    <div class="carousel-item rounded">
+                        <img src="{{ asset('LandingPage/img/gula.jpg') }}"
+                        class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                        <a href="#" class="btn px-4 py-2 text-white rounded">Kuliner</a>
                     </div>
                     <div class="carousel-item rounded">
                         <img src="{{ asset('LandingPage/img/hero-img-2.jpg') }}"
                         class="img-fluid w-100 h-100 rounded" alt="Second slide">
                         <a href="#" class="btn px-4 py-2 text-white rounded">Sayuran</a>
                     </div>
-
                 </div>
-            </div>
-        </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
+</div>
+</div>
+</div>
 </div>
 <!-- Hero End -->
 {{-- Cara Berbelanja --}}
@@ -78,9 +83,12 @@
                         <p class="small"><i class="fas fa-store"></i> {{ $product->saller_name }}</p>
                     </a>
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
+    @endforeach
+</div>
+</div>
 </div>
 
 <!-- Bestseller Product End -->
@@ -95,9 +103,8 @@
     </div>
 </div>
 {{-- End About Us --}}
-
 <script type="text/javascript">
-    // Melacak klik
+// Melacak klik
     function trackClick(productId) {
         fetch(`/track-click/${productId}`, {
             method: 'POST',
@@ -110,7 +117,7 @@
         .then(data => console.log(data));
     }
 
-    // Mendapatkan produk populer
+// Mendapatkan produk populer
     function getPopularProducts() {
         fetch('/popular-products')
         .then(response => response.json())
@@ -120,7 +127,7 @@
         });
     }
 
-    // Panggil fungsi untuk menampilkan produk populer saat halaman dimuat
+// Panggil fungsi untuk menampilkan produk populer saat halaman dimuat
     document.addEventListener('DOMContentLoaded', getPopularProducts);
 </script>
 @endsection

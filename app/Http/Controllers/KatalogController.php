@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\ProductClick;
 use App\Models\Category;
 use App\Models\SocialMedia;
-use App\Models\ProductClick;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

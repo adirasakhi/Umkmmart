@@ -11,7 +11,7 @@
 <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
+        <label for="name" class="form-label">Nama</label>
         <input type="text" name="name" class="form-control" id="name" value="{{ $user->name }}" readonly
             style="background-color:#e9ecef; cursor: default;">
     </div>
@@ -21,34 +21,45 @@
             style="background-color:#e9ecef; cursor: default;">
     </div>
     <div class="mb-3">
-        <label for="address" class="form-label">Address</label>
+        <label for="address" class="form-label">Alamat</label>
         <input type="text" name="address" class="form-control" id="address" value="{{ $user->address }}" readonly
             style="background-color:#e9ecef; cursor: default;">
     </div>
     <div class="mb-3">
-        <label for="phone" class="form-label">Phone</label>
+        <label for="phone" class="form-label">No. Telepon</label>
         <input type="text" name="phone" class="form-control" id="phone" value="{{ $user->phone }}" readonly
             style="background-color:#e9ecef; cursor: default;">
     </div>
     <div class="mb-3">
-        <label for="photo" class="form-label">Photo</label>
+        <label for="photo" class="form-label">Foto</label>
         <img src="{{ asset('storage/' . $user->support_document) }}" class="img-fluid rounded mb-2 img-thumbnail"
             alt="">
     </div>
-    <div class="mb-3">
-        <label for="social_media_id" class="form-label">Social Media</label>
-        <div>
-            <span class="badge bg-primary text-white"><i class="bi bi-facebook text-white"></i> Facebook</span>
-            <a href="https://api.whatsapp.com/send/?phone=628812248087"><span class="badge bg-success text-white"><i
-                        class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
-            <span class="badge bg-dark text-white"><i class="bi bi-tiktok text-white"></i> TikTok</span>
-            <span class="badge bg-danger text-white"><i class="bi bi-instagram text-white"></i> Instagram</span>
-        </div>
+    <div class="form-group">
+        <label for="facebook" class="control-label">Facebook</label>
+        <input type="text" name="facebook" class="form-control" placeholder="Facebook"
+            value="{{ $sosmed->first()->facebook ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+    </div>
+    <div class="form-group">
+        <label for="whatsapp" class="control-label">WhatsApp</label>
+        <input type="text" name="whatsapp" class="form-control" placeholder="WhatsApp"
+            value="{{ $sosmed->first()->whatsapp ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+    </div>
+    <div class="form-group">
+        <label for="tiktok" class="control-label">Tiktok</label>
+        <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+            value="{{ $sosmed->first()->tiktok ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+    </div>
+    <div class="form-group">
+        <label for="instagram" class="control-label">Instagram</label>
+        <input type="text" name="instagram" class="form-control" placeholder="Instagram"
+            value="{{ $sosmed->first()->instagram ?? '' }}" style="background-color: #e9ecef; cursor: default"
+            readonly>
     </div>
 
     <div class="d-flex justify-content-start align-items-center">
         <button type="submit" class="btn btn-danger mt-3 mr-2 col-12 text-light"><i class="bi bi-x-circle-fill"></i>
-            UnApprove</button>
+            Non Aktifkan</button>
     </div>
 
 </form>

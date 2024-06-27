@@ -141,7 +141,7 @@
                         <div class="form-group">
                             <label for="name" class="control-label">Nama <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" placeholder="Nama"
-                                value="{{ old('name') }}">
+                                value="{{ old('name') }}" required>
                             @if ($errors->has('name'))
                                 <div class="error">{{ $errors->first('name') }}</div>
                             @endif
@@ -149,7 +149,7 @@
                         <div class="form-group">
                             <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control" placeholder="Email"
-                                value="{{ old('email') }}">
+                                value="{{ old('email') }}" required>
                             @if ($errors->has('email'))
                                 <div class="error">{{ $errors->first('email') }}</div>
                             @endif
@@ -168,35 +168,66 @@
                         <div class="form-group">
                             <label for="phone" class="control-label">No. Telepon <span
                                     class="text-danger">*</span></label>
-                            <input type="tel" name="phone" class="form-control" placeholder="No. Telepon"
-                                value="{{ old('phone') }}" pattern="[0-9]+" title="Masukkan hanya angka">
+                            <div style="display: flex; align-items: center;">
+                                <span
+                                    style="padding: 10px; border: 1px solid #e4e6fc; background-color: #fdfdff; border-radius: 7px 0 0 7px; color: grey">+62</span>
+                                <input type="tel" name="phone" placeholder="No. Telepon"
+                                    value="{{ old('phone') ? substr(old('phone'), 3) : '' }}" pattern="[0-9]+"
+                                    title="Masukkan hanya angka" class="form-control"
+                                    style="border-radius: 0 7px 7px 0;">
+                            </div>
                             @if ($errors->has('phone'))
                                 <div class="error">{{ $errors->first('phone') }}</div>
                             @endif
                         </div>
                         <div class="form-group">
                             <label for="address" class="control-label">Alamat <span class="text-danger">*</span></label>
-                            <textarea name="address" class="form-control" id="address" placeholder="Alamat">{{ old('address') }}</textarea>
+                            <textarea name="address" class="form-control" id="address" placeholder="Alamat" required>{{ old('address') }}</textarea>
                             @if ($errors->has('address'))
                                 <div class="error">{{ $errors->first('address') }}</div>
                             @endif
                         </div>
                         <div class="form-group">
-                            <input type="file" name="support_documents" id="support_documents"
-                                accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
                             <label for="support_documents" style="color: #404040">
                                 <span class="text-danger">*</span>
                                 Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
                                 <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
                             </label>
+                            <input type="file" name="support_documents" id="support_documents"
+                                accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
                             @if ($errors->has('support_documents'))
                                 <div class="error">{{ $errors->first('support_documents') }}</div>
                             @endif
                         </div>
-
+                        <div class="form-group">
+                            <label for="facebook" class="control-label">Facebook</label>
+                            <input type="text" name="facebook" class="form-control" placeholder="Facebook"
+                                value="{{ old('facebook') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="whatsapp" class="control-label">WhatsApp</label>
+                            <div class="input-group">
+                                <span class="input-group-text">+62</span>
+                                <input type="tel" name="whatsapp" placeholder="WhatsApp"
+                                    value="{{ old('whatsapp') ? (substr(old('whatsapp'), 0, 1) === '0' ? '62' . substr(old('whatsapp'), 1) : old('whatsapp')) : '' }}"
+                                    pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tiktok" class="control-label">Tiktok</label>
+                            <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+                                value="{{ old('tiktok') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="instagram" class="control-label">Instagram</label>
+                            <input type="text" name="instagram" class="form-control" placeholder="Instagram"
+                                value="{{ old('instagram') }}">
+                        </div>
                         <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
                             Save</button>
                     </form>
+
+
                 </div>
             </div>
         </div>

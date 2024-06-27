@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Product;
-use App\Models\ProductClick;
 use App\Models\Category;
 use App\Models\SocialMedia;
 use App\Models\ProductClick;

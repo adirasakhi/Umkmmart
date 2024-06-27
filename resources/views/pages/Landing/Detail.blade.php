@@ -17,7 +17,7 @@
                         <div class="border rounded">
                             <a href="#">
                                 <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
-                                alt="Image" style="height: 300px">
+                                alt="Image" style="height: 300px object-fit:cover">
 
                             </a>
                         </div>
@@ -144,17 +144,19 @@
 </div>
 {{-- end Modal Info Toko  --}}
 <script>
-    document.getElementById('contactSellerBtn').addEventListener('click', function() {
+    document.getElementById('contactSellerBtn').addEventListener('click', function(event) {
+        event.preventDefault();
         var quantity = document.getElementById('productQuantity').value;
         var productName = "{{ $product->name }}";
         var productPrice = {{ $product->price }};
         var totalPrice = productPrice * quantity;
         var sellerPhone = "{{ $product->seller->phone }}";
-        var message = `Halo, saya tertarik dengan produk Anda.%0A
-        Nama produk: ${productName}%0A
-        Harga produk: Rp${productPrice.toLocaleString('id-ID')}%0A
-        Jumlah produk yang dibeli: ${quantity}%0A
-        Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}`;
+        var message = `Halo, saya tertarik dengan produk Anda.
+Nama produk: ${productName}
+Harga produk: Rp${productPrice.toLocaleString('id-ID')}
+Jumlah produk yang dibeli: ${quantity}
+Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
+Link produk: ${location.href}`;
 
         var whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');

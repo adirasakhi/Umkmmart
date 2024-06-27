@@ -28,31 +28,32 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $user = Auth::user();
 
+        $user = Auth::user();
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|integer',
+            'price' => 'required',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required|integer',
             'seller_id' => 'required_if:role_id,1|integer',
         ]);
+
         $imagePath = $request->file('image')->store('product_image', 'public');
         $image = Image::make(Storage::disk('public')->path($imagePath));
         $image->resize(1080, 1351)->save();
 
         $sellerId = ($user->role_id == 2) ? $user->id : $validatedData['seller_id'];
+        $price = str_replace('.', '', $request->post('price'));
 
         $product = Product::create([
             'name' => $validatedData['name'],
-            'price' => $validatedData['price'],
+            'price' => $price,
             'description' => $validatedData['description'],
             'image' => $imagePath,
             'category_id' => $validatedData['category_id'],
             'seller_id' => $sellerId,
         ]);
-
         if ($product) {
             return redirect()->route('products.index')->with('success', 'Product berhasil ditambahkan');
         } else {

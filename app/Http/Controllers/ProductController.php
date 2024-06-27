@@ -23,13 +23,14 @@ class ProductController extends Controller
             $products = Product::where('seller_id', $user->id)->get();
         }
         $categories = Category::all();
-        return view('pages.product.product', ['products' => $products, 'categories' => $categories, 'user' => $user]);
+        return view ('pages.product.product', ['products' => $products, 'categories' => $categories, 'user' => $user]);
     }
 
     public function store(Request $request)
     {
         $user = Auth::user();
-
+        
+        // dd($request);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|integer',

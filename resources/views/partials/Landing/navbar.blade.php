@@ -15,7 +15,7 @@
                         <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
                         <a href="/katalog"
                             class="nav-item nav-link {{ Request::is('katalog') ? 'active' : '' }}">Shop</a>
-                        <a href="#aboutus"
+                        <a href="/#aboutus"
                             class="nav-item nav-link {{ Request::is('aboutus') ? 'active' : '' }}">About Us</a>
                         <a href="#contact"
                             class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>

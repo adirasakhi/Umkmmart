@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Single Page Header start -->
-    
+
     <!-- Single Page Header End -->
 
     <!-- Fruits Shop Start-->

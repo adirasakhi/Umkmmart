@@ -19,7 +19,7 @@
                 Rp
             </div>
         </div>
-        <input type="text" class="form-control currency mb-3" name="price" id="price" value="{{ $product->price }}">
+        <input type="text" class="form-control currency mb-3" name="price" id="price" value="{{ number_format($product->price, 0, ',', '.') }}" onkeyup="formatNumber(this)">
     </div>
     <label for="description" class="control-label">Description</label>
     <textarea name="description" class="form-control mb-3">{{ $product->description }}</textarea>
@@ -33,5 +33,5 @@
             </option>
         @endforeach
     </select>
-    <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
+    <button type="submit" class="btn btn-primary col-12" onclick="removeFormatBeforeSubmit()"><span class="fa fa-save"></span> Save</button>
 </form>

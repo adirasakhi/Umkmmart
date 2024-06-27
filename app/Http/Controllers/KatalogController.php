@@ -43,23 +43,24 @@ class KatalogController extends Controller
             }
         }
 
-        $products = $query->paginate(10);
+        $products = $query->paginate(12);
 
         return view('pages.Landing.shop', compact('products', 'categories', 'categoryId', 'minPrice', 'maxPrice'));
     }
 
-    public function katalog()
-    {
-        $products = Product::paginate(10);
-        $categories = Category::withCount('products')->get();
-        return view('pages.Landing.shop', ['products' => $products, 'categories' => $categories]);
-    }
+    // public function katalog()
+    // {
+    //     $products = Product::paginate(10);
+    //     $categories = Category::withCount('products')->get();
+    //     return view('pages.Landing.shop', ['products' => $products, 'categories' => $categories]);
+    // }
 
     public function detail($id)
     {
         $product = Product::find($id);
         $categories = Category::all();
         $user = User::all();
+        // $items = User::withCount('products')->get();
         $social_media = SocialMedia::all();
         $related_products = Product::where('category_id', $product->category_id)
         ->where('id', '!=', $product->id)
@@ -129,7 +130,7 @@ class KatalogController extends Controller
     }
     $query->orderBy('price', $sort);
 
-        $products = $query->paginate(10);
+        $products = $query->paginate(12);
         $categories = Category::withCount('products')->get();
 
         return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice','sort'));

@@ -95,7 +95,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $product->name }}</td>
-                                                    <td>{{ $product->price }}</td>
+                                                    <td>Rp{{ number_format($product->price, 0, ',', '.') }}</td>
                                                     <td>
                                                         @php
                                                             $maxWords = 15; // Jumlah kata maksimum untuk deskripsi yang dipotong
@@ -173,7 +173,8 @@
                                         Rp
                                     </div>
                                 </div>
-                                <input type="text" class="form-control currency" name="price" id="price">
+                                <input type="text" class="form-control currency" name="price" id="price"
+                                    onkeyup="formatNumber(this)">
                             </div>
                         </div>
                         <div class="form-group">
@@ -208,7 +209,7 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
+                        <button type="submit" class="btn btn-primary col-12" onclick="removeFormatBeforeSubmit()"><span class="fa fa-save"></span>
                             Save</button>
                     </form>
 
@@ -318,5 +319,33 @@
             background-color: #f44336;
         }
     </style>
+
+    <script>
+        function formatNumber(input) {
+            // Remove non-numeric characters
+            var value = input.value.replace(/[^0-9]/g, '');
+
+            // Format the value with dots for thousands separator
+            var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Update the input value with the formatted value
+            input.value = formattedValue;
+        }
+
+        function removeFormat(input) {
+            // Remove non-numeric characters
+            var value = input.value.replace(/[^0-9]/g, '');
+
+            // Update the input value with the cleaned numeric value
+            input.value = value;
+        }
+
+        function removeFormatBeforeSubmit() {
+            var priceInput = document.getElementById('price');
+
+            // Call removeFormat function to clean thousand separators
+            removeFormat(priceInput);
+        }
+    </script>
 
 @endsection

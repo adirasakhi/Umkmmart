@@ -197,7 +197,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8|confirmed',
             'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|regex:/[0-9]{11,13}$/',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // Validasi input media sosial
             'facebook' => 'nullable|string|max:255',
@@ -208,7 +208,9 @@ class UserController extends Controller
 
         // Temukan pengguna berdasarkan ID
         $user = User::find($id);
-
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
         if ($user) {
             // Update data pengguna
             $dataToUpdate = [
@@ -252,8 +254,6 @@ class UserController extends Controller
             return redirect()->route('users.profile')->with('error', 'User tidak ditemukan');
         }
     }
-
-
     public function store(Request $request)
     {
         if (substr($request->phone, 0, 1) === '0') {
@@ -263,13 +263,13 @@ class UserController extends Controller
         if ($request->has('whatsapp') && substr($request->whatsapp, 0, 1) === '0') {
             $request->merge(['whatsapp' => '62' . substr($request->whatsapp, 1)]);
         }
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
             'address' => 'required',
+
             'phone' => 'required|string|regex:/[0-9]{8,12}$/',
             'support_documents' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048',
             // Validasi input media sosial
@@ -297,7 +297,6 @@ class UserController extends Controller
             $filename = $file->hashName();
             $path = $file->storeAs('Document_users', $filename, 'public');
         }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -308,6 +307,7 @@ class UserController extends Controller
             'role_id' => 2,
             'support_document' => $path ?? null, // Save filename in the database
         ]);
+
 
         // Simpan data sosial media
         $user->socialMedia()->create([

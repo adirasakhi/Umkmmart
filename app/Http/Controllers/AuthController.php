@@ -31,7 +31,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
-            'phone' => 'required|string|regex:/[0-9]{8,12}$/',
+            'phone' => 'required|string|regex:/[0-9]{11,13}$/',
             'support_documents' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
         ], [
             'name.required' => 'Nama harus diisi',
@@ -55,7 +55,9 @@ class AuthController extends Controller
             $filename = $file->hashName();
             $path = $file->storeAs('Document_users', $filename, 'public');
         }
-
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -72,6 +74,7 @@ class AuthController extends Controller
         Session::put('action', 'register');  // Set session action
         return redirect()->route('register'); // Adjust the redirection as needed
     }
+
 
 
     public function loginAction(Request $request)

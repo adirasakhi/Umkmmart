@@ -74,8 +74,10 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Name</th>
-                                                <th>Phone</th>
+                                                <th>Nama</th>
+                                                <th>Email</th>
+                                                <th>No. Telepon</th>
+                                                <th>Dokumen Pendukung</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -85,7 +87,11 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $user->name }}</td>
+                                                    <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phone }}</td>
+                                                    <td><a href="{{ asset('storage/'. $user->support_document) }}">
+                                                        <img src="{{ asset('storage/'. $user->support_document) }}" alt="Dokumen Pendukung" class="img-fluid img-thumbnail" width="100">
+                                                    </a></td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <button class="btn btn-icon btn-primary edit"

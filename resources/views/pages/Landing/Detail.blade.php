@@ -17,7 +17,7 @@
                         <div class="border rounded">
                             <a href="#">
                                 <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
-                                alt="Image" style="height: 300px">
+                                alt="Image" style="height: 300px; object-fit:cover">
 
                             </a>
                         </div>

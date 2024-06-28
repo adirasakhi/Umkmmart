@@ -40,7 +40,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">Edit Produk</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="data"></div>
@@ -64,7 +65,8 @@
                             <div class="row">
                                 @if (Auth::user()->role_id == 2)
                                     <div class="col d-flex justify-content-end">
-                                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Produk</button>
+                                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px"
+                                            data-bs-toggle="modal" data-bs-target="#myModalCreate">Tambah Produk</button>
                                     </div>
                                 @endif
                             </div>
@@ -89,26 +91,36 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $product->name }}</td>
-                                                    <td>{{ $product->price }}</td>
+                                                    <td>Rp{{ number_format($product->price, 0, ',', '.') }}</td>
                                                     <td>
                                                         @php
                                                             $maxWords = 15;
                                                             $description = $product->description;
                                                             $words = explode(' ', $description);
-                                                            $shortDescription = implode(' ', array_slice($words, 0, $maxWords));
-                                                            $remainingWords = implode(' ', array_slice($words, $maxWords));
+                                                            $shortDescription = implode(
+                                                                ' ',
+                                                                array_slice($words, 0, $maxWords),
+                                                            );
+                                                            $remainingWords = implode(
+                                                                ' ',
+                                                                array_slice($words, $maxWords),
+                                                            );
                                                         @endphp
                                                         <div class="description-container">
                                                             <p class="description">{!! $shortDescription !!}</p>
                                                             @if (count($words) > $maxWords)
-                                                                <span class="remaining-words" style="display: none;">{!! $remainingWords !!}</span>
-                                                                <button class="btn btn-sm btn-link see-more">See more</button>
+                                                                <span class="remaining-words"
+                                                                    style="display: none;">{!! $remainingWords !!}</span>
+                                                                <button class="btn btn-sm btn-link see-more">See
+                                                                    more</button>
                                                             @endif
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <a href="{{ asset('storage/' . $product->image) }}">
-                                                            <img src="{{ asset('storage/' . $product->image) }}" alt="product_image" class="img-fluid img-thumbnail" width="200">
+                                                            <img src="{{ asset('storage/' . $product->image) }}"
+                                                                alt="product_image" class="img-fluid img-thumbnail"
+                                                                width="200" style="object-fit: cover">
                                                         </a>
                                                     </td>
                                                     <td>{{ $product->category->category }}</td>
@@ -141,7 +153,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">Tambah Produk</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
@@ -156,7 +169,8 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input type="text" class="form-control currency" name="price" id="price" value="{{ old('price') }}" onkeyup="formatNumber(this)">
+                                <input type="text" class="form-control currency" name="price" id="price"
+                                    value="{{ old('price') }}" onkeyup="formatNumber(this)">
                             </div>
                         </div>
                         <div class="form-group">
@@ -189,7 +203,8 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
+                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
+                            Save</button>
                     </form>
                 </div>
             </div>
@@ -295,15 +310,24 @@
                     const descriptionContainer = this.parentElement;
                     const moreContent = descriptionContainer.querySelector('.remaining-words');
 
-                    moreContent.style.display = (moreContent.style.display === 'none' || moreContent.style.display === '') ? 'inline' : 'none';
-                    this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
+                    moreContent.style.display = (moreContent.style.display === 'none' || moreContent
+                        .style.display === '') ? 'inline' : 'none';
+                    this.textContent = moreContent.style.display === 'none' ? 'See more' :
+                        'See less';
                 });
             });
         });
 
         function formatNumber(input) {
-            var value = input.value.replace(/[^0-9]/g, '');
+            var value = input.value.replace(/\./g, '');
+
+            // Remove non-numeric characters
+            value = value.replace(/[^0-9]/g, '');
+
+            // Format the value with dots for thousands separator
             var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Update the input value with the formatted value
             input.value = formattedValue;
         }
 

@@ -90,11 +90,12 @@ class ProductController extends Controller
         ]);
 
         $product = Product::find($id);
-
+        $price = str_replace('.', '', $request->post('price'));
         if ($product) {
             $price = str_replace('.', '', $request->post('price'));
             $dataToUpdate = [
                 'name' => $validatedData['name'],
+                'price' => $price,
                 'price' => $price,
                 'description' => $validatedData['description'],
                 'category_id' => $validatedData['category_id'],

@@ -63,9 +63,9 @@ class KatalogController extends Controller
         // $items = User::withCount('products')->get();
         $social_media = SocialMedia::all();
         $related_products = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->limit(3)
-            ->get();
+        ->where('id', '!=', $product->id)
+        ->limit(3)
+        ->get();
 
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
@@ -105,99 +105,97 @@ class KatalogController extends Controller
         $sort = $request->input('sort', 'asc', 'desc');
         $query = Product::query();
 
-    if (isset ($categoryId) && (($categoryId != null))) {
-        $query->where('category_id', $categoryId);
-    }
-
-    if (isset ($minPrice) && ($minPrice != null)) {
-        $query->where('price', '>=', $minPrice);
-    }
-
-    if (isset ($maxPrice) && ($maxPrice != null)) {
-        $query->where('price', '<=', $maxPrice);
-    }
-
-    if(isset ($keywords) && ($keywords != null) ){
-        $keywordArray = explode(' ', $keywords);
-        foreach ($keywordArray as $keyword) {
-            $query = $query->Where('name', 'like', '%'.$keyword.'%');
-
-        if(!in_array($sort, ['asc','desc'])){
-            $sort = 'asc';
+        if (isset ($categoryId) && (($categoryId != null))) {
+            $query->where('category_id', $categoryId);
         }
-        $query->orderBy('price', $sort);
 
-
-        if (!in_array($sort, ['asc', 'desc'])) {
-            $sort = 'asc';
+        if (isset ($minPrice) && ($minPrice != null)) {
+            $query->where('price', '>=', $minPrice);
         }
-        $query->orderBy('price', $sort);
 
-        $products = $query->paginate(12);
-        $categories = Category::withCount('products')->get();
+        if (isset ($maxPrice) && ($maxPrice != null)) {
+            $query->where('price', '<=', $maxPrice);
+        }
 
-        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
-    }
-    }}
-    public function search(Request $request)
-    {
-        $keywords = $request->input('keywords');
-        $categoryId = $request->input('id');
-        $minPrice = $request->input('min');
-        $maxPrice = $request->input('max');
-
-        $query = Product::query()
-        ->when($categoryId, function ($query, $categoryId) {
-            return $query->where('category_id', $categoryId);
-        })
-        ->when(!is_null($minPrice), function ($query) use ($minPrice) {
-            return $query->where('price', '>=', $minPrice);
-        })
-        ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
-            return $query->where('price', '<=', $maxPrice);
-        });
-
-        if (!empty($keywords)) {
+        if(isset ($keywords) && ($keywords != null) ){
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
-                $query->where('name', 'like', '%' . strtolower($keyword) . '%');
+                $query = $query->Where('name', 'like', '%'.$keyword.'%');
+
+                if(!in_array($sort, ['asc','desc'])){
+                    $sort = 'asc';
+                }
+                $query->orderBy('price', $sort);
+
+
+                if (!in_array($sort, ['asc', 'desc'])) {
+                    $sort = 'asc';
+                }
+                $query->orderBy('price', $sort);
+
+                $products = $query->paginate(12);
+                $categories = Category::withCount('products')->get();
+
+                return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
             }
+        }}
+        public function search(Request $request)
+        {
+            $keywords = $request->input('keywords');
+            $categoryId = $request->input('id');
+            $minPrice = $request->input('min');
+            $maxPrice = $request->input('max');
+
+            $query = Product::query()
+            ->when($categoryId, function ($query, $categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
+            ->when(!is_null($minPrice), function ($query) use ($minPrice) {
+                return $query->where('price', '>=', $minPrice);
+            })
+            ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
+                return $query->where('price', '<=', $maxPrice);
+            });
+
+            if (!empty($keywords)) {
+                $keywordArray = explode(' ', $keywords);
+                foreach ($keywordArray as $keyword) {
+                    $query->where('name', 'like', '%' . strtolower($keyword) . '%');
+                }
+            }
+
+            $products = $query->paginate(10);
+            $categories = Category::withCount('products')->get();
+
+            return view('pages.Landing.shop', compact('products', 'categories'));
         }
+        public function getPopularProduct()
+        {
+            $user = User::all();
+            $popularProduct = Product::select(
+                'product.id',
+                'product.name',
+                'product.price',
+                'product.image',
+                'users.name as saller_name',
+                DB::raw('COUNT(product_clicks.id) as click_count')
+            )
+            ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
+            ->join('users', 'product.seller_id', '=', 'users.id')
 
-        $products = $query->paginate(10);
-        $categories = Category::withCount('products')->get();
+            ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy(
+                'product.id',
+                'product.name',
+                'product.price',
+                'product.image',
+                'users.name'
+            )
+            ->orderByDesc('click_count')
+            ->take(10)
+            ->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories'));
+
+            return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
+        }
     }
-    public function getPopularProduct()
-    {
-        $user = User::all();
-        $popularProduct = Product::select(
-            'product.id',
-            'product.name',
-            'product.price',
-            'product.image',
-            'users.name as saller_name',
-            DB::raw('COUNT(product_clicks.id) as click_count')
-        )
-        ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-         ->join('users', 'product.seller_id', '=', 'users.id')
-
-        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
-        ->groupBy(
-            'product.id',
-            'product.name',
-            'product.price',
-            'product.image',
-            'users.name'
-        )
-        ->orderByDesc('click_count')
-        ->take(10)
-        ->get();
-
-
-        return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
-    }
-    }
-
-}

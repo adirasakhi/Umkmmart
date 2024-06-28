@@ -53,9 +53,9 @@
 <div class="container-fluid py-3">
     <div class="container py-3">
         <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-5" style="margin-top: 10px;">Cara berbelanja</h1>
+            <h1 class="display-5" style="margin-top: 10px;">Cara Berbelanja</h1>
             <p>Bagaimana cara belanja di UMKMart.id simak ilustrasi berikut</p>
-            <img src="{{ asset('LandingPage/img/how-to-shop.png') }}" style="width: 500px; height: 350px;">
+            <img src="{{ asset('LandingPage/img/how-to-shop.png') }}" style="width: 800px; height: 400px;">
 
         </div>
     </div>
@@ -97,7 +97,7 @@
 <div class="container-fluid py-5" id="aboutus">
     <div class="container py-5">
         <div class="text-center mx-auto mb-9" style="max-width: 700px;">
-            <h1 class="display-5" style="margin-top: 50px;">About Us</h1>
+            <h1 class="display-5" style="margin-top: 50px;">Tentang Kami</h1>
             <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
         </div>
     </div>

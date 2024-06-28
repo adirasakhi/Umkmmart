@@ -56,7 +56,7 @@
                         </nav>
                         <div class="tab-content mb-5">
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                <p style="text-align: justify">{{ $product->description }} </p>
+                                <p style="text-align: justify">{!! $product->description !!} </p>
                                 <div class="px-2">
 
                                 </div>

@@ -12,13 +12,13 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="ms-auto d-flex align-items-center">
                     <div class="navbar-nav" style="font-weight: bold; color: black;">
-                        <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
+                        <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
                         <a href="/katalog"
-                            class="nav-item nav-link {{ Request::is('katalog') ? 'active' : '' }}">Shop</a>
-                        <a href="#aboutus"
-                            class="nav-item nav-link {{ Request::is('aboutus') ? 'active' : '' }}">About Us</a>
+                            class="nav-item nav-link {{ Request::is('katalog') ? 'active' : '' }}">Belanja</a>
+                        <a href="/#aboutus"
+                            class="nav-item nav-link {{ Request::is('aboutus') ? 'active' : '' }}">Tentang Kami</a>
                         <a href="#contact"
-                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>
+                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Kotak</a>
 
                         <a href="/login" class="nav-item nav-link d-xl-none">Masuk</a>
                         <a href="/login" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">

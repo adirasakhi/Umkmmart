@@ -42,8 +42,7 @@
                             <textarea name="address" class="form-control" id="address" placeholder="Alamat" required>{{ $user->address }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="phone" class="control-label">Nomor Telepon <span
-                                    class="text-danger">*</span></label>
+                            <label for="phone" class="control-label">Nomor Telepon <span class="text-danger">*</span></label>
                             <input type="text" name="phone" class="form-control" placeholder="No. Telepon" required
                                 value="{{ $user->phone }}">
                         </div>
@@ -52,29 +51,39 @@
                             <input type="file" name="photo" class="form-control" placeholder="Foto Profile"
                                 value="">
                         </div>
+
+                        @php
+                            $social = $sosmed->first() ?? (object)[
+                                'facebook' => '',
+                                'whatsapp' => '',
+                                'tiktok' => '',
+                                'instagram' => ''
+                            ];
+                        @endphp
+
                         <div class="form-group">
                             <label for="facebook" class="control-label">Facebook</label>
                             <input type="text" name="facebook" class="form-control" placeholder="Facebook"
-                                value="{{ $sosmed->first()->facebook ?? '' }}">
+                                value="{{ $social->facebook }}">
                         </div>
                         <div class="form-group">
                             <label for="whatsapp" class="control-label">WhatsApp</label>
                             <div class="input-group">
                                 <span class="input-group-text">+62</span>
                                 <input type="tel" name="whatsapp" placeholder="WhatsApp"
-                                    value="{{ $sosmed->first()->whatsapp ? (substr($sosmed->first()->whatsapp, 0, 1) === '0' ? '62' . substr($sosmed->first()->whatsapp, 1) : $sosmed->first()->whatsapp) : '' }}"
+                                    value="{{ $social->whatsapp ? (substr($social->whatsapp, 0, 1) === '0' ? '62' . substr($social->whatsapp, 1) : $social->whatsapp) : '' }}"
                                     pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tiktok" class="control-label">Tiktok</label>
                             <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
-                                value="{{ $sosmed->first()->tiktok ?? '' }}">
+                                value="{{ $social->tiktok }}">
                         </div>
                         <div class="form-group">
                             <label for="instagram" class="control-label">Instagram</label>
                             <input type="text" name="instagram" class="form-control" placeholder="Instagram"
-                                value="{{ $sosmed->first()->instagram ?? '' }}">
+                                value="{{ $social->instagram }}">
                         </div>
                         <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span>
                             Save</button>
@@ -93,14 +102,6 @@
                             <div class="section-header">
                                 <h1>Profile</h1>
                             </div>
-                            <div class="text-center">
-                                @if ($user->photo != null)
-                                <img src="{{ asset ('storage/'. $user->photo) }}" class="img-fluid img-thumbnail" width="100">
-                                @else
-                                <img src="{{ asset('assets/img/avatar/avatar-1.png') }}"width="100" class="rounded-circle">
-                                @endif
-
-                            </div>
                             @if ($user->photo != null)
                                 <div class="text-center">
                                     <img src="{{ asset('storage/' . $user->photo) }}" width="100"
@@ -114,14 +115,15 @@
                             @endif
 
                             <div class="text-center mt-3">
-
-                                <span class="bg-secondary p-1 px-4 rounded text-white">                                    @if ($user->role_id == 1)
+                                <span class="bg-secondary p-1 px-4 rounded text-white">
+                                    @if ($user->role_id == 1)
                                     Admin
                                 @elseif ($user->role_id == 2)
                                     penjual
                                 @else
                                     Pengguna
-                                @endif</span>
+                                @endif
+                                </span>
                                 <h5 class="mt-2 mb-0">{{ $user->name }}</h5>
                                 <p class="mt-2 mb-0">{{ $user->address }}</p>
                                 @if($user->role_id ==2)
@@ -130,7 +132,6 @@
                                         @if ($val->facebook != null)
                                         <a href="https://facebook.com/{{ $val->facebook }}"><span class="badge bg-primary text-white"><i
                                                     class="bi bi-facebook text-white"></i> Facebook</span></a>
-
                                         @endif
                                         @if ($val->whatsapp != null)
                                             <a href="https://api.whatsapp.com/send/?phone={{ $val->whatsapp }}"><span
@@ -143,7 +144,7 @@
                                                 <i class="bi bi-tiktok text-white"></i> TikTok
                                             </span>
                                         </a>
-                                    @endif
+                                        @endif
                                         @if ($val->instagram != null)
                                         <a href="https://instagram.com/{{ $val->instagram }}"><span class="badge bg-danger text-white"><i
                                                     class="bi bi-instagram text-white"></i> Instagram</span></a>

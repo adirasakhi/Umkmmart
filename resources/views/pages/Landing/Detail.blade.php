@@ -5,54 +5,69 @@
     <div class="container-fluid py-5 mt-5">
         <div class="container py-5">
             <div class="row g-4 mb-5">
-                <div class="col-lg-8 col-xl-9">
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <div class="border rounded">
-                                <a href="#">
-                                    <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
-                                        alt="Image" style="height: 300px; width:100%; object-fit:cover;">
-                                </a>
-                            </div>
+                <div class="col-lg-4">
+                    <div class="main-image-container border rounded mb-3">
+                        <a href="#">
+                            <img src="{{ asset('storage2/dodol-sirsak.jpg') }}" class="img-fluid rounded" alt="Image"
+                                id="expandedImg">
+                        </a>
+                    </div>
+                    <div class="scrollable-row">
+                        <div class="col">
+                            <img src="{{ asset('storage2/madu.jpg') }}" class="img-fluid rounded imgClick" alt="Image">
                         </div>
-                        <div class="col-lg-6">
-                            <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
-                            <p class="mb-1">{{ $product->category->category }}</p>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#myModalSeller">
-                                <p class="mb-5"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
-                            </a>
-                            <h5 class="fw-bold mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</h5>
-                            <div class="input-group quantity mb-3" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" id="productQuantity"
-                                    class="form-control form-control-sm text-center border-0" value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <a href="#" id="contactSellerBtn" class="btn-custom">
-                                <i class="fa fa-phone me-2"></i> Hubungi Penjual
-                            </a>
+                        <div class="col">
+                            <img src="{{ asset('storage2/nangka.jpg') }}" class="img-fluid rounded imgClick" alt="Image">
                         </div>
-                        <div class="col-lg-12">
-                            <nav>
-                                <div class="nav nav-tabs mb-3">
-                                    <button class="nav-link active border-white border-bottom-0" type="button"
-                                        role="tab" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
-                                        aria-controls="nav-about" aria-selected="true">Description</button>
-                                </div>
-                            </nav>
-                            <div class="tab-content mb-5">
-                                <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                    <p style="text-align: justify">{!! $product->description !!}</p>
-                                </div>
-                            </div>
+                        <div class="col">
+                            <img src="{{ asset('storage2/sapu-lidi.jpg') }}" class="img-fluid rounded imgClick"
+                                alt="Image">
+                        </div>
+                        <div class="col">
+                            <img src="{{ asset('storage2/dodol-sirsak.jpg') }}" class="img-fluid rounded imgClick"
+                                alt="Image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
+                    <p class="mb-1">{{ $product->category->category }}</p>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#myModalSeller">
+                        <p class="mb-5"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
+                    </a>
+                    <h5 class="fw-bold mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</h5>
+                    <div class="input-group quantity mb-3" style="width: 100px;">
+                        <div class="input-group-btn">
+                            <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <input type="text" id="productQuantity" class="form-control form-control-sm text-center border-0"
+                            value="1">
+                        <div class="input-group-btn">
+                            <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <a href="#" id="contactSellerBtn" class="btn-custom">
+                        <i class="fa fa-phone me-2"></i> Hubungi Penjual
+                    </a>
+                </div>
+                <div class="col-lg-4 border rounded">
+                    <!-- Kolom kosong -->
+                </div>
+                <div class="col-lg-12 mt-4">
+                    <nav>
+                        <div class="nav nav-tabs mb-3">
+                            <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
+                                id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
+                                aria-controls="nav-about" aria-selected="true">Description</button>
+                        </div>
+                    </nav>
+                    <div class="tab-content mb-5">
+                        <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                            <p style="text-align: justify">{!! $product->description !!}</p>
                         </div>
                     </div>
                 </div>
@@ -111,7 +126,8 @@
                                 @if ($product->seller->social->instagram)
                                     <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
                                         style="display: inline-block; margin-right: 10px;">
-                                        <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                        <span class="badge bg-danger text-white"
+                                            style="padding: 10px; border-radius: 5px;">
                                             <i class="bi bi-instagram text-white"></i> Instagram
                                         </span>
                                     </a>
@@ -153,5 +169,18 @@ Link produk: ${location.href}`;
             var whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const expandedImg = document.getElementById('expandedImg');
+            const imgClick = document.querySelectorAll('.imgClick');
+
+            imgClick.forEach(function(element) {
+                element.addEventListener('click', function() {
+                    expandedImg.src = this.src;
+                });
+            });
+        })
     </script>
 @endsection

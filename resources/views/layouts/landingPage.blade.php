@@ -126,6 +126,40 @@
             border-color: black;
         }
 
+        .scrollable-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .main-image-container img {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .scrollable-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+            gap: 10px;
+        }
+
+        .scrollable-row .col {
+            flex: 0 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .scrollable-row .col img {
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
     </style>
 </head>
 

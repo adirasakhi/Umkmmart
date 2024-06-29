@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KatalogController;
@@ -68,6 +69,14 @@ Route::middleware('auth', 'role')->group(function () {
     Route::post('/products/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // banners Routes
+    Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
+    Route::post('/banner/store', [BannerController::class, "store"])->name('banner.store');
+    Route::post('/banner/edit', [BannerController::class, 'edit'])->name('banner.edit');
+    Route::post('/banner/update/{id}', [BannerController::class, 'update'])->name('banner.update');
+    Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
+
 
     // Sosmed Routes
     // Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductClick;
@@ -171,6 +172,8 @@ class KatalogController extends Controller
         }
         public function getPopularProduct()
         {
+            $bannerSlide = Banner::where('type', 'slideshow')->get();
+            $bannerHead = Banner::where('type', 'head')->first();
             $user = User::all();
             $popularProduct = Product::select(
                 'product.id',
@@ -196,6 +199,6 @@ class KatalogController extends Controller
             ->get();
 
 
-            return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
+            return view('pages.Landing.index', ['popularProduct' => $popularProduct, 'slide'=> $bannerSlide, 'bannerHead'=> $bannerHead]);
         }
-    }
+}

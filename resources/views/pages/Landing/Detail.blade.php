@@ -1,11 +1,5 @@
 @extends('layouts.landingPage')
 @section('content')
-    <!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop Detail</h1>
-    </div>
-    <!-- Single Page Header End -->
-
 
     <!-- Single Product Start -->
     <div class="container-fluid py-5 mt-5">
@@ -18,7 +12,6 @@
                                 <a href="#">
                                     <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded"
                                         alt="Image" style="height: 300px; width:100%; object-fit:cover;">
-
                                 </a>
                             </div>
                         </div>
@@ -57,7 +50,7 @@
                             </nav>
                             <div class="tab-content mb-5">
                                 <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                    <p style="text-align: justify">{{ strip_tags($product->description) }}</p>
+                                    <p style="text-align: justify">{!! $product->description !!}</p>
                                 </div>
                             </div>
                         </div>

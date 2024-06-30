@@ -56,6 +56,11 @@
                     <i class="fas fa-th-large"></i><span>Banner</span>
                 </a>
             </li>
+            <li class="{{ request()->is('about') ? 'active' : '' }}">
+                <a href="/about" class="nav-link">
+                    <i class="fas fa-th-large"></i><span>Informasi</span>
+                </a>
+            </li>
         </ul>
 
     </aside>

@@ -170,7 +170,7 @@ class KatalogController extends Controller
 
             return view('pages.Landing.shop', compact('products', 'categories'));
         }
-        public function getPopularProduct()
+        /*public function getPopularProduct()
         {
             $bannerSlide = Banner::where('type', 'slideshow')->get();
             $bannerHead = Banner::where('type', 'head')->first();
@@ -200,5 +200,5 @@ class KatalogController extends Controller
 
 
             return view('pages.Landing.index', ['popularProduct' => $popularProduct, 'slide'=> $bannerSlide, 'bannerHead'=> $bannerHead]);
-        }
+        }*/
 }

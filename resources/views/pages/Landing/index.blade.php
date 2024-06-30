@@ -2,7 +2,8 @@
 
 @section('content')
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header" style="background-image: url('{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}'); background-size: cover; background-position: center;">
+<div class="container-fluid py-5 mb-5 hero-header" style="background-image: url('{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}'); background-size: cover; background-position: center; position: relative;">
+    <div class="overlay"></div>
     <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
@@ -53,8 +54,8 @@
             <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
         </div>
         <div class="row g-4">
-         @foreach ($popularProduct as $product)
-         <div class="col-lg-6 col-xl-4">
+           @foreach ($popularProduct as $product)
+           <div class="col-lg-6 col-xl-4">
             <div class="p-4 rounded bg-light">
                 <div class="row align-items-center">
                     <div class="col-6">
@@ -90,10 +91,21 @@
 {{-- End About Us --}}
 {{-- About Us --}}
 <div class="container-fluid py-5" id="aboutus">
-    <div class="container py-5">
-        <div class="text-center mx-auto mb-9" style="max-width: 700px;">
-            <h1 class="display-5" style="margin-top: 50px;">Tentang Kami</h1>
-            <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
+    <div class="text-center mx-auto mb-9" style="max-width: 700px;">
+        <h1 class="display-5" style="margin-top: 50px;">Tentang Kami</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            @if ($about)
+            <div class="text-center">
+                @if ($about->image)
+                <img src="{{ asset('storage/' . $about->image) }}" class="img-fluid mb-3" alt="About Image" width="200px" height="200px">
+                @endif
+                <p>{!! $about->content !!}</p>
+            </div>
+            @else
+            <p>Data tentang kami belum tersedia.</p>
+            @endif
         </div>
     </div>
 </div>

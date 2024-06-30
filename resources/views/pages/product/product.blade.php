@@ -91,7 +91,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $product->name }}</td>
-                                                    <td>{{ $product->price }}</td>
+                                                    <td>Rp{{ number_format($product->price, 0, ',', '.') }}</td>
                                                     <td>
                                                         @php
                                                             $maxWords = 15;
@@ -120,20 +120,19 @@
                                                         <a href="{{ asset('storage/' . $product->image) }}">
                                                             <img src="{{ asset('storage/' . $product->image) }}"
                                                                 alt="product_image" class="img-fluid img-thumbnail"
-                                                                width="50">
+                                                                width="200" style="object-fit: cover">
                                                         </a>
                                                     </td>
                                                     <td>{{ $product->category->category }}</td>
                                                     <td>{{ $product->seller->name }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
-                                                            <button class="btn btn-icon btn-warning edit mx-2"
-                                                                data-id="{{ $product->id }}"><i
-                                                                    class="far fa-edit"></i></button>
-                                                            <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                                data-id="{{ $product->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#myModalDelete"><i
-                                                                    class="fas fa-trash"></i></button>
+
+                                                            @if (Auth::user()->role_id == 2 )
+                                                            <button class="btn btn-icon btn-warning edit mx-2" data-id="{{ $product->id }}"><i class="far fa-edit"></i></button>
+
+                                                            @endif
+                                                            <button class="btn btn-icon btn-danger delete-btn mx-2" data-id="{{ $product->id }}" data-bs-toggle="modal" data-bs-target="#myModalDelete"><i class="fas fa-trash"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -321,8 +320,15 @@
         });
 
         function formatNumber(input) {
-            var value = input.value.replace(/[^0-9]/g, '');
+            var value = input.value.replace(/\./g, '');
+
+            // Remove non-numeric characters
+            value = value.replace(/[^0-9]/g, '');
+
+            // Format the value with dots for thousands separator
             var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Update the input value with the formatted value
             input.value = formattedValue;
         }
 

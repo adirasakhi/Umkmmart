@@ -3,19 +3,19 @@
 @section('content')
 
     <!-- Single Page Header start -->
-    
+
     <!-- Single Page Header End -->
 
     <!-- Fruits Shop Start-->
     <div class="container-fluid fruite py-4 custom-container">
         <div class="container py-4 custom-container">
-            <div class="row g-4 align-items-start"> <!-- Penyesuaian pada align-items-start untuk membuat sejajar -->
+            <div class="row g-4 align-items-start">
                 <div class="col-lg-12">
                     <div class="row g-4 justify-content-center">
                         <div class="col-10 col-md-8">
                             <div class="form-group w-100 mx-auto d-flex mb-1">
                                 <form action="{{ route('katalog.search') }}" class="w-100 d-flex align-items-stretch">
-                                    <div class="position-relative flex-grow-1" style=" margin-top:100px">
+                                    <div class="position-relative flex-grow-1" style="margin-top:100px">
                                         <input type="search" class="form-control p-3 pe-5" name="keywords"
                                             placeholder="Cari Produk UMKM ..." aria-describedby="search-icon-1"
                                             value="{{ request('keywords') }}" style="border-radius: 4px;">
@@ -47,14 +47,15 @@
                                             <h6 style="margin-top: 5px; font-weight: bold;">Filter</h6>
                                         </div>
                                         <div class="card-body">
-
-                                            <form action="{{ route('katalog.filter') }}" method="GET">
+                                            <form action="{{ route('katalog.filter') }}" method="GET"
+                                                onsubmit="removeFormatBeforeSubmit()">
                                                 <h6>
                                                     <center>Kategori</center>
                                                 </h6>
                                                 @foreach ($categories as $category)
                                                     <div class="d-flex justify-content-start fruite-name my-2">
-                                                        <input type="checkbox" name="id" id="category_id"
+                                                        <input type="checkbox" name="id"
+                                                            id="category_id_{{ $category->id }}"
                                                             class="custom-checkbox my-1" value="{{ $category->id }}"
                                                             @if (request('id') == $category->id) checked @endif>
                                                         <label class="ms-1">{{ $category->category }}</label>
@@ -67,8 +68,7 @@
                                                 <div class="my-2 justify-content-center align-items-center">
                                                     <div class="input-group my-2">
                                                         <div class="input-group-prepend">
-                                                            <div class="input-group-text" style="border-radius: 4px">
-                                                                Rp
+                                                            <div class="input-group-text" style="border-radius: 4px">Rp
                                                             </div>
                                                         </div>
                                                         <input type="text" placeholder="Minimum"
@@ -78,8 +78,7 @@
                                                     </div>
                                                     <div class="input-group my-2">
                                                         <div class="input-group-prepend">
-                                                            <div class="input-group-text" style="border-radius: 4px">
-                                                                Rp
+                                                            <div class="input-group-text" style="border-radius: 4px">Rp
                                                             </div>
                                                         </div>
                                                         <input type="text" placeholder="Maksimum"
@@ -107,17 +106,12 @@
                                                     </label>
                                                 </div>
                                                 <div class="my-2 d-flex justify-content-center align-items-center">
-                                                    <a href="{{ route('katalog.index') }}"><button type="button"
-                                                            style="color: white; border-radius: 4px"
-                                                            class="btn btn-primary me-1">
-                                                            Reset
-                                                        </button>
+                                                    <a href="{{ route('katalog.index') }}">
+                                                        <button type="button" style="color: white; border-radius: 4px"
+                                                            class="btn btn-primary me-1">Reset</button>
                                                     </a>
                                                     <button type="submit" style="color: white; border-radius: 4px"
-                                                        class="btn btn-primary me-1 my-2"
-                                                        onclick="removeFormatBeforeSubmit()">
-                                                        Filter
-                                                    </button>
+                                                        class="btn btn-primary me-1 my-2">Filter</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -139,7 +133,8 @@
                                             <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top"
                                                 style="height: 150px; object-fit:cover;border-radius: 4px" alt="...">
                                             <div class="card-body">
-                                                <h6 class="card-title" style="font-weight:medium">{{ $product->name }}</h6>
+                                                <h6 class="card-title" style="font-weight:medium">{{ $product->name }}
+                                                </h6>
                                                 <h6><strong>Rp{{ number_format($product->price, 0, ',', '.') }}</strong>
                                                 </h6>
                                                 <h6 class="small"><i class="fas fa-store"></i>
@@ -167,9 +162,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel" style="text-align: center;">
-                        Filter
-                    </h5>
+                    <h5 class="modal-title" id="filterModalLabel" style="text-align: center;">Filter</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -183,8 +176,8 @@
                         @foreach ($categories as $index => $category)
                             @if ($index < $initialCount)
                                 <div class="d-flex justify-content-start align-items-center fruite-name my-3">
-                                    <input type="checkbox" name="id" id="category_id{{ $category->id }}"
-                                        class="me-2" value="{{ $category->id }}"
+                                    <input type="checkbox" name="id" id="modal_category_id{{ $category->id }}"
+                                        class="custom-checkbox me-2" value="{{ $category->id }}"
                                         @if (request('id') == $category->id) checked @endif>
                                     <label style="text-align:center">{{ $category->category }}</label>
                                 </div>
@@ -197,8 +190,8 @@
                                 @if ($index >= $initialCount)
                                     <div
                                         class="d-flex justify-content-start align-items-center fruite-name my-3 additional-category">
-                                        <input type="checkbox" name="id" id="category_id{{ $category->id }}"
-                                            class="me-2" value="{{ $category->id }}"
+                                        <input type="checkbox" name="id" id="modal_category_id{{ $category->id }}"
+                                            class="custom-checkbox me-2" value="{{ $category->id }}"
                                             @if (request('id') == $category->id) checked @endif>
                                         <label style="text-align:center">{{ $category->category }}</label>
                                     </div>
@@ -217,13 +210,28 @@
                             <center>Harga</center>
                         </h6>
                         <div class="my-2 d-flex justify-content-center align-items-center">
-                            <input type="text" placeholder="Min" name="min" id="min"
-                                value="{{ request('min') }}" class="form-control input-sx me-1"
-                                onkeyup="formatNumber(this)">
-                            <input type="text" placeholder="Max" name="max" id="max"
-                                value="{{ request('max') }}" class="form-control input-sx me-1"
-                                onkeyup="formatNumber(this)">
-                            <input type="hidden" name="keywords" value="{{ request('keywords') }}" id="keywords">
+                            <div class="input-group my-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="border-radius: 4px">
+                                        Rp
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="Minimum" style="border-radius: 4px"
+                                    class="form-control input-sx me-2" name="min" id="min"
+                                    value="{{ request('max') }}">
+                            </div>
+                            <div class="input-group my-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="border-radius: 4px">
+                                        Rp
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="Maksimum" style="border-radius: 4px"
+                                    class="form-control input-sx" name="max" id="max"
+                                    value="{{ request('max') }}">
+                            </div>
+                            <input type="hidden" name="keywords" value="{{ request('keywords') }}"
+                                id="keywords">
                         </div>
                         <hr>
                         <h6>
@@ -231,22 +239,23 @@
                         </h6>
                         <div class="my-2 d-flex justify-content-center align-items-center">
                             <label for="" class="me-3">
-                                <input type="radio" name="sort" id="desc" value="desc" class="me-1"
+                                <input type="radio" name="sort" id="desc_modal" value="desc" class="me-1"
                                     {{ request('sort') == 'desc' ? 'checked' : '' }}>Tertinggi
                             </label>
                             <label for="" class="me-3">
-                                <input type="radio" name="sort" id="asc" value="asc" class="me-1"
+                                <input type="radio" name="sort" id="asc_modal" value="asc" class="me-1"
                                     {{ request('sort') == 'asc' ? 'checked' : '' }}>Terendah
                             </label>
                         </div>
                         <div class="my-2 d-flex justify-content-center align-items-center">
-                            <a href="{{ route('katalog.index') }}"><button type="button" style="color: white"
+                            <a href="{{ route('katalog.index') }}">
+                                <button type="button" style="color: white; border-radius: 4px"
                                     class="btn btn-primary me-1">
                                     Reset
                                 </button>
                             </a>
-                            <button type="submit" style="color: white" class="btn btn-primary me-1 my-2"
-                                onclick="removeFormatBeforeSubmit()">
+                            <button type="submit" style="color: white; border-radius: 4px"
+                                class="btn btn-primary me-1 my-2">
                                 Filter
                             </button>
                         </div>

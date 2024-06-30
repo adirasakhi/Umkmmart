@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductClick;
+use App\Models\Category;
 use App\Models\SocialMedia;
-use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -70,9 +70,10 @@ class KatalogController extends Controller
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
         }
+
+        /*product click*/
         $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
 
-        // Cari klik yang sudah ada dari perangkat yang sama pada hari yang sama
         $existingClick = ProductClick::where('product_id', $id)
             ->where('device_id', $deviceId)
             ->whereDate('clicked_at', Carbon::today())
@@ -90,6 +91,7 @@ class KatalogController extends Controller
                 'click_count' => 1,
             ]);
         }
+        /*end product click*/
 
         return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
     }
@@ -128,6 +130,13 @@ class KatalogController extends Controller
                 $query->orderBy('price', $sort);
 
 
+        if (isset($keywords) && ($keywords != null)) {
+            $keywordArray = explode(' ', $keywords);
+            foreach ($keywordArray as $keyword) {
+                $query = $query->Where('name', 'like', '%' . $keyword . '%');
+            }
+        }
+
                 if (!in_array($sort, ['asc', 'desc'])) {
                     $sort = 'asc';
                 }
@@ -140,6 +149,7 @@ class KatalogController extends Controller
             }
         }
     }
+
     public function search(Request $request)
     {
         $keywords = $request->input('keywords');

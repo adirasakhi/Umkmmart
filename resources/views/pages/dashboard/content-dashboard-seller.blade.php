@@ -17,7 +17,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Products</h4>
+                                <h4>Total Produk</h4>
                             </div>
                             <div class="card-body">
                                 {{ $productCount }}
@@ -32,7 +32,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Clicks</h4>
+                                <h4>Total Klik</h4>
                             </div>
                             <div class="card-body">
                                 {{ $totalClicks }}
@@ -47,7 +47,7 @@
                 <div class="col-lg-12">
                     <div class="card" style="height: 400px;">
                         <div class="card-header">
-                            <h4>Clicks Per Product</h4>
+                            <h4>Klik Per Produk</h4>
                         </div>
                         <div class="card-body" style="height: 90%;">
                             <canvas id="clicksPerProductChart" style="height: 100%;"></canvas>

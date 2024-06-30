@@ -57,7 +57,8 @@ Route::middleware('auth', 'role')->group(function () {
     Route::post('/users/showInactive', [UserController::class, 'showInactive'])->name('showInactive');
     Route::post('/users/showReject', [UserController::class, 'showRejected'])->name('showRejected');
 
-    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/update-status/{id}', [UserController::class, 'updateStatus'])->name('users.update.status');
+    Route::post('/users/update-user/{id}', [UserController::class, 'updateUser'])->name('users.update.user');
     Route::post('/users/action-reject/{id}', [UserController::class, 'actionReject'])->name('users.action.reject');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');

@@ -88,6 +88,7 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required|integer',
         ]);
+        $price = str_replace('.', '', $request->post('price'));
 
         $product = Product::find($id);
         $price = str_replace('.', '', $request->post('price'));
@@ -95,7 +96,6 @@ class ProductController extends Controller
             $price = str_replace('.', '', $request->post('price'));
             $dataToUpdate = [
                 'name' => $validatedData['name'],
-                'price' => $price,
                 'price' => $price,
                 'description' => $validatedData['description'],
                 'category_id' => $validatedData['category_id'],

@@ -123,18 +123,31 @@ class KatalogController extends Controller
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
                 $query = $query->Where('name', 'like', '%' . $keyword . '%');
+
+                if (!in_array($sort, ['asc', 'desc'])) {
+                    $sort = 'asc';
+                }
+                $query->orderBy('price', $sort);
+
+
+        if (isset($keywords) && ($keywords != null)) {
+            $keywordArray = explode(' ', $keywords);
+            foreach ($keywordArray as $keyword) {
+                $query = $query->Where('name', 'like', '%' . $keyword . '%');
             }
         }
 
-        if (!in_array($sort, ['asc', 'desc'])) {
-            $sort = 'asc';
+                if (!in_array($sort, ['asc', 'desc'])) {
+                    $sort = 'asc';
+                }
+                $query->orderBy('price', $sort);
+
+                $products = $query->paginate(12);
+                $categories = Category::withCount('products')->get();
+
+                return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
+            }
         }
-        $query->orderBy('price', $sort);
-
-        $products = $query->paginate(12);
-        $categories = Category::withCount('products')->get();
-
-        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
     }
 
     public function search(Request $request)

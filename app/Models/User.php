@@ -29,10 +29,7 @@ class User extends Authenticatable
         'role_id',
     ];
 
-    public function social()
-    {
-        return $this->hasOne(SocialMedia::class);
-    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -58,7 +55,7 @@ class User extends Authenticatable
     }
     public function socialMedia()
     {
-        return $this->hasMany(SocialMedia::class);
+        return $this->hasOne(SocialMedia::class);
     }
     public function role()
     {

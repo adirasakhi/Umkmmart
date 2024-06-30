@@ -31,6 +31,78 @@
             </div>
         </div>
     </div>
+    {{-- Modal for Editing User --}}
+    @foreach ($users as $user)
+        <div class="modal fade" id="myModalEdit_{{ $user->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabelEdit" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabelEdit">Edit Profil Pengguna</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('users.update.user', $user->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" name="name" class="form-control" id="name"
+                                    value="{{ $user->name }}" style="background-color:#e9ecef; cursor: default;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" id="email"
+                                    value="{{ $user->email }}" style="background-color:#e9ecef; cursor: default;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Alamat</label>
+                                <input type="text" name="address" class="form-control" id="address"
+                                    value="{{ $user->address }}" style="background-color:#e9ecef; cursor: default;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">No. Telepon</label>
+                                <input type="text" name="phone" class="form-control" id="phone"
+                                    value="{{ $user->phone }}" style="background-color:#e9ecef; cursor: default;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="photo" class="form-label">Foto</label>
+                                <img src="{{ asset('storage/' . $user->support_document) }}"
+                                    class="img-fluid rounded mb-2 img-thumbnail" alt="">
+                            </div>
+                            <div class="form-group">
+                                <label for="facebook" class="control-label">Facebook</label>
+                                <input type="text" name="facebook" class="form-control" placeholder="Facebook"
+                                    value="{{ $user->socialMedia->facebook ?? '' }}"
+                                    style="background-color: #e9ecef; cursor: default">
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsapp" class="control-label">WhatsApp</label>
+                                <input type="text" name="whatsapp" class="form-control" placeholder="WhatsApp"
+                                    value="{{ $user->socialMedia->whatsapp ?? '' }}"
+                                    style="background-color: #e9ecef; cursor: default">
+                            </div>
+                            <div class="form-group">
+                                <label for="tiktok" class="control-label">Tiktok</label>
+                                <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+                                    value="{{ $user->socialMedia->tiktok ?? '' }}"
+                                    style="background-color: #e9ecef; cursor: default">
+                            </div>
+                            <div class="form-group">
+                                <label for="instagram" class="control-label">Instagram</label>
+                                <input type="text" name="instagram" class="form-control" placeholder="Instagram"
+                                    value="{{ $user->socialMedia->instagram ?? '' }}"
+                                    style="background-color: #e9ecef; cursor: default">
+                            </div>
+                            <button type="submit" class="btn btn-primary col-12">Simpan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
     @foreach ($users as $user)
         <div class="modal fade" id="myModalDelete_{{ $user->id }}" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
@@ -102,15 +174,23 @@
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phone }}</td>
-                                                    <td><a href="{{ asset('storage/'. $user->support_document) }}">
-                                                        <img src="{{ asset('storage/'. $user->support_document) }}" alt="Dokumen Pendukung" class="img-fluid img-thumbnail" width="100">
-                                                    </a></td>
+                                                    <td><a href="{{ asset('storage/' . $user->support_document) }}">
+                                                            <img src="{{ asset('storage/' . $user->support_document) }}"
+                                                                alt="Dokumen Pendukung" class="img-fluid img-thumbnail"
+                                                                width="100">
+                                                        </a></td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <button class="btn btn-icon btn-primary edit"
                                                                 data-id="{{ $user->id }}"><i
                                                                     class="bi bi-eye-fill"></i></button>
-                                                            <button class="btn btn-icon btn-danger delete-btn mx-2"
+                                                            <div class="button">
+                                                                <button class="btn btn-warning mx-2"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#myModalEdit_{{ $user->id }}"><i
+                                                                        class="far fa-edit"></i></button>
+                                                            </div>
+                                                            <button class="btn btn-icon btn-danger delete-btn"
                                                                 data-id="{{ $user->id }}" data-bs-toggle="modal"
                                                                 data-bs-target="#myModalDelete_{{ $user->id }}"><i
                                                                     class="fas fa-trash"></i></button>

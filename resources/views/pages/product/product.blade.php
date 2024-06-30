@@ -127,6 +127,7 @@
                                                     <td>{{ $product->seller->name }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
+
                                                             @if (Auth::user()->role_id == 2 )
                                                             <button class="btn btn-icon btn-warning edit mx-2" data-id="{{ $product->id }}"><i class="far fa-edit"></i></button>
 

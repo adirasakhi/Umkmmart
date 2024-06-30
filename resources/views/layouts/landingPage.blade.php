@@ -160,6 +160,30 @@
             object-fit: cover;
             border-radius: 8px;
         }
+
+        .variant-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+        }
+        .variant-item {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+        .variant-item:hover {
+            background-color: #e2e2e2;
+            cursor: pointer;
+        }
+        .main-image-container img {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 

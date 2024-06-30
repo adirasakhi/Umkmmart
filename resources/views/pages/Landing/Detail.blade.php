@@ -8,34 +8,45 @@
                 <div class="col-lg-4">
                     <div class="main-image-container border rounded mb-3">
                         <a href="#">
-                            <img src="{{ asset('storage2/dodol-sirsak.jpg') }}" class="img-fluid rounded" alt="Image"
-                                id="expandedImg">
+                            <img src="{{ asset('storage/' . $variants->first()->image) }}" class="img-fluid rounded"
+                                alt="Image" id="expandedImg" style="object-fit: cover;">
                         </a>
                     </div>
                     <div class="scrollable-row">
-                        <div class="col">
-                            <img src="{{ asset('storage2/madu.jpg') }}" class="img-fluid rounded imgClick" alt="Image">
-                        </div>
-                        <div class="col">
-                            <img src="{{ asset('storage2/nangka.jpg') }}" class="img-fluid rounded imgClick" alt="Image">
-                        </div>
-                        <div class="col">
-                            <img src="{{ asset('storage2/sapu-lidi.jpg') }}" class="img-fluid rounded imgClick"
-                                alt="Image">
-                        </div>
-                        <div class="col">
-                            <img src="{{ asset('storage2/dodol-sirsak.jpg') }}" class="img-fluid rounded imgClick"
-                                alt="Image">
-                        </div>
+                        @foreach ($variants as $variant)
+                            <div class="col">
+                                <img src="{{ asset('storage/' . $variant->image) }}" class="img-fluid rounded imgClick"
+                                    alt="Image" style="object-fit: cover;">
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
                     <p class="mb-1">{{ $product->category->category }}</p>
                     <a href="" data-bs-toggle="modal" data-bs-target="#myModalSeller">
-                        <p class="mb-5"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
+                        <p class="mb-2"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
                     </a>
-                    <h5 class="fw-bold mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</h5>
+                    <h3 class="fw-bold mb-3">Rp{{ number_format($product->variants->min('price'), 0, ',', '.') }}</h3>
+                    <div class="variant-container">
+                        @foreach ($variants as $variant)
+                            <div class="variant-item">{{ $variant->name }}</div>
+                        @endforeach
+                    </div>
+                    <nav>
+                        <div class="nav nav-tabs mb-3">
+                            <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
+                                id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
+                                aria-controls="nav-about" aria-selected="true">Description</button>
+                        </div>
+                    </nav>
+                    <div class="tab-content mb-5">
+                        <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                            <p style="text-align: justify">{!! $product->description !!}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 border rounded">
                     <div class="input-group quantity mb-3" style="width: 100px;">
                         <div class="input-group-btn">
                             <button class="btn btn-sm btn-minus rounded-circle bg-light border">
@@ -54,10 +65,7 @@
                         <i class="fa fa-phone me-2"></i> Hubungi Penjual
                     </a>
                 </div>
-                <div class="col-lg-4 border rounded">
-                    <!-- Kolom kosong -->
-                </div>
-                <div class="col-lg-12 mt-4">
+                {{-- <div class="col-lg-12 mt-4">
                     <nav>
                         <div class="nav nav-tabs mb-3">
                             <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
@@ -70,9 +78,9 @@
                             <p style="text-align: justify">{!! $product->description !!}</p>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
-            <h1 class="fw-bold mb-0">Related products</h1>
+            <h1 class="fw-bold mb-0">Produk Terkait</h1>
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($related_products as $related_product)

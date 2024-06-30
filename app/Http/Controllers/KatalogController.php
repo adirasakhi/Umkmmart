@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductClick;
 use App\Models\Category;
 use App\Models\SocialMedia;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,23 +45,33 @@ class KatalogController extends Controller
 
     public function detail($id)
     {
-        $product = Product::find($id);
+        // Temukan produk berdasarkan ID
+        $product = Product::with('variants', 'seller')->find($id);
+
+        // Redirect jika produk tidak ditemukan
+        if (!$product) {
+            return redirect()->route('katalog.index')->with('error', 'Product not found.');
+        }
+
+        // Ambil semua kategori
         $categories = Category::all();
-        $user = User::all();
-        // $items = User::withCount('products')->get();
+
+        // Ambil semua pengguna (mungkin Anda ingin filter ini lebih spesifik)
+        $users = User::all();
+
+        // Ambil semua media sosial
         $social_media = SocialMedia::all();
+
+        // Ambil produk terkait berdasarkan kategori yang sama, kecuali produk saat ini
         $related_products = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->limit(3)
             ->get();
 
-        if (!$product) {
-            return redirect()->route('katalog.index')->with('error', 'Product not found.');
-        }
-        
-        /*product click*/
-        $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
+        // Mengidentifikasi perangkat menggunakan IP address atau metode lain
+        $deviceId = request()->ip();
 
+        // Cek jika sudah ada klik untuk produk ini hari ini dari perangkat ini
         $existingClick = ProductClick::where('product_id', $id)
             ->where('device_id', $deviceId)
             ->whereDate('clicked_at', Carbon::today())
@@ -78,10 +89,18 @@ class KatalogController extends Controller
                 'click_count' => 1,
             ]);
         }
-        /*end product click*/
 
-        return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
+        // Kembalikan view dengan data yang diperlukan
+        return view('pages.Landing.Detail', [
+            'product' => $product,
+            'categories' => $categories,
+            'users' => $users,
+            'social_media' => $social_media,
+            'related_products' => $related_products,
+            'variants' => $product->variants,
+        ]);
     }
+
 
     public function filter(Request $request)
     {

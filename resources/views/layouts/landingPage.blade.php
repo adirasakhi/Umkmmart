@@ -182,7 +182,28 @@
         }
         .main-image-container img {
             width: 100%;
-            height: auto;
+            height: 360px;
+        }
+        .nav-tabs .nav-link {
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .nav-tabs .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: black;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .scrollable-column {
+            max-height: 500px; /* Adjust this value as needed */
+            overflow-y: auto;
         }
     </style>
 </head>

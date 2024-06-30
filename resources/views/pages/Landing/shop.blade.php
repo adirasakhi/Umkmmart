@@ -125,14 +125,14 @@
                                 <div class="col-6 col-md-4 col-lg-4">
                                     <div class="card h-100" style="border-radius: 4px">
                                         <a href="{{ route('katalog.detail', ['id' => $product->id]) }}">
-                                            <img src="{{ asset('storage/' . $product->variant_image) }}"
+                                            <img src="{{ asset('storage/' . $product->min_variant_image) }}"
                                                 class="card-img-top"
-                                                style="height: 150px; object-fit:cover; border-radius: 4px"
-                                                alt="...">
+                                                style="height: 150px; object-fit: cover; border-radius: 4px;"
+                                                alt="Product Image">
                                             <div class="card-body">
-                                                <h6 class="card-title" style="font-weight:medium">{{ $product->name }}
+                                                <h6 class="card-title" style="font-weight: medium">{{ $product->name }}
                                                 </h6>
-                                                <h6><strong>Rp{{ number_format($product->min_variant_price, 0, ',', '.') }}</strong>
+                                                <h6><strong>Rp{{ number_format($product->min_price, 0, ',', '.') }}</strong>
                                                 </h6>
                                                 <h6 class="small"><i class="fas fa-store"></i>
                                                     {{ $product->seller_name }}</h6>

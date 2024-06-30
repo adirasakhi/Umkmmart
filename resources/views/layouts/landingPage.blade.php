@@ -167,6 +167,7 @@
             gap: 10px;
             padding: 10px 0;
         }
+
         .variant-item {
             flex: 0 0 auto;
             white-space: nowrap;
@@ -176,14 +177,17 @@
             text-align: center;
             background-color: #f8f8f8;
         }
+
         .variant-item:hover {
             background-color: #e2e2e2;
             cursor: pointer;
         }
+
         .main-image-container img {
             width: 100%;
             height: 360px;
         }
+
         .nav-tabs .nav-link {
             text-align: center;
             position: relative;
@@ -201,9 +205,25 @@
             bottom: 0;
             left: 0;
         }
+
         .scrollable-column {
-            max-height: 500px; /* Adjust this value as needed */
+            max-height: 500px;
+            /* Adjust this value as needed */
             overflow-y: auto;
+        }
+
+        h6,
+        h2#orderVariantPrice {
+            margin-bottom: 0;
+            /* Menghapus margin bawah dari elemen h6 */
+            margin-top: 0;
+            /* Menghapus margin atas dari elemen h2 */
+        }
+
+        .strike-through {
+            text-decoration: line-through;
+            opacity: 0.6;
+            font-weight: lighter;
         }
     </style>
 </head>

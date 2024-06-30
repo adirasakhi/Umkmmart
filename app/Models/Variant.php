@@ -22,4 +22,8 @@ class Variant extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function getDiscountedPriceAttribute()
+    {
+        return $this->price - ($this->price * ($this->discount / 100));
+    }
 }

@@ -155,7 +155,8 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data"
+                        onsubmit="return validateForm();">
                         @csrf
                         <div class="form-group">
                             <label for="name" class="control-label">Nama Produk</label>
@@ -238,13 +239,13 @@
                     </div>
                     <div class="modal-body">
                         <!-- Tampilkan daftar varian -->
-                        <table class="table table-striped">
+                        <table class="table table-striped border border-color-black">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Varian</th>
                                     <th>Harga</th>
-                                    <th>Diskon</th>
+                                    <th>Diskon(%)</th>
                                     <th>Gambar</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -257,8 +258,8 @@
                                         <td>{{ $variant->name }}</td>
                                         <td>{{ $variant->price }}</td>
                                         <td>{{ $variant->discount }}</td>
-                                        <td><img src="{{ Storage::url($variant->image) }}" alt="Image"
-                                                width="50" style="object-fit: cover;">
+                                        <td><img src="{{ Storage::url($variant->image) }}" alt="Image" width="50"
+                                                style="object-fit: cover;">
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -279,6 +280,9 @@
                             </tbody>
                         </table>
                         <!-- Form untuk menambah varian -->
+                        <h6 class="mt-3">
+                            <center>Tambah Varian</center>
+                        </h6>
                         <form action="{{ route('products.variants.store', $product->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
@@ -286,19 +290,28 @@
                                 <div class="variant">
                                     <div class="form-group">
                                         <label>Nama Varian</label>
-                                        <input type="text" name="variant_name[]" class="form-control" required>
+                                        <input type="text" name="variant_name[]" class="form-control"
+                                            placeholder="Misal : Warna/Ukuran/Rasa" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Harga Varian</label>
-                                        <input type="text" name="variant_price[]" class="form-control" required>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style="border-radius: 4px">
+                                                    Rp
+                                                </div>
+                                            </div>
+                                            <input type="text" name="variant_price[]" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Diskon Varian (%)</label>
+                                        <input type="text" name="variant_discount[]" class="form-control"
+                                            placeholder="Misal : 10 (boleh dikosongkan bila tidak ada diskon)">
                                     </div>
                                     <div class="form-group">
                                         <label>Gambar Varian</label>
                                         <input type="file" name="variant_image[]" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Diskon Varian</label>
-                                        <input type="text" name="variant_discount[]" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -342,8 +355,9 @@
                                         value="{{ $variant->price }}" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Diskon Varian</label>
+                                    <label>Diskon Varian (%)</label>
                                     <input type="text" name="variant_discount" class="form-control"
+                                        placeholder="(boleh dikosongkan bila tidak ada diskon)"
                                         value="{{ $variant->discount }}">
                                 </div>
                                 <div class="form-group">
@@ -475,6 +489,51 @@
                 var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 input.value = formattedValue;
             }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Cek jika ada pesan sukses dan produk baru dibuat
+            @if (session('product_id'))
+                // Buka modal tambah varian
+                var productId = {{ session('product_id') }};
+                $('#varModal' + productId).modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).modal('show');
+            @endif
+
+            // Cegah penutupan modal jika belum ada varian
+            $('[id^=varModal]').on('hide.bs.modal', function(e) {
+                var variantsExist = $(this).find('tbody tr').length > 0; // Cek jika ada varian
+                if (!variantsExist) {
+                    e.preventDefault();
+                    alert('Anda harus menambah minimal satu varian untuk dapat menampilkan produk.');
+                }
+            });
+
+            // Event listener ketika modal tambah produk ditutup
+            $('#myModalCreate').on('hidden.bs.modal', function() {
+                var productId = {{ session('product_id') ?? 'null' }};
+                if (productId) {
+                    $('#varModal' + productId).modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).modal('show');
+                }
+            });
+
+            // Cegah penutupan modal ketika diklik di luar area modal
+            $('[id^=varModal]').on('click', function(e) {
+                if ($(e.target).hasClass('modal')) {
+                    var variantsExist = $(this).find('tbody tr').length > 0;
+                    if (!variantsExist) {
+                        e.preventDefault();
+                        alert('Anda harus menambah minimal satu varian untuk dapat menampilkan produk.');
+                    }
+                }
+            });
         });
     </script>
 @endsection

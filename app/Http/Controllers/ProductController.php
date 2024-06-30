@@ -47,7 +47,11 @@ class ProductController extends Controller
             'seller_id' => $sellerId,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product berhasil ditambahkan');
+        // Simpan product_id di session
+    session()->flash('product_id', $product->id);
+
+    // Redirect ke halaman produk
+    return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
     public function storeVariant(Request $request, Product $product)

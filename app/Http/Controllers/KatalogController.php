@@ -92,6 +92,11 @@ class KatalogController extends Controller
             ]);
         }
 
+        // Menghitung harga setelah diskon
+        foreach ($product->variants as $variant) {
+            $variant->discounted_price = $variant->getDiscountedPriceAttribute();
+        }
+
         // Kembalikan view dengan data yang diperlukan
         return view('pages.Landing.Detail', [
             'product' => $product,

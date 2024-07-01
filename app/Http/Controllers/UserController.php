@@ -267,7 +267,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'address' => 'required|string|max:255',
             'phone' => 'required|string|regex:/[0-9]{11,13}$/',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'support_document' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // Validasi input media sosial
             'facebook' => 'nullable|string|max:255',
             'whatsapp' => 'nullable|string|max:255',
@@ -290,15 +290,15 @@ class UserController extends Controller
             ];
 
             // Update foto pengguna jika ada
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('support_document')) {
                 // Hapus foto lama
-                if ($user->photo) {
-                    Storage::disk('public')->delete($user->photo);
+                if ($user->support_document) {
+                    Storage::disk('public')->delete($user->support_document);
                 }
 
                 // Simpan foto baru
-                $photoPath = $request->file('photo')->store('photo_users', 'public');
-                $dataToUpdate['photo'] = $photoPath;
+                $photoPath = $request->file('support_document')->store('Document_users', 'public');
+                $dataToUpdate['support_document'] = $photoPath;
             }
 
             // Perbarui data pengguna

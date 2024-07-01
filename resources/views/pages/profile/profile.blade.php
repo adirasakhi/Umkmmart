@@ -42,7 +42,8 @@
                             <textarea name="address" class="form-control" id="address" placeholder="Alamat" required>{{ $user->address }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="phone" class="control-label">Nomor Telepon <span class="text-danger">*</span></label>
+                            <label for="phone" class="control-label">Nomor Telepon <span
+                                    class="text-danger">*</span></label>
                             <input type="text" name="phone" class="form-control" placeholder="No. Telepon" required
                                 value="{{ $user->phone }}">
                         </div>
@@ -61,7 +62,6 @@
                                     'tiktok' => '',
                                     'instagram' => '',
                                 ];
-
                         @endphp
 
                         <div class="form-group">
@@ -72,7 +72,6 @@
                         <div class="form-group">
                             <label for="whatsapp" class="control-label">WhatsApp</label>
                             <div class="input-group">
-                                <span class="input-group-text">+62</span>
                                 <input type="tel" name="whatsapp" placeholder="WhatsApp"
                                     value="{{ $social->whatsapp ? (substr($social->whatsapp, 0, 1) === '0' ? '62' . substr($social->whatsapp, 1) : $social->whatsapp) : '' }}"
                                     pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">
@@ -80,7 +79,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tiktok" class="control-label">Tiktok</label>
-                            <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+                            <input type="text" name="tiktok" class="form-control" placeholder="@ Akun Tiktok"
                                 value="{{ $social->tiktok }}">
                         </div>
                         <div class="form-group">

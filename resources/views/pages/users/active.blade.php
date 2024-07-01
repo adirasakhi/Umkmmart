@@ -67,9 +67,15 @@
                                     value="{{ $user->phone }}" style="background-color:#e9ecef; cursor: default;">
                             </div>
                             <div class="mb-3">
-                                <label for="photo" class="form-label">Foto</label>
+                                <label for="photo" class="form-label">Dokumen</label>
                                 <img src="{{ asset('storage/' . $user->support_document) }}"
                                     class="img-fluid rounded mb-2 img-thumbnail" alt="">
+                                <input type="file" name="support_document" id="support_document"
+                                    accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
+                                <label for="support_document" style="color: #404040">
+                                    Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
+                                    <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="facebook" class="control-label">Facebook</label>
@@ -290,7 +296,6 @@
                         <div class="form-group">
                             <label for="whatsapp" class="control-label">WhatsApp</label>
                             <div class="input-group">
-                                <span class="input-group-text">+62</span>
                                 <input type="tel" name="whatsapp" placeholder="WhatsApp"
                                     value="{{ old('whatsapp') ? (substr(old('whatsapp'), 0, 1) === '0' ? '62' . substr(old('whatsapp'), 1) : old('whatsapp')) : '' }}"
                                     pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">
@@ -298,7 +303,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tiktok" class="control-label">Tiktok</label>
-                            <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+                            <input type="text" name="tiktok" class="form-control" placeholder="@ Akun Tiktok"
                                 value="{{ old('tiktok') }}">
                         </div>
                         <div class="form-group">

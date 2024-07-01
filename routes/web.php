@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SocialmediaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomepageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,10 +20,10 @@ use Illuminate\Support\Facades\Route;
     return view('pages.Landing.index');
 });*/
 
-Route::get('/', [KatalogController::class, 'getPopularProduct']);
+Route::get('/', [HomepageController::class, 'index']);
 
 Route::middleware(['visitor'])->group(function () {
-    Route::get('/', [KatalogController::class, 'getPopularProduct']);
+    Route::get('/', [HomepageController::class, 'index']);
     Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
 });
 
@@ -57,7 +60,8 @@ Route::middleware('auth', 'role')->group(function () {
     Route::post('/users/showInactive', [UserController::class, 'showInactive'])->name('showInactive');
     Route::post('/users/showReject', [UserController::class, 'showRejected'])->name('showRejected');
 
-    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/update-status/{id}', [UserController::class, 'updateStatus'])->name('users.update.status');
+    Route::post('/users/update-user/{id}', [UserController::class, 'updateUser'])->name('users.update.user');
     Route::post('/users/action-reject/{id}', [UserController::class, 'actionReject'])->name('users.action.reject');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
@@ -72,6 +76,20 @@ Route::middleware('auth', 'role')->group(function () {
     Route::put('/products/variants/{variant}', [ProductController::class, 'updateVariant'])->name('products.variants.update');
     Route::delete('/products/variants/{variant}', [ProductController::class, 'deleteVariant'])->name('products.variants.delete');
 
+
+    // banners Routes
+    Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
+    Route::post('/banner/store', [BannerController::class, "store"])->name('banner.store');
+    Route::post('/banner/edit', [BannerController::class, 'edit'])->name('banner.edit');
+    Route::post('/banner/update/{id}', [BannerController::class, 'update'])->name('banner.update');
+    Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
+
+    // abouts 
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::post('/about/store', [AboutController::class, "store"])->name('about.store');
+    Route::post('/about/edit', [AboutController::class, 'edit'])->name('about.edit');
+    Route::post('/about/update/{id}', [AboutController::class, 'update'])->name('about.update');
+    Route::delete('/about/delete/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
 
     // Sosmed Routes
     // Route::get('/sosial-media', [SocialmediaController::class, "index"])->name('sosial-media');

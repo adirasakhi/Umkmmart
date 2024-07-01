@@ -235,6 +235,7 @@
 
             btnPlus.addEventListener('click', function() {
                 productQuantity.value = parseInt(productQuantity.value); // Increment quantity by 1
+
                 updateTotalPrice();
             });
 
@@ -242,6 +243,7 @@
                 if (parseInt(productQuantity.value) > 0) {
                     productQuantity.value = parseInt(productQuantity
                     .value); // Decrement quantity by 1, but not below 1
+
                     updateTotalPrice();
                 }
             });
@@ -250,8 +252,7 @@
                 const variantId = element.dataset.variantId;
                 const variantName = element.dataset.variantName;
                 const variantPrice = parseFloat(element.dataset.variantPrice.replaceAll('.', ''));
-                const variantDiscountedPrice = parseFloat(element.dataset.variantDiscountedPrice.replaceAll('.',
-                    ''));
+                const variantDiscountedPrice = parseFloat(element.dataset.variantDiscountedPrice.replaceAll('.', ''));
                 const variantImage = element.dataset.variantImage;
                 expandedImg.src = variantImage;
                 orderVariantImage.src = variantImage;
@@ -295,6 +296,7 @@
                     '')) : null;
                 var variantPrice = parseFloat(priceElements[priceElements.length - 1].replace(/[^\d]/g,
                 ''));
+
                 var totalPrice = variantPrice * quantity;
                 var sellerPhone = "{{ $product->seller->phone }}";
 
@@ -302,6 +304,7 @@
     Nama produk: ${productName}
     Varian: ${variantName}
     Harga produk: ${originalPrice ? `Rp${originalPrice.toLocaleString('id-ID')} (diskon menjadi: Rp${variantPrice.toLocaleString('id-ID')})` : `Rp${variantPrice.toLocaleString('id-ID')}`}
+
     Jumlah produk yang dibeli: ${quantity}
     Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
     Link produk: ${location.href}`;

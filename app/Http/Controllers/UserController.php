@@ -67,7 +67,7 @@ class UserController extends Controller
         }
     }
 
-    public function update($id)
+    public function updateStatus($id)
     {
 
         $user = User::find($id);
@@ -98,6 +98,7 @@ class UserController extends Controller
     public function active()
     {
         $users = User::where(['status' => 'active', 'role_id' => 2])->get();
+
         return view('pages.users.active', ['users' => $users]);
     }
 
@@ -252,6 +253,73 @@ class UserController extends Controller
             return redirect()->route('users.profile')->with('success', 'User berhasil diupdate');
         } else {
             return redirect()->route('users.profile')->with('error', 'User tidak ditemukan');
+        }
+    }
+    public function updateUser(Request $request, $id)
+    {
+
+        if ($request->has('whatsapp') && substr($request->whatsapp, 0, 1) === '0') {
+            $request->merge(['whatsapp' => '62' . substr($request->whatsapp, 1)]);
+        }
+        // Validasi input pengguna
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|regex:/[0-9]{11,13}$/',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Validasi input media sosial
+            'facebook' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'tiktok' => 'nullable|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+        ]);
+
+        // Temukan pengguna berdasarkan ID
+        $user = User::find($id);
+        if (substr($request->phone, 0, 1) === '0') {
+            $request->merge(['phone' => '62' . substr($request->phone, 1)]);
+        }
+        if ($user) {
+            // Update data pengguna
+            $dataToUpdate = [
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'address' => $validatedData['address'],
+                'phone' => $validatedData['phone'],
+            ];
+
+            // Update foto pengguna jika ada
+            if ($request->hasFile('photo')) {
+                // Hapus foto lama
+                if ($user->photo) {
+                    Storage::disk('public')->delete($user->photo);
+                }
+
+                // Simpan foto baru
+                $photoPath = $request->file('photo')->store('photo_users', 'public');
+                $dataToUpdate['photo'] = $photoPath;
+            }
+
+            // Perbarui data pengguna
+            $user->update($dataToUpdate);
+
+            // Update atau buat data media sosial
+            $sosmedData = [
+                'facebook' => $validatedData['facebook'],
+                'whatsapp' => $validatedData['whatsapp'],
+                'tiktok' => $validatedData['tiktok'],
+                'instagram' => $validatedData['instagram'],
+            ];
+
+            SocialMedia::updateOrCreate(
+                ['user_id' => $user->id],
+                $sosmedData
+            );
+
+            return redirect()->route('users.active')->with('success', 'User berhasil diupdate');
+        } else {
+            return redirect()->route('users.active')->with('error', 'User tidak ditemukan');
         }
     }
     public function store(Request $request)

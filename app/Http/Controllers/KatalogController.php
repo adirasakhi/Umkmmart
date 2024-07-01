@@ -81,7 +81,7 @@ class KatalogController extends Controller
             ->where('product.category_id', $product->category_id)
             ->where('product.id', '!=', $product->id)
             ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price')
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         // Mengidentifikasi perangkat menggunakan IP address atau metode lain

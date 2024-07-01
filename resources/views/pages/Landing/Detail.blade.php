@@ -1,11 +1,5 @@
 @extends('layouts.landingPage')
 @section('content')
-<!-- Single Page Header start -->
-<div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Shop Detail</h1>
-</div>
-<!-- Single Page Header End -->
-
 
     <!-- Single Product Start -->
     <div class="container-fluid py-5 mt-5">
@@ -126,23 +120,6 @@
                             <i class="fa fa-phone me-2"></i> Hubungi Penjual
                         </a>
                     </div>
-                    <div class="col-lg-12">
-                        <nav>
-                            <div class="nav nav-tabs mb-3">
-                                <button class="nav-link active border-white border-bottom-0" type="button"
-                                role="tab" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
-                                aria-controls="nav-about" aria-selected="true">Description</button>
-                            </div>
-                        </nav>
-                        <div class="tab-content mb-5">
-                            <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                <p style="text-align: justify">{{ $product->description }} </p>
-                                <div class="px-2">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <h1 class="fw-bold mb-0">Produk Terkait</h1>
@@ -167,7 +144,7 @@
     </div>
     <!-- Single Product End -->
 
-    {{-- Modal Info Toko --}}
+    <!-- Modal Info Toko -->
     <div class="modal fade" id="myModalSeller" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -188,34 +165,43 @@
                     <p><strong>Media Sosial</strong></p>
                     <div>
                         @if ($product->seller->social)
-                        @if ($product->seller->social->facebook)
-                        <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}"
-                            style="display: inline-block; margin-right: 10px;">
-                            <span class="badge bg-primary text-white"
-                            style="padding: 10px; border-radius: 5px;">
-                            <i class="bi bi-facebook text-white"></i> Facebook
-                        </span>
-                    </a>
-                    @endif
-                    @if ($product->seller->social->instagram)
-                    <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
-                        style="display: inline-block; margin-right: 10px;">
-                        <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
-                            <i class="bi bi-instagram text-white"></i> Instagram
-                        </span>
-                    </a>
-                    @endif
-                    @if ($product->seller->social->tiktok)
-                    <a href="https://www.tiktok.com/{{ $product->seller->social->tiktok }}"
-                        style="display: inline-block; margin-right: 10px;">
-                        <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
-                            <img src="{{asset('storage/logo-tiktok-svgrepo-com (1).svg')}}" style="width: 12px" alt=""> TikTok
-                        </span>
-                    </a>
-                    @endif
-                    @else
-                    <p>Tidak ada akun sosial media</p>
-                    @endif
+                            @if ($product->seller->social->facebook)
+                                <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-primary text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-facebook text-white"></i> Facebook
+                                    </span>
+                                </a>
+                            @endif
+                            @if ($product->seller->social->instagram)
+                                <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-instagram text-white"></i> Instagram
+                                    </span>
+                                </a>
+                            @endif
+                            @if ($product->seller->social->tiktok)
+                                <a href="https://www.tiktok.com/@{{ $product - > seller - > social - > tiktok }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-tiktok text-white"></i> TikTok
+                                    </span>
+                                </a>
+                            @endif
+                            @if ($product->seller->social->youtube)
+                                <a href="https://www.youtube.com/{{ $product->seller->social->youtube }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-youtube text-white"></i> YouTube
+                                    </span>
+                                </a>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" data-bs-dismiss="modal">Tutup</a>
                 </div>
             </div>
         </div>
@@ -249,7 +235,6 @@
 
             btnPlus.addEventListener('click', function() {
                 productQuantity.value = parseInt(productQuantity.value); // Increment quantity by 1
-
                 updateTotalPrice();
             });
 
@@ -257,7 +242,6 @@
                 if (parseInt(productQuantity.value) > 0) {
                     productQuantity.value = parseInt(productQuantity
                     .value); // Decrement quantity by 1, but not below 1
-
                     updateTotalPrice();
                 }
             });
@@ -266,7 +250,8 @@
                 const variantId = element.dataset.variantId;
                 const variantName = element.dataset.variantName;
                 const variantPrice = parseFloat(element.dataset.variantPrice.replaceAll('.', ''));
-                const variantDiscountedPrice = parseFloat(element.dataset.variantDiscountedPrice.replaceAll('.', ''));
+                const variantDiscountedPrice = parseFloat(element.dataset.variantDiscountedPrice.replaceAll('.',
+                    ''));
                 const variantImage = element.dataset.variantImage;
                 expandedImg.src = variantImage;
                 orderVariantImage.src = variantImage;
@@ -310,7 +295,6 @@
                     '')) : null;
                 var variantPrice = parseFloat(priceElements[priceElements.length - 1].replace(/[^\d]/g,
                 ''));
-
                 var totalPrice = variantPrice * quantity;
                 var sellerPhone = "{{ $product->seller->phone }}";
 
@@ -318,7 +302,6 @@
     Nama produk: ${productName}
     Varian: ${variantName}
     Harga produk: ${originalPrice ? `Rp${originalPrice.toLocaleString('id-ID')} (diskon menjadi: Rp${variantPrice.toLocaleString('id-ID')})` : `Rp${variantPrice.toLocaleString('id-ID')}`}
-
     Jumlah produk yang dibeli: ${quantity}
     Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
     Link produk: ${location.href}`;
@@ -330,4 +313,3 @@
     </script>
 
 @endsection
-

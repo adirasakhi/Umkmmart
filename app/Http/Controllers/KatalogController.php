@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
-use App\Models\Category;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductClick;
+use App\Models\Category;
 use App\Models\SocialMedia;
-use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,45 +23,45 @@ class KatalogController extends Controller
 
         $categories = Category::withCount('products')->get();
 
-        $query = Product::query();
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
 
-        if ($categoryId) {
-            $query->where('category_id', $categoryId);
-        }
+        $query = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
+            })
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price');
 
-        if (!is_null($minPrice)) {
-            $query->where('price', '>=', $minPrice);
-        }
-
-        if (!is_null($maxPrice)) {
-            $query->where('price', '<=', $maxPrice);
-        }
-
-        if (!empty($keywords)) {
-            $keywordArray = explode(' ', $keywords);
-            foreach ($keywordArray as $keyword) {
-                $query->where('name', 'like', '%' . strtolower($keyword) . '%');
-            }
-        }
-
+        // Memuat relasi Seller untuk setiap produk
         $products = $query->paginate(12);
 
         return view('pages.Landing.shop', compact('products', 'categories', 'categoryId', 'minPrice', 'maxPrice'));
     }
 
-    // public function katalog()
-    // {
-    //     $products = Product::paginate(10);
-    //     $categories = Category::withCount('products')->get();
-    //     return view('pages.Landing.shop', ['products' => $products, 'categories' => $categories]);
-    // }
 
     public function detail($id)
     {
-        $product = Product::find($id);
+        // Temukan produk berdasarkan ID
+        $product = Product::with('variants', 'seller')->find($id);
+
+        // Redirect jika produk tidak ditemukan
+        if (!$product) {
+            return redirect()->route('katalog.index')->with('error', 'Product not found.');
+        }
+
+        // Ambil semua kategori
         $categories = Category::all();
-        $user = User::all();
-        // $items = User::withCount('products')->get();
+
+        // Ambil semua pengguna (mungkin Anda ingin filter ini lebih spesifik)
+        $users = User::all();
+
+        // Ambil semua media sosial
         $social_media = SocialMedia::all();
 
         // Ambil produk terkait berdasarkan kategori yang sama, kecuali produk saat ini
@@ -84,22 +84,20 @@ class KatalogController extends Controller
             ->limit(3)
             ->get();
 
-        if (!$product) {
-            return redirect()->route('katalog.index')->with('error', 'Product not found.');
-        }
-        $deviceId = request()->ip(); // Atau gunakan metode lain untuk mengidentifikasi perangkat
+        // Mengidentifikasi perangkat menggunakan IP address atau metode lain
+        $deviceId = request()->ip();
 
-        // Cari klik yang sudah ada dari perangkat yang sama pada hari yang sama
+        // Cek jika sudah ada klik untuk produk ini hari ini dari perangkat ini
         $existingClick = ProductClick::where('product_id', $id)
-        ->where('device_id', $deviceId)
-        ->whereDate('clicked_at', Carbon::today())
-        ->first();
+            ->where('device_id', $deviceId)
+            ->whereDate('clicked_at', Carbon::today())
+            ->first();
 
         if ($existingClick) {
-        // Jika sudah ada, tambahkan jumlah klik
+            // Jika sudah ada, tambahkan jumlah klik
             $existingClick->increment('click_count');
         } else {
-        // Jika belum ada, buat entri baru dengan click_count = 1
+            // Jika belum ada, buat entri baru dengan click_count = 1
             ProductClick::create([
                 'product_id' => $id,
                 'device_id' => $deviceId,
@@ -108,50 +106,77 @@ class KatalogController extends Controller
             ]);
         }
 
-        return view('pages.Landing.Detail', ['product' => $product, 'categories' => $categories, 'user' => $user, 'social_media' => $social_media, 'related_products' => $related_products]);
+        // Menghitung harga setelah diskon
+        foreach ($product->variants as $variant) {
+            $variant->discounted_price = $variant->getDiscountedPriceAttribute();
+        }
+
+        // Kembalikan view dengan data yang diperlukan
+        return view('pages.Landing.Detail', [
+            'product' => $product,
+            'categories' => $categories,
+            'users' => $users,
+            'social_media' => $social_media,
+            'related_products' => $related_products,
+            'variants' => $product->variants,
+        ]);
     }
 
 
     public function filter(Request $request)
     {
-        // dd($request->all());
         $categoryId = $request->input('id');
         $keywords = $request->input('keywords');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
-        $sort = $request->input('sort', 'asc', 'desc');
-        $query = Product::query();
+        $sort = $request->input('sort', 'asc');
 
-        if (isset ($categoryId) && (($categoryId != null))) {
-            $query->where('category_id', $categoryId);
+        // Subquery to get the minimum price and corresponding variant id for each product
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
+
+        $query = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
+            })
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price');
+
+        if (isset($categoryId) && ($categoryId != null)) {
+            $query->where('product.category_id', $categoryId);
         }
 
-        if (isset ($minPrice) && ($minPrice != null)) {
-            $query->where('price', '>=', $minPrice);
+        if (isset($minPrice) && ($minPrice != null)) {
+            $query->where('min_variants.min_price', '>=', $minPrice);
         }
 
-        if (isset ($maxPrice) && ($maxPrice != null)) {
-            $query->where('price', '<=', $maxPrice);
+        if (isset($maxPrice) && ($maxPrice != null)) {
+            $query->where('min_variants.min_price', '<=', $maxPrice);
         }
 
-        if(isset ($keywords) && ($keywords != null) ){
+        if (isset($keywords) && ($keywords != null)) {
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
-                $query = $query->Where('name', 'like', '%'.$keyword.'%');
+                $query->where('product.name', 'like', '%' . $keyword . '%');
+            }
+        }
 
-                if(!in_array($sort, ['asc','desc'])){
-                    $sort = 'asc';
-                }
-                $query->orderBy('price', $sort);
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'asc';
+        }
 
+        $query->orderBy('min_variants.min_price', $sort);
 
-                if (!in_array($sort, ['asc', 'desc'])) {
-                    $sort = 'asc';
-                }
-                $query->orderBy('price', $sort);
+        $products = $query->paginate(12);
+        $categories = Category::withCount('products')->get();
 
-                $products = $query->paginate(12);
-                $categories = Category::withCount('products')->get();
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
+    }
 
     public function search(Request $request)
     {
@@ -193,8 +218,8 @@ class KatalogController extends Controller
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
                 $query->where('product.name', 'like', '%' . $keyword . '%');
-
             }
+        }
 
         if (!in_array($sort, ['asc', 'desc'])) {
             $sort = 'asc';

@@ -63,10 +63,26 @@ class KatalogController extends Controller
         $user = User::all();
         // $items = User::withCount('products')->get();
         $social_media = SocialMedia::all();
-        $related_products = Product::where('category_id', $product->category_id)
-        ->where('id', '!=', $product->id)
-        ->limit(3)
-        ->get();
+
+        // Ambil produk terkait berdasarkan kategori yang sama, kecuali produk saat ini
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
+
+        $related_products = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
+            })
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->where('product.category_id', $product->category_id)
+            ->where('product.id', '!=', $product->id)
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price')
+            ->limit(3)
+            ->get();
 
         if (!$product) {
             return redirect()->route('katalog.index')->with('error', 'Product not found.');
@@ -137,52 +153,73 @@ class KatalogController extends Controller
                 $products = $query->paginate(12);
                 $categories = Category::withCount('products')->get();
 
-                return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
-            }
-        }}
-        public function search(Request $request)
-        {
-            $keywords = $request->input('keywords');
-            $categoryId = $request->input('id');
-            $minPrice = $request->input('min');
-            $maxPrice = $request->input('max');
+    public function search(Request $request)
+    {
+        $keywords = $request->input('keywords');
+        $categoryId = $request->input('id');
+        $minPrice = $request->input('min');
+        $maxPrice = $request->input('max');
+        $sort = $request->input('sort', 'asc');
 
-            $query = Product::query()
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
+        // Subquery untuk mendapatkan harga minimum dan id varian yang sesuai untuk setiap produk
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
+
+        $query = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
             })
-            ->when(!is_null($minPrice), function ($query) use ($minPrice) {
-                return $query->where('price', '>=', $minPrice);
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
             })
-            ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
-                return $query->where('price', '<=', $maxPrice);
-            });
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price');
 
-            if (!empty($keywords)) {
-                $keywordArray = explode(' ', $keywords);
-                foreach ($keywordArray as $keyword) {
-                    $query->where('name', 'like', '%' . strtolower($keyword) . '%');
-                }
-            }
-
-            $products = $query->paginate(10);
-            $categories = Category::withCount('products')->get();
-
-            return view('pages.Landing.shop', compact('products', 'categories'));
+        if (!is_null($categoryId)) {
+            $query->where('product.category_id', $categoryId);
         }
-        /*public function getPopularProduct()
-        {
-            $bannerSlide = Banner::where('type', 'slideshow')->get();
-            $bannerHead = Banner::where('type', 'head')->first();
-            $user = User::all();
-            $popularProduct = Product::select(
-                'product.id',
-                'product.name',
-                'product.price',
-                'product.image',
-                'users.name as saller_name',
-                DB::raw('COUNT(product_clicks.id) as click_count')
-            )
+
+        if (!is_null($minPrice)) {
+            $query->where('min_variants.min_price', '>=', $minPrice);
+        }
+
+        if (!is_null($maxPrice)) {
+            $query->where('min_variants.min_price', '<=', $maxPrice);
+        }
+
+        if (!empty($keywords)) {
+            $keywordArray = explode(' ', $keywords);
+            foreach ($keywordArray as $keyword) {
+                $query->where('product.name', 'like', '%' . $keyword . '%');
+
+            }
+
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'asc';
+        }
+
+        $query->orderBy('min_variants.min_price', $sort);
+
+        $products = $query->paginate(12);
+        $categories = Category::withCount('products')->get();
+
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
+    }
+
+
+    public function getPopularProduct()
+    {
+        $user = User::all();
+        $popularProduct = Product::select(
+            'product.id',
+            'product.name',
+            'product.price',
+            'product.image',
+            'users.name as saller_name',
+            DB::raw('COUNT(product_clicks.id) as click_count')
+        )
             ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
             ->join('users', 'product.seller_id', '=', 'users.id')
 
@@ -199,6 +236,6 @@ class KatalogController extends Controller
             ->get();
 
 
-            return view('pages.Landing.index', ['popularProduct' => $popularProduct, 'slide'=> $bannerSlide, 'bannerHead'=> $bannerHead]);
-        }*/
+        return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
+    }
 }

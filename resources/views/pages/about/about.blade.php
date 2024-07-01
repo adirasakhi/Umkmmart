@@ -94,148 +94,148 @@
                                         @foreach ($about as $val)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>@php
-                                            $maxWords = 15;
-                                            $description = $val->content;
-                                            $words = explode(' ', $description);
-                                            $shortDescription = implode(' ', array_slice($words, 0, $maxWords));
-                                            $remainingWords = implode(' ', array_slice($words, $maxWords));
-                                            @endphp
-                                            <div class="description-container">
-                                                <p class="description">{!! $shortDescription !!}</p>
-                                                @if (count($words) > $maxWords)
-                                                <span class="remaining-words" style="display: none;">{!! $remainingWords !!}</span>
-                                                <button class="btn btn-sm btn-link see-more">See more</button>
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="{{ asset('storage/' . $val->image) }}">
-                                                <img src="{{ asset('storage/' . $val->image) }}" alt="val_image" class="img-fluid img-thumbnail" width="200">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-start align-items-center">
-                                                <button class="btn btn-icon btn-warning edit mx-2"
-                                                data-id="{{ $val->id }}"><i
-                                                class="far fa-edit"></i></button>
-                                                <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                data-id="{{ $val->id }}" data-bs-toggle="modal"
-                                                data-bs-target="#myModalDelete"><i
-                                                class="fas fa-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </table>
+                                            <td>
+                                                @php
+                                                $maxWords = 35;
+                                                $description = $val->content;
+                                                $words = explode(' ', $description);
+                                                $shortDescription = implode(' ', array_slice($words, 0, $maxWords));
+                                                $remainingWords = implode(' ', array_slice($words, $maxWords));
+                                                @endphp
+                                                <div class="description-container">
+                                                    <p class="description">{!! $shortDescription !!}</p>
+                                                    @if (count($words) > $maxWords)
+                                                    <span class="remaining-words" style="display: none;">{!! $remainingWords !!}</span>
+                                                    <button class="btn btn-sm btn-link see-more">See more</button>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ asset('storage/' . $val->image) }}">
+                                                        <img src="{{ asset('storage/' . $val->image) }}" alt="val_image" class="img-fluid img-thumbnail" width="200">
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex justify-content-start align-items-center">
+                                                        <button class="btn btn-icon btn-warning edit mx-2"
+                                                        data-id="{{ $val->id }}"><i
+                                                        class="far fa-edit"></i></button>
+                                                        <button class="btn btn-icon btn-danger delete-btn mx-2"
+                                                        data-id="{{ $val->id }}" data-bs-toggle="modal"
+                                                        data-bs-target="#myModalDelete"><i
+                                                        class="fas fa-trash"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </div>
+
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
-    </section>
-</div>
 
-{{-- Modal Tambah --}}
-<div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Tambah Informasi</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url('about/store/') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="content" class="control-label">Isi Konten</label>
-                            <textarea name="content" class="summernote-simple"></textarea>
+        {{-- Modal Tambah --}}
+        <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Tambah Informasi</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                         </div>
-                        <div class="form-group">
-                            <label for="image" class="control-label">Logo</label>
-                            <input type="file" name="image" class="form-control" id="imageInput">
-                            <div id="imagePreview" class="mt-2"></div>
-                        </div>
-                        <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
-                    </div>
-                    <br>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- end Tambah Modal --}}
-    {{-- Modal delete --}}
-    <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Hapus Data</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus Data ini?</p>
-                    <form id="deleteForm" action="" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <div class="row justify-content-end">
-                            <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
-                                <span class="fa fa-times"></span> Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary col-2 mr-3">
-                                <span class="fa fa-check"></span> Yakin
-                            </button>
+                        <div class="modal-body">
+                            <form action="{{ url('about/store/') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="content" class="control-label">Isi Konten</label>
+                                    <textarea name="content" class="summernote-simple"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="image" class="control-label">Logo</label>
+                                    <input type="file" name="image" class="form-control" id="imageInput">
+                                    <div id="imagePreview" class="mt-2"></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary col-12"><span class="fa fa-save"></span> Save</button>
+                            </div>
+                            <br>
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-    {{-- end Modal delete  --}}
-    {{-- Js Edit --}}
-    <script type="text/javascript">
-        $(function() {
-            $(document).on('click', '.edit', function(e) {
-                e.preventDefault();
-                $("#myModalEdit").modal('show');
-                $.post('{{ route('about.edit') }}', {
-                    id: $(this).attr('data-id'),
-                    _token: '{{ csrf_token() }}'
-                },
-                function(html) {
-                    $(".data").html(html);
-                }
-                );
-            });
-        });
-    </script>
-    {{-- Js Hapus --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-btn');
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const deleteForm = document.getElementById('deleteForm');
-                    deleteForm.action = `{{ url('/about/delete') }}/${id}`;
+            {{-- end Tambah Modal --}}
+            {{-- Modal delete --}}
+            <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Hapus Data</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menghapus Data ini?</p>
+                            <form id="deleteForm" action="" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <div class="row justify-content-end">
+                                    <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
+                                        <span class="fa fa-times"></span> Batal
+                                    </button>
+                                    <button type="submit" class="btn btn-primary col-2 mr-3">
+                                        <span class="fa fa-check"></span> Yakin
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- end Modal delete  --}}
+            {{-- Js Edit --}}
+            <script type="text/javascript">
+                $(function() {
+                    $(document).on('click', '.edit', function(e) {
+                        e.preventDefault();
+                        $("#myModalEdit").modal('show');
+                        $.post('{{ route('about.edit') }}', {
+                            id: $(this).attr('data-id'),
+                            _token: '{{ csrf_token() }}'
+                        },
+                        function(html) {
+                            $(".data").html(html);
+                        }
+                        );
+                    });
                 });
-            });
-            const seeMoreButtons = document.querySelectorAll('.see-more');
-            seeMoreButtons.forEach(seeMoreBtn => {
-                seeMoreBtn.addEventListener('click', function() {
-                    const descriptionContainer = this.parentElement;
-                    const moreContent = descriptionContainer.querySelector('.remaining-words');
+            </script>
+            {{-- Js Hapus --}}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const deleteButtons = document.querySelectorAll('.delete-btn');
 
-                    moreContent.style.display = (moreContent.style.display === 'none' || moreContent.style.display === '') ? 'inline' : 'none';
-                    this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
+                    deleteButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            const deleteForm = document.getElementById('deleteForm');
+                            deleteForm.action = `{{ url('/about/delete') }}/${id}`;
+                        });
+                    });
+                    const seeMoreButtons = document.querySelectorAll('.see-more');
+                    seeMoreButtons.forEach(seeMoreBtn => {
+                        seeMoreBtn.addEventListener('click', function() {
+                            const descriptionContainer = this.parentElement;
+                            const moreContent = descriptionContainer.querySelector('.remaining-words');
+
+                            moreContent.style.display = (moreContent.style.display === 'none' || moreContent.style.display === '') ? 'inline' : 'none';
+                            this.textContent = moreContent.style.display === 'none' ? 'See more' : 'See less';
+                        });
+                    });
                 });
-            });
-        });
-        document.getElementById('imageInput').addEventListener('change', function(event) {
-            const imagePreview = document.getElementById('imagePreview');
+                document.getElementById('imageInput').addEventListener('change', function(event) {
+                    const imagePreview = document.getElementById('imagePreview');
             imagePreview.innerHTML = ''; // Clear existing previews
             const files = event.target.files;
 

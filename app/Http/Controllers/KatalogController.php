@@ -170,35 +170,5 @@ class KatalogController extends Controller
 
             return view('pages.Landing.shop', compact('products', 'categories'));
         }
-        /*public function getPopularProduct()
-        {
-            $bannerSlide = Banner::where('type', 'slideshow')->get();
-            $bannerHead = Banner::where('type', 'head')->first();
-            $user = User::all();
-            $popularProduct = Product::select(
-                'product.id',
-                'product.name',
-                'product.price',
-                'product.image',
-                'users.name as saller_name',
-                DB::raw('COUNT(product_clicks.id) as click_count')
-            )
-            ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-            ->join('users', 'product.seller_id', '=', 'users.id')
+    }
 
-            ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
-            ->groupBy(
-                'product.id',
-                'product.name',
-                'product.price',
-                'product.image',
-                'users.name'
-            )
-            ->orderByDesc('click_count')
-            ->take(10)
-            ->get();
-
-
-            return view('pages.Landing.index', ['popularProduct' => $popularProduct, 'slide'=> $bannerSlide, 'bannerHead'=> $bannerHead]);
-        }*/
-}

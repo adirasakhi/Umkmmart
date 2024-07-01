@@ -109,6 +109,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'category_id' => 'required|integer',
         ]);
+        $price = str_replace('.', '', $request->post('price'));
 
         $product = Product::find($id);
         if ($product) {

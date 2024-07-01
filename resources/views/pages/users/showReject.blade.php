@@ -8,7 +8,7 @@
     </div>
 @endif
 
-<form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('users.update.status', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="name" class="form-label">Nama</label>

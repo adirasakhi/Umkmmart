@@ -53,12 +53,15 @@
                         </div>
 
                         @php
-                            $social = $sosmed->first() ?? (object)[
-                                'facebook' => '',
-                                'whatsapp' => '',
-                                'tiktok' => '',
-                                'instagram' => ''
-                            ];
+                            $social =
+                                $sosmed->first() ??
+                                (object) [
+                                    'facebook' => '',
+                                    'whatsapp' => '',
+                                    'tiktok' => '',
+                                    'instagram' => '',
+                                ];
+
                         @endphp
 
                         <div class="form-group">
@@ -117,46 +120,50 @@
                             <div class="text-center mt-3">
                                 <span class="bg-secondary p-1 px-4 rounded text-white">
                                     @if ($user->role_id == 1)
-                                    Admin
-                                @elseif ($user->role_id == 2)
-                                    penjual
-                                @else
-                                    Pengguna
-                                @endif
+                                        Admin
+                                    @elseif ($user->role_id == 2)
+                                        penjual
+                                    @else
+                                        Pengguna
+                                    @endif
                                 </span>
                                 <h5 class="mt-2 mb-0">{{ $user->name }}</h5>
                                 <p class="mt-2 mb-0">{{ $user->address }}</p>
-                                @if($user->role_id ==2)
-                                @foreach ($sosmed as $val)
-                                    <div class="m-3">
-                                        @if ($val->facebook != null)
-                                        <a href="https://facebook.com/{{ $val->facebook }}"><span class="badge bg-primary text-white"><i
-                                                    class="bi bi-facebook text-white"></i> Facebook</span></a>
-                                        @endif
-                                        @if ($val->whatsapp != null)
-                                            <a href="https://api.whatsapp.com/send/?phone={{ $val->whatsapp }}"><span
-                                                    class="badge bg-success text-white"><i
-                                                        class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
-                                        @endif
-                                        @if ($val->tiktok != null)
-                                        <a href="https://tiktok.com/{{ $val->tiktok }}">
-                                            <span class="badge bg-dark text-white">
-                                                <i class="bi bi-tiktok text-white"></i> TikTok
-                                            </span>
-                                        </a>
-                                        @endif
-                                        @if ($val->instagram != null)
-                                        <a href="https://instagram.com/{{ $val->instagram }}"><span class="badge bg-danger text-white"><i
-                                                    class="bi bi-instagram text-white"></i> Instagram</span></a>
-                                        @endif
-                                    </div>
-                                @endforeach
+                                @if ($user->role_id == 2)
+                                    @foreach ($sosmed as $val)
+                                        <div class="m-3">
+                                            @if ($val->facebook != null)
+                                                <a href="https://facebook.com/{{ $val->facebook }}"><span
+                                                        class="badge bg-primary text-white"><i
+                                                            class="bi bi-facebook text-white"></i> Facebook</span></a>
+                                            @endif
+                                            @if ($val->whatsapp != null)
+                                                <a href="https://api.whatsapp.com/send/?phone={{ $val->whatsapp }}"><span
+                                                        class="badge bg-success text-white"><i
+                                                            class="bi bi-whatsapp text-white"></i> WhatsApp</span></a>
+                                            @endif
+                                            @if ($val->tiktok != null)
+                                                <a href="https://tiktok.com/{{ $val->tiktok }}">
+                                                    <span class="badge bg-dark text-white">
+                                                        <i class="bi bi-tiktok text-white"></i> TikTok
+                                                    </span>
+                                                </a>
+                                            @endif
+                                            @if ($val->instagram != null)
+                                                <a href="https://instagram.com/{{ $val->instagram }}"><span
+                                                        class="badge bg-danger text-white"><i
+                                                            class="bi bi-instagram text-white"></i> Instagram</span></a>
+                                            @endif
+                                        </div>
+                                    @endforeach
                                 @endif
 
                                 @if ($user->role_id == 2)
-                                <div class="buttons">
-                                    <button class="btn btn-primary my-2" style="width: 180px; margin:20px" data-bs-toggle="modal" data-bs-target="#myModalCreate_{{  $user->id }}">Edit Profile</button>
-                                </div>
+                                    <div class="buttons">
+                                        <button class="btn btn-primary my-2" style="width: 180px; margin:20px"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#myModalCreate_{{ $user->id }}">Edit Profile</button>
+                                    </div>
                                 @endif
                             </div>
                         </div>

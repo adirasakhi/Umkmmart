@@ -280,6 +280,8 @@
                             </tbody>
                         </table>
                         <!-- Form untuk menambah varian -->
+
+                        @if (Auth::user()->role_id == 2)
                         <h6 class="mt-3">
                             <center>Tambah Varian</center>
                         </h6>
@@ -317,6 +319,8 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
+                        @endif
+
                     </div>
                 </div>
             </div>

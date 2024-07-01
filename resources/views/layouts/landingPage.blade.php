@@ -141,15 +141,33 @@
             height: 100%;
             object-fit: cover; /* Memastikan gambar terisi penuh dalam area yang ditetapkan */
         }
-        .container-fluid div.overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .carousel-item img {
             width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.4);
+            height: auto;
+            object-fit: cover; /* Memastikan gambar di dalam carousel terisi penuh */
         }
 
+        .hero-header {
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .carousel-control-prev, .carousel-control-next {
+            background-color: rgba(0, 0, 0, 0.5); /* Ubah warna background untuk tombol prev dan next jika diperlukan */
+        }
+
+         .hero-header {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-header .container {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
 

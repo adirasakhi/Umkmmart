@@ -23,17 +23,25 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
-
     }
 
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id');
     }
-    
 
     public function clicks()
     {
         return $this->hasMany(ProductClick::class);
+    }
+
+    public function variants()
+    {
+        return $this->hasMany(Variant::class);
+    }
+
+    public function cheapestVariant()
+    {
+        return $this->variants()->orderBy('price', 'asc')->first();
     }
 }

@@ -1,11 +1,6 @@
 @extends('layouts.landingPage')
 
 @section('content')
-
-    <!-- Single Page Header start -->
-
-    <!-- Single Page Header End -->
-
     <!-- Fruits Shop Start-->
     <div class="container-fluid fruite py-4 custom-container">
         <div class="container py-4 custom-container">
@@ -125,20 +120,22 @@
                 {{-- Konten Produk --}}
                 <div class="col-lg-9">
                     <div class="mb-6">
-                        <div class="row g-4 justify-content-start " id="result">
+                        <div class="row g-4 justify-content-start" id="result">
                             @foreach ($products as $product)
                                 <div class="col-6 col-md-4 col-lg-4">
                                     <div class="card h-100" style="border-radius: 4px">
                                         <a href="{{ route('katalog.detail', ['id' => $product->id]) }}">
-                                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top"
-                                                style="height: 150px; object-fit:cover;border-radius: 4px" alt="...">
+                                            <img src="{{ asset('storage/' . $product->min_variant_image) }}"
+                                                class="card-img-top"
+                                                style="height: 150px; object-fit: cover; border-radius: 4px;"
+                                                alt="Product Image">
                                             <div class="card-body">
-                                                <h6 class="card-title" style="font-weight:medium">{{ $product->name }}
+                                                <h6 class="card-title" style="font-weight: medium">{{ $product->name }}
                                                 </h6>
-                                                <h6><strong>Rp{{ number_format($product->price, 0, ',', '.') }}</strong>
+                                                <h6><strong>Rp{{ number_format($product->min_price, 0, ',', '.') }}</strong>
                                                 </h6>
                                                 <h6 class="small"><i class="fas fa-store"></i>
-                                                    {{ $product->seller->name }}</h6>
+                                                    {{ $product->seller_name }}</h6>
                                             </div>
                                         </a>
                                     </div>
@@ -230,8 +227,7 @@
                                     class="form-control input-sx" name="max" id="max"
                                     value="{{ request('max') }}">
                             </div>
-                            <input type="hidden" name="keywords" value="{{ request('keywords') }}"
-                                id="keywords">
+                            <input type="hidden" name="keywords" value="{{ request('keywords') }}" id="keywords">
                         </div>
                         <hr>
                         <h6>

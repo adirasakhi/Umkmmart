@@ -65,8 +65,22 @@ class KatalogController extends Controller
         $social_media = SocialMedia::all();
 
         // Ambil produk terkait berdasarkan kategori yang sama, kecuali produk saat ini
-        $related_products = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
+
+        $related_products = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
+            })
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->where('product.category_id', $product->category_id)
+            ->where('product.id', '!=', $product->id)
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price')
             ->limit(3)
             ->get();
 
@@ -170,32 +184,55 @@ class KatalogController extends Controller
         $categoryId = $request->input('id');
         $minPrice = $request->input('min');
         $maxPrice = $request->input('max');
+        $sort = $request->input('sort', 'asc');
 
-        $query = Product::query()
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
-            })
-            ->when(!is_null($minPrice), function ($query) use ($minPrice) {
-                return $query->where('price', '>=', $minPrice);
-            })
-            ->when(!is_null($maxPrice), function ($query) use ($maxPrice) {
-                return $query->where('price', '<=', $maxPrice);
-            });
+        // Subquery untuk mendapatkan harga minimum dan id varian yang sesuai untuk setiap produk
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
 
+        $query = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
+            })
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price');
+
+        if (!is_null($categoryId)) {
+            $query->where('product.category_id', $categoryId);
+        }
+
+        if (!is_null($minPrice)) {
+            $query->where('min_variants.min_price', '>=', $minPrice);
+        }
+
+        if (!is_null($maxPrice)) {
+            $query->where('min_variants.min_price', '<=', $maxPrice);
+        }
 
         if (!empty($keywords)) {
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
-                $query->where('name', 'like', '%' . strtolower($keyword) . '%');
+                $query->where('product.name', 'like', '%' . $keyword . '%');
             }
         }
 
-        
-        $products = $query->paginate(10);
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'asc';
+        }
+
+        $query->orderBy('min_variants.min_price', $sort);
+
+        $products = $query->paginate(12);
         $categories = Category::withCount('products')->get();
 
-        return view('pages.Landing.shop', compact('products', 'categories'));
+        return view('pages.Landing.shop', compact('products', 'categories', 'minPrice', 'maxPrice', 'sort'));
     }
+
 
     public function getPopularProduct()
     {

@@ -20,7 +20,8 @@
                                     alt="Image" style="object-fit: cover;" data-variant-id="{{ $variant->id }}"
                                     data-variant-name="{{ $variant->name }}"
                                     data-variant-price="{{ number_format($variant->price, 0, ',', '.') }}"
-                                    data-variant-discounted-price="{{ number_format($variant->discounted_price, 0, ',', '.') }}">
+                                    data-variant-discounted-price="{{ number_format($variant->discounted_price, 0, ',', '.') }}"
+                                    data-variant-image="{{ asset('storage/' . $variant->image) }}">
                             </div>
                         @endforeach
                     </div>
@@ -36,7 +37,7 @@
                         @if (
                             $product->variants->sortBy('price')->first()->price >
                                 $product->variants->sortBy('price')->first()->discounted_price)
-                            <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
+                            <p class="strike-through">Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
                             <h2 class="discounted-price" id="orderVariantPrice">
                                 Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
                             </h2>
@@ -126,14 +127,14 @@
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($related_products as $related_product)
                         <div class="card h-100">
-                            <img src="{{ asset('storage/' . $related_product->image) }}" class="card-img-top"
+                            <img src="{{ asset('storage/' . $related_product->min_variant_image) }}" class="card-img-top"
                                 style="height: 150px; object-fit: cover;" alt="Image">
                             <div class="card-body">
                                 <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
                                     <h6 class="card-title">{{ $related_product->name }}</h6>
                                 </a>
-                                <h6><strong>Rp{{ number_format($related_product->price, 0, ',', '.') }}</strong></h6>
-                                <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller->name }}</p>
+                                <h6><strong>Rp{{ number_format($related_product->min_price, 0, ',', '.') }}</strong></h6>
+                                <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller_name }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -216,6 +217,9 @@
             const orderVariantPrice = document.getElementById('orderVariantPrice');
             const orderVariantTotal = document.getElementById('orderVariantTotal');
             const productQuantity = document.getElementById('productQuantity');
+            const btnPlus = document.querySelector('.btn-plus');
+            const btnMinus = document.querySelector('.btn-minus');
+            const contactSellerBtn = document.getElementById('contactSellerBtn');
 
             imgClickElements.forEach(imgClick => {
                 imgClick.addEventListener('click', function() {
@@ -227,6 +231,19 @@
                 variantItem.addEventListener('click', function() {
                     updateVariantDetails(this);
                 });
+            });
+
+            btnPlus.addEventListener('click', function() {
+                productQuantity.value = parseInt(productQuantity.value); // Increment quantity by 1
+                updateTotalPrice();
+            });
+
+            btnMinus.addEventListener('click', function() {
+                if (parseInt(productQuantity.value) > 0) {
+                    productQuantity.value = parseInt(productQuantity
+                    .value); // Decrement quantity by 1, but not below 1
+                    updateTotalPrice();
+                }
             });
 
             function updateVariantDetails(element) {
@@ -250,26 +267,6 @@
                 updateTotalPrice();
             }
 
-            const quantityMinusButton = document.querySelector('.btn-minus');
-            const quantityPlusButton = document.querySelector('.btn-plus');
-
-            quantityMinusButton.addEventListener('click', function() {
-                let quantity = parseInt(productQuantity.value);
-                if (quantity > 1) { // Menghindari quantity menjadi 0 atau negatif
-                    quantity--;
-                    productQuantity.value = quantity;
-                    updateTotalPrice();
-                }
-            });
-
-            quantityPlusButton.addEventListener('click', function() {
-            let quantity = parseInt(productQuantity.value);
-            quantity++;
-            productQuantity.value = quantity;
-            updateTotalPrice();
-        });
-
-
             function updateTotalPrice() {
                 let quantity = parseInt(productQuantity.value);
                 let priceElements = orderVariantPrice.innerHTML.split('<br>');
@@ -287,8 +284,32 @@
 
             // Initial update on page load
             updateTotalPrice();
+
+            contactSellerBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                var quantity = productQuantity.value;
+                var productName = "{{ $product->name }}";
+                var variantName = orderVariantName.textContent;
+                var priceElements = orderVariantPrice.innerHTML.split('<br>');
+                var originalPrice = priceElements.length > 1 ? parseFloat(priceElements[0].replace(/[^\d]/g,
+                    '')) : null;
+                var variantPrice = parseFloat(priceElements[priceElements.length - 1].replace(/[^\d]/g,
+                ''));
+                var totalPrice = variantPrice * quantity;
+                var sellerPhone = "{{ $product->seller->phone }}";
+
+                var message = `Halo, saya tertarik dengan produk Anda.
+    Nama produk: ${productName}
+    Varian: ${variantName}
+    Harga produk: ${originalPrice ? `Rp${originalPrice.toLocaleString('id-ID')} (diskon menjadi: Rp${variantPrice.toLocaleString('id-ID')})` : `Rp${variantPrice.toLocaleString('id-ID')}`}
+    Jumlah produk yang dibeli: ${quantity}
+    Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
+    Link produk: ${location.href}`;
+
+                var whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            });
         });
     </script>
-
 
 @endsection

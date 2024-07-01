@@ -119,17 +119,19 @@ class KatalogController extends Controller
 
         // Subquery to get the minimum price and corresponding variant id for each product
         $subquery = DB::table('variants')
-            ->select('product_id', DB::raw('MIN(price) as min_price'), DB::raw('MIN(id) as min_variant_id'))
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
             ->groupBy('product_id');
 
-        // Join the subquery with products and variants to get the full data
         $query = DB::table('product')
             ->joinSub($subquery, 'min_variants', function ($join) {
                 $join->on('product.id', '=', 'min_variants.product_id');
             })
-            ->join('variants', 'variants.id', '=', 'min_variants.min_variant_id')
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
             ->join('users', 'product.seller_id', '=', 'users.id')
-            ->select('product.*', 'min_variants.min_price as min_variant_price', 'variants.image as variant_image', 'users.name as seller_name');
+            ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price');
 
         if (isset($categoryId) && ($categoryId != null)) {
             $query->where('product.category_id', $categoryId);
@@ -180,6 +182,7 @@ class KatalogController extends Controller
                 return $query->where('price', '<=', $maxPrice);
             });
 
+
         if (!empty($keywords)) {
             $keywordArray = explode(' ', $keywords);
             foreach ($keywordArray as $keyword) {
@@ -187,6 +190,7 @@ class KatalogController extends Controller
             }
         }
 
+        
         $products = $query->paginate(10);
         $categories = Category::withCount('products')->get();
 

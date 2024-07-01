@@ -2,12 +2,13 @@
 
 @section('content')
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header">
+<div class="container-fluid py-5 mb-5 hero-header" style="background-image: url('{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}'); background-size: cover; background-position: center; position: relative;">
+    <div class="overlay"></div>
     <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
-                <h4 class="mb-3 " style="color: #747d88; font-family: 'Open Sans', sans-serif;">Dukung UMKM Lokal</h4>
-                <h1 class="mb-5 display-3 text-primary">Produk Unggulan UMKM</h1>
+                <h4 class="mb-3 " style="color: #747d88; font-family: 'Open Sans', sans-serif;"></h4>
+                <h1 class="mb-5 display-3 text-primary"></h1>
                 <div class="position-relative mx-auto">
                     <a href="{{ route('katalog.index') }}"
                     class="btn btn-primary border-2 border-secondary py-3 px-4 rounded-pill text-white">Belanja
@@ -18,49 +19,33 @@
             <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active rounded">
-                        <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}"
+                        <img src="{{ asset('LandingPage/img/kerajinan.jpg')  }}"
                         class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
                         <a href="#" class="btn px-4 py-2 text-white rounded">Kerajinan</a>
                     </div>
+                    @foreach($slide as $value)
                     <div class="carousel-item rounded">
-                        <img src="{{ asset('LandingPage/img/gula.jpg') }}"
-                        class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                        <a href="#" class="btn px-4 py-2 text-white rounded">Kuliner</a>
+                        <div class="image-wrapper">
+                            <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img" alt="Slide">
+                        </div>
+                        <a href="#" class="btn px-4 py-2 text-white rounded">{!! $value->description !!}</a>
                     </div>
-                    <div class="carousel-item rounded">
-                        <img src="{{ asset('LandingPage/img/hero-img-2.jpg') }}"
-                        class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                        <a href="#" class="btn px-4 py-2 text-white rounded">Sayuran</a>
-                    </div>
+                    @endforeach
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselId"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</div>
-</div>
-</div>
-</div>
-<!-- Hero End -->
-{{-- Cara Berbelanja --}}
-<div class="container-fluid py-3">
-    <div class="container py-3">
-        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-5" style="margin-top: 10px;">Cara berbelanja</h1>
-            <p>Bagaimana cara belanja di UMKMart.id simak ilustrasi berikut</p>
-            <img src="{{ asset('LandingPage/img/how-to-shop.png') }}" style="width: 500px; height: 350px;">
-
+            </div>
         </div>
     </div>
 </div>
-{{-- End About Us --}}
+</div>
+<!-- Hero End -->
 <!-- Bestseller Product Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
@@ -92,13 +77,35 @@
 </div>
 
 <!-- Bestseller Product End -->
+{{-- Cara Berbelanja --}}
+<div class="container-fluid py-3">
+    <div class="container py-3">
+        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+            <h1 class="display-5" style="margin-top: 10px;">Cara Berbelanja</h1>
+            <p>Bagaimana cara belanja di UMKMart.id simak ilustrasi berikut</p>
+            <img src="{{ asset('LandingPage/img/how-to-shop.png') }}" style="width: 800px; height: 400px;">
 
+        </div>
+    </div>
+</div>
+{{-- End About Us --}}
 {{-- About Us --}}
 <div class="container-fluid py-5" id="aboutus">
-    <div class="container py-5">
-        <div class="text-center mx-auto mb-9" style="max-width: 700px;">
-            <h1 class="display-5" style="margin-top: 50px;">About Us</h1>
-            <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
+    <div class="text-center mx-auto mb-9" style="max-width: 700px;">
+        <h1 class="display-5" style="margin-top: 50px;">Tentang Kami</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            @if ($about)
+            <div class="text-center">
+                @if ($about->image)
+                <img src="{{ asset('storage/' . $about->image) }}" class="img-fluid mb-3" alt="About Image" width="200px" height="200px">
+                @endif
+                <p>{!! $about->content !!}</p>
+            </div>
+            @else
+            <p>Data tentang kami belum tersedia.</p>
+            @endif
         </div>
     </div>
 </div>

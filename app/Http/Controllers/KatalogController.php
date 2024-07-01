@@ -171,3 +171,4 @@ class KatalogController extends Controller
             return view('pages.Landing.shop', compact('products', 'categories'));
         }
     }
+

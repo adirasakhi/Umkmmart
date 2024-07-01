@@ -60,7 +60,8 @@ Route::middleware('auth', 'role')->group(function () {
     Route::post('/users/showInactive', [UserController::class, 'showInactive'])->name('showInactive');
     Route::post('/users/showReject', [UserController::class, 'showRejected'])->name('showRejected');
 
-    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/update-status/{id}', [UserController::class, 'updateStatus'])->name('users.update.status');
+    Route::post('/users/update-user/{id}', [UserController::class, 'updateUser'])->name('users.update.user');
     Route::post('/users/action-reject/{id}', [UserController::class, 'actionReject'])->name('users.action.reject');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
@@ -71,6 +72,10 @@ Route::middleware('auth', 'role')->group(function () {
     Route::post('/products/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::post('/products/{product}/variants', [ProductController::class, 'storeVariant'])->name('products.variants.store');
+    Route::put('/products/variants/{variant}', [ProductController::class, 'updateVariant'])->name('products.variants.update');
+    Route::delete('/products/variants/{variant}', [ProductController::class, 'deleteVariant'])->name('products.variants.delete');
+
 
     // banners Routes
     Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');

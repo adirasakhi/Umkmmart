@@ -15,17 +15,17 @@
             </div>
             <div class="col-md-12 col-lg-5">
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
+                    <div class="carousel-inner rounded" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Kerajinan</a>
+                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid bg-secondary rounded" alt="First slide" style="height: 240px; width:400px;">
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 200px; height:60px;">Kerajinan</a>
                         </div>
                         @foreach($slide as $value)
                         <div class="carousel-item rounded">
                             <div class="image-wrapper">
-                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img" alt="Slide">
+                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img rounded" alt="Slide" style="height: 240px; width:400px;">
                             </div>
-                            <a href="#" class="btn px-4 py-2 text-white rounded">{!! $value->description !!}</a>
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 200px; height:60px;">{!! $value->description !!}</a>
                         </div>
                         @endforeach
                     </div>
@@ -104,7 +104,7 @@
                 @endif
             </div>
             <div class="text-center">
-                <p>{!! $about->content !!}</p>
+                <p  style="text-align: justify">{!! $about->content !!}</p>
 
             </div>
             @else

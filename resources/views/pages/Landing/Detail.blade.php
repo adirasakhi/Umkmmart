@@ -37,9 +37,9 @@
                         @if (
                             $product->variants->sortBy('price')->first()->price >
                                 $product->variants->sortBy('price')->first()->discounted_price)
-                            <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
-                            <h2 class="discounted-price" id="orderVariantPrice">
-                                Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
+                            <h2 class="discounted-price mb-3" id="orderVariantPrice">
+                                <strong>
+                                Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}</strong>
                             </h2>
                         @else
                             <h2 class="discounted-price mb-3" id="orderVariantPrice">
@@ -264,7 +264,8 @@
                         `<span class="strike-through">Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</span><br><strong>Rp${new Intl.NumberFormat('id-ID').format(variantDiscountedPrice)}</strong>`;
                 } else {
                     orderVariantPrice.textContent = `Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}`;
-                    orderVariantPrice.innerHTML = `<strong>Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</strong>`;
+                    orderVariantPrice.innerHTML =
+                        `<strong>Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</strong>`;
                 }
                 updateTotalPrice();
             }

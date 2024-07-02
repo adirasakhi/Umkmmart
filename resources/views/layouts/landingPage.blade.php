@@ -217,7 +217,7 @@
             margin-bottom: 0;
             /* Menghapus margin bawah dari elemen h6 */
             margin-top: 0;
-            /* Menghapus margin atas dari elemen h2 */
+            /* Menghapus margin atas dari elemen h2 */}
         .container-fluid .overlay {
             position: absolute;
             top: 0px;

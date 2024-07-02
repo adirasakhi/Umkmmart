@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.auth.css') }}">
-    <title>Halaman Login Modern | AsmrProg</title>
+    <title>UMKMart | Login</title>
     <style>
         .error-message {
             color: red;
@@ -94,7 +94,7 @@
                 <input type="email" name="email" placeholder="Email" required
                     value="{{ session('action') == 'login' ? old('email') : '' }}">
                 <input type="password" name="password" placeholder="Kata Sandi" required>
-                <a href="#">Lupa Kata Sandi Anda?</a>
+                {{-- <a href="#">Lupa Kata Sandi Anda?</a> --}}
                 <button type="submit">Masuk</button>
             </form>
         </div>

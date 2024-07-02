@@ -37,7 +37,7 @@
                         @if (
                             $product->variants->sortBy('price')->first()->price >
                                 $product->variants->sortBy('price')->first()->discounted_price)
-                            <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
+                            {{-- <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p> --}}
                             <h2 class="discounted-price" id="orderVariantPrice">
                                 Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
                             </h2>
@@ -155,7 +155,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <img src="{{ asset('storage/' . $product->seller->photo) }}" alt="">
+                        <img src="{{ asset('storage/' . $product->seller->photo) }}" alt="" style="width: 100px; margin-left:180px">
                         <p><strong>Toko :</strong> {{ $product->seller->name }}</p>
                     </div>
                     <p><strong>Lokasi :</strong> {{ $product->seller->address }}</p>

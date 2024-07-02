@@ -3,7 +3,7 @@
 @section('content')
 <!-- Hero Start -->
 <div class="container-fluid py-5 mb-5 hero-header position-relative">
-    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" >
+    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" style="height: 480px; object-fit:cover" >
     <div class="container py-5 ">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
@@ -49,7 +49,7 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-5">Produk Terlaris</h1>
+            <h1 class="display-5">Produk Terpopuler</h1>
             <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
         </div>
         <div class="row g-4">

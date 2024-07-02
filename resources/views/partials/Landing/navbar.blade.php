@@ -19,7 +19,7 @@
                         <a href="/#aboutus"
                             class="nav-item nav-link {{ Request::is('aboutus') ? 'active' : '' }}">Tentang Kami</a>
                         <a href="#contact"
-                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Kotak</a>
+                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Kontak</a>
 
                         <a href="/login" class="nav-item nav-link d-xl-none">Masuk</a>
                         <a href="/login" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">

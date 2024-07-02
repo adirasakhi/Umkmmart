@@ -143,7 +143,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Tambah Kategori</h4>
+                <h4 class="modal-title" id="myModalLabel">Tambah Banner</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>
                 </div>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description" class="control-label">Deskripsi</label>
-                            <textarea name="description" class="summernote-simple"></textarea>
+                            <textarea name="description" class="summernote-simple" style="height: 100px"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="type" class="control-label">Tipe</label>
@@ -190,7 +190,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Hapus Kategori</h4>
+                    <h4 class="modal-title" id="myModalLabel">Hapus Banner</h4>
                 </div>
                 <div class="modal-body">
                     <p>Apakah Anda yakin ingin menghapus Banner ini?</p>

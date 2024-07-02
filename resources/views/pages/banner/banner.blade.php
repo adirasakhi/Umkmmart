@@ -162,7 +162,7 @@
                             <label for="type" class="control-label">Tipe</label>
                             <select name="type" class="form-control">
                                 <option value="">-- Pilih Tipe Banner --</option>
-                                <option value="slideshow">Banner Slideshow</option>
+                                <option value="slideshow">Banner Slideshow <span class="bg-red">(Ukuran : )</span></option>
                                 @php
                                 $headBannerExists = $banner->contains('type', 'head');
                                 @endphp

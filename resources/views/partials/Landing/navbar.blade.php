@@ -3,7 +3,8 @@
     <div class="container pt-4 top-link">
         <nav class="navbar navbar-light bg-white navbar-expand-xl align-items-center">
             <a href="/" class="navbar-brand">
-                <h1 class="text-primary display-6">UMKMart.id</h1>
+                {{-- <h1 class="text-primary display-6">UMKMart.id</h1> --}}
+                <img src="{{ asset('storage/logo.png' ) }}" alt="" style="width: 150px">
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse">

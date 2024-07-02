@@ -3,7 +3,8 @@
     <div class="container pt-4 top-link">
         <nav class="navbar navbar-light bg-white navbar-expand-xl align-items-center">
             <a href="/" class="navbar-brand">
-                <h1 class="text-primary display-6">UMKMart.id</h1>
+                {{-- <h1 class="text-primary display-6">UMKMart.id</h1> --}}
+                <img src="{{ asset('storage/logo.png' ) }}" alt="" style="width: 120px">
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse">
@@ -18,7 +19,7 @@
                         <a href="/#aboutus"
                             class="nav-item nav-link {{ Request::is('aboutus') ? 'active' : '' }}">Tentang Kami</a>
                         <a href="#contact"
-                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Kotak</a>
+                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Kontak</a>
 
                         <a href="/login" class="nav-item nav-link d-xl-none">Masuk</a>
                         <a href="/login" class="ms-3 d-flex align-items-center user-icon d-none d-xl-inline">

@@ -44,7 +44,7 @@
                 <div class="col-lg-6">
                     <div class="card" style="height: 400px;">
                         <div class="card-header">
-                            <h4>Products Per Category</h4>
+                            <h4>Produk Per Kategori</h4>
                         </div>
                         <div class="card-body" style="height: 90%;">
                             <canvas id="productsPerCategoryChart" style="height: 100%;"></canvas>
@@ -54,7 +54,7 @@
                 <div class="col-lg-6">
                     <div class="card" style="height: 400px;">
                         <div class="card-header">
-                            <h4>Total Visitors</h4>
+                            <h4>Total Pengunjung</h4>
                         </div>
                         <div class="card-body" style="height: 90%;">
                             <canvas id="totalVisitorsChart" style="height: 100%;"></canvas>
@@ -77,7 +77,7 @@
                 data: {
                     labels: productsPerCategoryLabels,
                     datasets: [{
-                        label: 'Products Count',
+                        label: 'Produk Per Kategori',
                         data: productsPerCategoryData,
                         backgroundColor: '#6777ef',
                         borderColor: '#6777ef',
@@ -116,7 +116,7 @@
                 data: {
                     labels: totalVisitorsData.labels,
                     datasets: [{
-                        label: 'Total Visitors Per Day',
+                        label: 'Total Pengunjung Per Hari',
                         data: totalVisitorsData.daily.map(function(value) { return parseInt(value); }),
                         backgroundColor: '#6777ef',
                         borderColor: '#6777ef',
@@ -124,7 +124,7 @@
                         pointBackgroundColor: '#ffffff',
                         pointRadius: 4
                     }, {
-                        label: 'Total Visitors Per Month',
+                        label: 'Total Pengunjung Per Bulan',
                         data: totalVisitorsData.monthly.map(function(value) { return parseInt(value); }),
                         backgroundColor: '#fc544b',
                         borderColor: '#fc544b',

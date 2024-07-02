@@ -3,7 +3,7 @@
 @section('content')
 <!-- Hero Start -->
 <div class="container-fluid py-5 mb-5 hero-header position-relative">
-    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" >
+    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" style="height: 480px; object-fit:cover" >
     <div class="container py-5 ">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
@@ -15,17 +15,17 @@
             </div>
             <div class="col-md-12 col-lg-5">
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
+                    <div class="carousel-inner rounded" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Kerajinan</a>
+                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid bg-secondary rounded" alt="First slide" style="height: 240px; width:400px;">
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 200px; height:60px;">Kerajinan</a>
                         </div>
                         @foreach($slide as $value)
                         <div class="carousel-item rounded">
                             <div class="image-wrapper">
-                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img" alt="Slide">
+                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img rounded" alt="Slide" style="height: 240px; width:400px;">
                             </div>
-                            <a href="#" class="btn px-4 py-2 text-white rounded">{!! $value->description !!}</a>
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 200px; height:60px;">{!! $value->description !!}</a>
                         </div>
                         @endforeach
                     </div>
@@ -49,7 +49,7 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-5">Produk Terlaris</h1>
+            <h1 class="display-5">Produk Terpopuler</h1>
             <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
         </div>
         <div class="row g-4">
@@ -104,7 +104,7 @@
                 @endif
             </div>
             <div class="text-center">
-                <p>{!! $about->content !!}</p>
+                <p  style="text-align: justify">{!! $about->content !!}</p>
 
             </div>
             @else

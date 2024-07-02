@@ -147,7 +147,7 @@
 
     <!-- Modal Tambah -->
     <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">Tambah Produk</h4>
@@ -159,15 +159,15 @@
                         onsubmit="return validateForm();">
                         @csrf
                         <div class="form-group">
-                            <label for="name" class="control-label">Nama Produk</label>
+                            <label for="name" class="control-label">Nama Produk <span style="color: red">*</span></label>
                             <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                         </div>
                         <div class="form-group">
-                            <label for="description" class="control-label">Deskripsi</label>
+                            <label for="description" class="control-label">Deskripsi <span style="color: red">*</span></label>
                             <textarea name="description" class="summernote-simple"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="category_id" class="control-label">Kategori</label>
+                            <label for="category_id" class="control-label">Kategori <span style="color: red">*</span></label>
                             <select name="category_id" class="form-control">
                                 <option value="">-- Pilih Jenis --</option>
                                 @foreach ($categories as $category)
@@ -258,8 +258,8 @@
                                         <td>{{ $variant->name }}</td>
                                         <td>{{ $variant->price }}</td>
                                         <td>{{ $variant->discount }}</td>
-                                        <td><img src="{{ Storage::url($variant->image) }}" alt="Image" width="50"
-                                                style="object-fit: cover;">
+                                        <td><a href="{{ Storage::url($variant->image) }}"><img src="{{ Storage::url($variant->image) }}" alt="Image" width="50"
+                                                style="object-fit: cover;"></a>
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -291,12 +291,12 @@
                             <div id="variantContainer{{ $product->id }}">
                                 <div class="variant">
                                     <div class="form-group">
-                                        <label>Nama Varian</label>
+                                        <label>Nama Varian <span style="color: red">*</span></label>
                                         <input type="text" name="variant_name[]" class="form-control"
                                             placeholder="Misal : Warna/Ukuran/Rasa" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Harga Varian</label>
+                                        <label>Harga Varian <span style="color: red">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text" style="border-radius: 4px">
@@ -312,7 +312,7 @@
                                             placeholder="Misal : 10 (boleh dikosongkan bila tidak ada diskon)">
                                     </div>
                                     <div class="form-group">
-                                        <label>Gambar Varian</label>
+                                        <label>Gambar Varian <span style="color: red">*</span></label>
                                         <input type="file" name="variant_image[]" class="form-control" required>
                                     </div>
                                 </div>

@@ -47,7 +47,7 @@ body {
 }
 
 .container button {
-    background-color: #512da8;
+    background-color: #404040;
     color: #fff;
     font-size: 12px;
     padding: 8px 30px;
@@ -88,7 +88,7 @@ body {
 }
 
 .container input:focus {
-    border: 2px solid #512da8;
+    border: 2px solid #404040;
     background-color: #f4f4f4;
 }
 
@@ -151,9 +151,9 @@ body {
 }
 
 .toggle {
-    background-color: #512da8;
+    background-color: #404040;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
+    background: linear-gradient(to right, #707070, #404040);
     color: #fff;
     position: relative;
     left: -100%;

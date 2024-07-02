@@ -19,27 +19,24 @@ class HomepageController extends Controller
         $bannerHead = Banner::where('type', 'head')->first();
         $user = User::all();
         $about = About::all()->first();
-        $popularProduct = Product::select(
-            'product.id',
-            'product.name',
-            'users.name as saller_name',
-            DB::raw('COUNT(product_clicks.id) as click_count')
-        )
-        ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-        ->join('users', 'product.seller_id', '=', 'users.id')
+        $subquery = DB::table('variants')
+            ->select('product_id', DB::raw('MIN(price) as min_price'))
+            ->groupBy('product_id');
 
-        ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
-        ->groupBy(
-            'product.id',
-            'product.name',
-            'users.name'
-        )
-        ->orderByDesc('click_count')
-        ->take(10)
-        ->get();
+        $popularProduct = DB::table('product')
+            ->joinSub($subquery, 'min_variants', function ($join) {
+                $join->on('product.id', '=', 'min_variants.product_id');
+            })
+            ->join('variants', function ($join) {
+                $join->on('product.id', '=', 'variants.product_id')
+                    ->whereColumn('variants.price', '=', 'min_variants.min_price');
+            })
+            ->join('users', 'product.seller_id', '=', 'users.id')
+            ->select('product.id', 'product.name', 'min_variants.min_price as min_price', 'variants.image as min_variant_image', 'users.name as seller_name')
+            ->limit(6)
+            ->get();
 
 
-        return view('pages.Landing.index', ['popularProduct' => $popularProduct, 'slide'=> $bannerSlide, 'bannerHead'=> $bannerHead, 'about'=>$about]);
+        return view('pages.Landing.index', ['popularProduct' => $popularProduct, 'slide' => $bannerSlide, 'bannerHead' => $bannerHead, 'about' => $about]);
     }
-
 }

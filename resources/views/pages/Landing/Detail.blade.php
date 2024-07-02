@@ -25,26 +25,27 @@
                     </div>
                     @endforeach
                 </div>
-            </div>
-            <!-- Product Details -->
-            <div class="col-lg-5 scrollable-column">
-                <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
-                <p class="mb-1">{{ $product->category->category }}</p>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#myModalSeller">
-                    <p class="mb-2"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
-                </a>
-                <div>
-                    @if (
-                        $product->variants->sortBy('price')->first()->price >
-                        $product->variants->sortBy('price')->first()->discounted_price)
-                        <p class="strike-through">{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
-                        <h2 class="discounted-price" id="orderVariantPrice">
-                            {{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
-                        </h2>
+                <!-- Product Details -->
+                <div class="col-lg-5 scrollable-column">
+                    <h4 class="fw-bold mb-1">{{ $product->name }}</h4>
+                    <p class="mb-1">{{ $product->category->category }}</p>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#myModalSeller">
+                        <p class="mb-2"><i class="fas fa-store"></i> {{ $product->seller->name }}</p>
+                    </a>
+                    <div>
+                        @if (
+                            $product->variants->sortBy('price')->first()->price >
+                                $product->variants->sortBy('price')->first()->discounted_price)
+                            <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
+                            <h2 class="discounted-price" id="orderVariantPrice">
+                                Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
+                            </h2>
                         @else
-                        <h2 class="discounted-price" id="orderVariantPrice">
-                            {{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}
-                        </h2>
+                            <h2 class="discounted-price mb-3" id="orderVariantPrice">
+                                <strong>
+                                    Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}
+                                </strong>
+                            </h2>
                         @endif
                     </div>
                     <h6><strong>Pilih Varian</strong></h6>
@@ -165,38 +166,38 @@
                     <p><strong>Media Sosial</strong></p>
                     <div>
                         @if ($product->seller->socialMedia)
-                        @if ($product->seller->socialMedia->facebook)
-                        <a href="https://www.facebook.com/{{ $product->seller->socialMedia->facebook }}"
-                            style="display: inline-block; margin-right: 10px;">
-                            <span class="badge bg-primary text-white" style="padding: 10px; border-radius: 5px;">
-                                <i class="bi bi-facebook text-white"></i> Facebook
-                            </span>
-                        </a>
-                        @endif
-                        @if ($product->seller->socialMedia->instagram)
-                        <a href="https://www.instagram.com/{{ $product->seller->socialMedia->instagram }}"
-                            style="display: inline-block; margin-right: 10px;">
-                            <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
-                                <i class="bi bi-instagram text-white"></i> Instagram
-                            </span>
-                        </a>
-                        @endif
-                        @if ($product->seller->socialMedia->tiktok)
-                        <a href="https://www.tiktok.com/@{{ $product - > seller - > socialMedia - > tiktok }}"
-                            style="display: inline-block; margin-right: 10px;">
-                            <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
-                                <i class="bi bi-tiktok text-white"></i> TikTok
-                            </span>
-                        </a>
-                        @endif
-                        @if ($product->seller->socialMedia->youtube)
-                        <a href="https://www.youtube.com/{{ $product->seller->socialMedia->youtube }}"
-                            style="display: inline-block; margin-right: 10px;">
-                            <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
-                                <i class="bi bi-youtube text-white"></i> YouTube
-                            </span>
-                        </a>
-                        @endif
+                            @if ($product->seller->socialMedia->facebook)
+                                <a href="https://www.facebook.com/{{ $product->seller->socialMedia->facebook }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-primary text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-facebook text-white"></i> Facebook
+                                    </span>
+                                </a>
+                            @endif
+                            @if ($product->seller->socialMedia->instagram)
+                                <a href="https://www.instagram.com/{{ $product->seller->socialMedia->instagram }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-instagram text-white"></i> Instagram
+                                    </span>
+                                </a>
+                            @endif
+                            @if ($product->seller->socialMedia->tiktok)
+                                <a href="https://www.tiktok.com/@{{ $product - > seller - > socialMedia - > tiktok }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-tiktok text-white"></i> TikTok
+                                    </span>
+                                </a>
+                            @endif
+                            @if ($product->seller->socialMedia->youtube)
+                                <a href="https://www.youtube.com/{{ $product->seller->socialMedia->youtube }}"
+                                    style="display: inline-block; margin-right: 10px;">
+                                    <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
+                                        <i class="bi bi-youtube text-white"></i> YouTube
+                                    </span>
+                                </a>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -241,7 +242,7 @@
             btnMinus.addEventListener('click', function() {
                 if (parseInt(productQuantity.value) > 0) {
                     productQuantity.value = parseInt(productQuantity
-                    .value); // Decrement quantity by 1, but not below 1
+                        .value); // Decrement quantity by 1, but not below 1
                     updateTotalPrice();
                 }
             });
@@ -259,13 +260,11 @@
 
                 if (variantPrice > variantDiscountedPrice) {
                     orderVariantPrice.innerHTML =
-                    `<span class="strike-through">Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</span><br>
-                    Rp${new Intl.NumberFormat('id-ID').format(variantDiscountedPrice)}
-                    `;
+                        `<span class="strike-through">Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</span><br><strong>Rp${new Intl.NumberFormat('id-ID').format(variantDiscountedPrice)}</strong>`;
                 } else {
                     orderVariantPrice.textContent = `Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}`;
+                    orderVariantPrice.innerHTML = `<strong>Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</strong>`;
                 }
-
                 updateTotalPrice();
             }
 

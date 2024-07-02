@@ -235,8 +235,10 @@
 
         .strike-through {
             text-decoration: line-through;
-            opacity: 0.6;
-            font-weight: lighter;
+            /* opacity: 0.6; */
+            font-weight:bold;
+            font-size: 1.5rem;
+            color: #dc3545;
         }
 
     </style>

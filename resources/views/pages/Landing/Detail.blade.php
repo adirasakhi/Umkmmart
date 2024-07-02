@@ -1,29 +1,30 @@
 @extends('layouts.landingPage')
 @section('content')
 
-<!-- Single Product Start -->
-<div class="container-fluid py-5 mt-5">
-    <div class="container py-5">
-        <div class="row g-4 mb-5">
-            <!-- Main Image and Thumbnails -->
-            <div class="col-lg-4">
-                <div class="main-image-container border rounded mb-3">
-                    <a href="#">
-                        <img src="{{ asset('storage/' . $product->variants->sortBy('price')->first()->image) }}"
-                        class="img-fluid rounded" alt="Image" id="expandedImg" style="object-fit: cover;">
-                    </a>
-                </div>
-                <div class="scrollable-row">
-                    @foreach ($variants as $variant)
-                    <div class="col">
-                        <img src="{{ asset('storage/' . $variant->image) }}" class="img-fluid rounded imgClick"
-                        alt="Image" style="object-fit: cover;" data-variant-id="{{ $variant->id }}"
-                        data-variant-name="{{ $variant->name }}"
-                        data-variant-price="{{ number_format($variant->price, 0, ',', '.') }}"
-                        data-variant-discounted-price="{{ number_format($variant->discounted_price, 0, ',', '.') }}"
-                        data-variant-image="{{ asset('storage/' . $variant->image) }}">
+    <!-- Single Product Start -->
+    <div class="container-fluid py-5 mt-5">
+        <div class="container py-5">
+            <div class="row g-4 mb-5">
+                <!-- Main Image and Thumbnails -->
+                <div class="col-lg-4">
+                    <div class="main-image-container border rounded mb-3">
+                        <a href="#">
+                            <img src="{{ asset('storage/' . $product->variants->sortBy('price')->first()->image) }}"
+                                class="img-fluid rounded" alt="Image" id="expandedImg" style="object-fit: cover;">
+                        </a>
                     </div>
-                    @endforeach
+                    <div class="scrollable-row">
+                        @foreach ($variants as $variant)
+                            <div class="col">
+                                <img src="{{ asset('storage/' . $variant->image) }}" class="img-fluid rounded imgClick"
+                                    alt="Image" style="object-fit: cover;" data-variant-id="{{ $variant->id }}"
+                                    data-variant-name="{{ $variant->name }}"
+                                    data-variant-price="{{ number_format($variant->price, 0, ',', '.') }}"
+                                    data-variant-discounted-price="{{ number_format($variant->discounted_price, 0, ',', '.') }}"
+                                    data-variant-image="{{ asset('storage/' . $variant->image) }}">
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
                 <!-- Product Details -->
                 <div class="col-lg-5 scrollable-column">
@@ -51,13 +52,13 @@
                     <h6><strong>Pilih Varian</strong></h6>
                     <div class="variant-container">
                         @foreach ($variants as $variant)
-                        <div class="variant-item" data-variant-id="{{ $variant->id }}"
-                            data-variant-name="{{ $variant->name }}"
-                            data-variant-price="{{ number_format($variant->price, 0, ',', '.') }}"
-                            data-variant-discounted-price="{{ number_format($variant->discounted_price, 0, ',', '.') }}"
-                            data-variant-image="{{ asset('storage/' . $variant->image) }}">
-                            {{ $variant->name }}
-                        </div>
+                            <div class="variant-item" data-variant-id="{{ $variant->id }}"
+                                data-variant-name="{{ $variant->name }}"
+                                data-variant-price="{{ number_format($variant->price, 0, ',', '.') }}"
+                                data-variant-discounted-price="{{ number_format($variant->discounted_price, 0, ',', '.') }}"
+                                data-variant-image="{{ asset('storage/' . $variant->image) }}">
+                                {{ $variant->name }}
+                            </div>
                         @endforeach
                     </div>
                     <div>
@@ -83,10 +84,10 @@
                     <div class="row">
                         <div class="d-flex my-3">
                             <img src="{{ asset('storage/' . $product->variants->sortBy('price')->first()->image) }}"
-                            class="img-fluid" alt="Image" id="orderVariantImage"
-                            style="object-fit: cover; width:30px; border-radius:4px;">
+                                class="img-fluid" alt="Image" id="orderVariantImage"
+                                style="object-fit: cover; width:30px; border-radius:4px;">
                             <div class="variant-item bg-white border-0"><strong
-                                id="orderVariantName">{{ $product->variants->sortBy('price')->first()->name }}</strong>
+                                    id="orderVariantName">{{ $product->variants->sortBy('price')->first()->name }}</strong>
                             </div>
                         </div>
                     </div>
@@ -97,7 +98,7 @@
                             </button>
                         </div>
                         <input type="text" id="productQuantity" class="form-control form-control-sm text-center border-0"
-                        value="1">
+                            value="1">
                         <div class="input-group-btn">
                             <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                 <i class="fa fa-plus"></i>
@@ -127,17 +128,17 @@
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($related_products as $related_product)
-                    <div class="card h-100">
-                        <img src="{{ asset('storage/' . $related_product->min_variant_image) }}" class="card-img-top"
-                        style="height: 150px; object-fit: cover;" alt="Image">
-                        <div class="card-body">
-                            <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
-                                <h6 class="card-title">{{ $related_product->name }}</h6>
-                            </a>
-                            <h6><strong>Rp{{ number_format($related_product->min_price, 0, ',', '.') }}</strong></h6>
-                            <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller_name }}</p>
+                        <div class="card h-100">
+                            <img src="{{ asset('storage/' . $related_product->min_variant_image) }}" class="card-img-top"
+                                style="height: 150px; object-fit: cover;" alt="Image">
+                            <div class="card-body">
+                                <a href="{{ route('katalog.detail', ['id' => $related_product->id]) }}">
+                                    <h6 class="card-title">{{ $related_product->name }}</h6>
+                                </a>
+                                <h6><strong>Rp{{ number_format($related_product->min_price, 0, ',', '.') }}</strong></h6>
+                                <p class="small"><i class="fas fa-store"></i> {{ $related_product->seller_name }}</p>
+                            </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>
@@ -300,12 +301,12 @@
                 var sellerPhone = "{{ $product->seller->phone }}";
 
                 var message = `Halo, saya tertarik dengan produk Anda.
-                Nama produk: ${productName}
-                Varian: ${variantName}
-                Harga produk: ${originalPrice ? `Rp${originalPrice.toLocaleString('id-ID')} (diskon menjadi: Rp${variantPrice.toLocaleString('id-ID')})` : `Rp${variantPrice.toLocaleString('id-ID')}`}
-                Jumlah produk yang dibeli: ${quantity}
-                Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
-                Link produk: ${location.href}`;
+    Nama produk: ${productName}
+    Varian: ${variantName}
+    Harga produk: ${originalPrice ? `Rp${originalPrice.toLocaleString('id-ID')} (diskon menjadi: Rp${variantPrice.toLocaleString('id-ID')})` : `Rp${variantPrice.toLocaleString('id-ID')}`}
+    Jumlah produk yang dibeli: ${quantity}
+    Total harga produk: Rp${totalPrice.toLocaleString('id-ID')}
+    Link produk: ${location.href}`;
 
                 var whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
                 window.open(whatsappUrl, '_blank');
@@ -313,4 +314,4 @@
         });
     </script>
 
-    @endsection
+@endsection

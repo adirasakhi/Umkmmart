@@ -52,8 +52,6 @@
                     @endif
 
                     <div style="display: flex; align-items: center;">
-                        <span
-                            style="padding: 11px 0px 10px 11px;  background-color: #eee; border-radius: 7px 0 0 7px; color: grey">+62</span>
                         <input type="tel" name="phone" placeholder="No. Telepon"
                             value="{{ old('phone') ? substr(old('phone'), 3) : '' }}" pattern="[0-9]+"
                             title="Masukkan hanya angka" style="flex: 1; padding: 10px; border-radius: 0 7px 7px 0;">

@@ -38,7 +38,7 @@
                             $product->variants->sortBy('price')->first()->price >
                                 $product->variants->sortBy('price')->first()->discounted_price)
                             {{-- <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p> --}}
-                            <h2 class="discounted-price" id="orderVariantPrice">
+                            <h2 class="discounted-price mb-3" id="orderVariantPrice">
                                 Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
                             </h2>
                         @else
@@ -75,19 +75,21 @@
                     </div>
                 </div>
                 <!-- Order Section -->
-                <div class="col-lg-3 border rounded" style="height:300px">
+                <div class="col-lg-3 border rounded" style="height: 300px; overflow: hidden;">
                     <div class="nav nav-tabs my-3 justify-content-center">
                         <h6 class="nav-link">
                             Atur Pesanan
                         </h6>
                     </div>
-                    <div class="row">
+                    <div class="row" style="overflow-x: auto;">
                         <div class="d-flex my-3">
                             <img src="{{ asset('storage/' . $product->variants->sortBy('price')->first()->image) }}"
                                 class="img-fluid" alt="Image" id="orderVariantImage"
-                                style="object-fit: cover; width:30px; border-radius:4px;">
-                            <div class="variant-item bg-white border-0"><strong
-                                    id="orderVariantName">{{ $product->variants->sortBy('price')->first()->name }}</strong>
+                                style="object-fit: cover; width: 30px; border-radius: 4px; margin-right: 10px;">
+                            <div class="variant-item bg-white border-0">
+                                <strong class="variant-name" id="orderVariantName">
+                                    {{ $product->variants->sortBy('price')->first()->name }}
+                                </strong>
                             </div>
                         </div>
                     </div>
@@ -123,6 +125,7 @@
                         </a>
                     </div>
                 </div>
+
             </div>
             <h1 class="fw-bold mb-0">Produk Terkait</h1>
             <div class="vesitable">
@@ -155,7 +158,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <img src="{{ asset('storage/' . $product->seller->photo) }}" alt="" style="width: 100px; margin-left:180px">
+                        <img src="{{ asset('storage/' . $product->seller->photo) }}" alt=""
+                            style="width: 100px; margin-left:180px">
                         <p><strong>Toko :</strong> {{ $product->seller->name }}</p>
                     </div>
                     <p><strong>Lokasi :</strong> {{ $product->seller->address }}</p>
@@ -264,7 +268,8 @@
                         `<span class="strike-through">Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</span><br><strong>Rp${new Intl.NumberFormat('id-ID').format(variantDiscountedPrice)}</strong>`;
                 } else {
                     orderVariantPrice.textContent = `Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}`;
-                    orderVariantPrice.innerHTML = `<strong>Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</strong>`;
+                    orderVariantPrice.innerHTML =
+                        `<strong>Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</strong>`;
                 }
                 updateTotalPrice();
             }

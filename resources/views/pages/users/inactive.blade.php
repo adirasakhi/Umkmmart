@@ -35,7 +35,8 @@
     @endif
 
     <!-- Modal Edit -->
-    <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    @foreach ($inactiveUsers as $user)
+    <div class="modal fade" id="myModalEdit_{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -44,12 +45,15 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="data"></div>
+                    <div class="data">
+                        @include('pages.users.showInactive')
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>
         </div>
     </div>
+    @endforeach
     <!-- end Edit Modal -->
 
     <!-- Main Content -->
@@ -93,7 +97,8 @@
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <div class="d-flex justify-content-start align-items-center">
                                                                 <button class="btn btn-icon btn-primary edit"
-                                                                    data-id="{{ $user->id }}"><i
+                                                                    data-id="{{ $user->id }}" data-bs-toggle="modal"
+                                                                    data-bs-target="#myModalEdit_{{ $user->id }}"><i
                                                                         class="bi bi-eye-fill"></i></button>
                                                                 {{-- <button class="btn btn-icon btn-danger delete-btn mx-2"
                                                                     data-id="{{ $user->id }}" data-bs-toggle="modal"

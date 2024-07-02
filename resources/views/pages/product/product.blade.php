@@ -34,8 +34,9 @@
         </script>
     @endif
 
+    @foreach ($products as $product)
     <!-- Modal Edit -->
-    <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myModalEdit_{{ $product->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -44,13 +45,16 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="data"></div>
+                    <div class="data">
+                        @include('pages.product.product-edit')
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>
         </div>
     </div>
     <!-- End Edit Modal -->
+    @endforeach
 
     <!-- Main Content -->
     <div class="main-content">
@@ -124,7 +128,8 @@
                                                             @if (Auth::user()->role_id == 2)
                                                                 <button class="btn btn-icon btn-warning edit mx-2"
                                                                     data-id="{{ $product->id }}"><i
-                                                                        class="far fa-edit"></i></button>
+                                                                        class="far fa-edit" data-bs-toggle="modal"
+                                                                        data-bs-target="#myModalEdit_{{ $product->id }}"></i></button>
                                                             @endif
                                                             <button class="btn btn-icon btn-danger delete-btn mx-2"
                                                                 data-id="{{ $product->id }}" data-bs-toggle="modal"
@@ -238,6 +243,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="table-responsive">
                         <!-- Tampilkan daftar varian -->
                         <table class="table table-striped border border-color-black">
                             <thead>
@@ -321,7 +327,7 @@
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
                         @endif
-
+                    </div>
                     </div>
                 </div>
             </div>

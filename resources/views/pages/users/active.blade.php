@@ -15,8 +15,8 @@
             {{ session('error') }}
         </div>
     @endif
-
-    <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    @foreach ($users as $user)
+    <div class="modal fade" id="myModalEditStatus_{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -25,12 +25,15 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="data"></div>
+                    <div class="data">
+                        @include('pages.users.showActive')
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>
         </div>
     </div>
+    @endforeach
     {{-- Modal for Editing User --}}
     @foreach ($users as $user)
         <div class="modal fade" id="myModalEdit_{{ $user->id }}" tabindex="-1" role="dialog"
@@ -67,9 +70,11 @@
                                     value="{{ $user->phone }}" style="background-color:#e9ecef; cursor: default;">
                             </div>
                             <div class="mb-3">
-                                <label for="photo" class="form-label">Foto</label>
+                                <label for="photo" class="form-label d-flex">Dokumen</label>
                                 <img src="{{ asset('storage/' . $user->support_document) }}"
-                                    class="img-fluid rounded mb-2 img-thumbnail" alt="">
+                                    class="img-fluid rounded mb-3 img-thumbnail d-flex" width="150px">
+                                <input type="file" name="support_document" id="support_document"
+                                    accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
                             </div>
                             <div class="form-group">
                                 <label for="facebook" class="control-label">Facebook</label>
@@ -182,8 +187,10 @@
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <button class="btn btn-icon btn-primary edit"
-                                                                data-id="{{ $user->id }}"><i
+                                                                data-id="{{ $user->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#myModalEditStatus_{{ $user->id }}"><i
                                                                     class="bi bi-eye-fill"></i></button>
+
                                                             <div class="button">
                                                                 <button class="btn btn-warning mx-2"
                                                                     data-bs-toggle="modal"
@@ -290,7 +297,6 @@
                         <div class="form-group">
                             <label for="whatsapp" class="control-label">WhatsApp</label>
                             <div class="input-group">
-                                <span class="input-group-text">+62</span>
                                 <input type="tel" name="whatsapp" placeholder="WhatsApp"
                                     value="{{ old('whatsapp') ? (substr(old('whatsapp'), 0, 1) === '0' ? '62' . substr(old('whatsapp'), 1) : old('whatsapp')) : '' }}"
                                     pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">
@@ -298,7 +304,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tiktok" class="control-label">Tiktok</label>
-                            <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
+                            <input type="text" name="tiktok" class="form-control" placeholder="@ Akun Tiktok"
                                 value="{{ old('tiktok') }}">
                         </div>
                         <div class="form-group">

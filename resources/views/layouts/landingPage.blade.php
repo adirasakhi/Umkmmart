@@ -126,6 +126,105 @@
             border-color: black;
         }
 
+        .scrollable-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .main-image-container img {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .scrollable-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+            gap: 10px;
+        }
+
+        .scrollable-row .col {
+            flex: 0 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .scrollable-row .col img {
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .variant-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .variant-item {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+
+        .variant-item:hover {
+            background-color: #e2e2e2;
+            cursor: pointer;
+        }
+
+        .main-image-container img {
+            width: 100%;
+            height: 360px;
+        }
+
+        .nav-tabs .nav-link {
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .nav-tabs .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: black;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .scrollable-column {
+            max-height: 500px;
+            /* Adjust this value as needed */
+            overflow-y: auto;
+        }
+
+        h6,
+        h2#orderVariantPrice {
+            margin-bottom: 0;
+            /* Menghapus margin bawah dari elemen h6 */
+            margin-top: 0;
+            /* Menghapus margin atas dari elemen h2 */
+        }
+
+        .strike-through {
+            text-decoration: line-through;
+            opacity: 0.6;
+            font-weight: lighter;
+        }
     </style>
 </head>
 

@@ -31,22 +31,22 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="d-flex flex-column text-start footer-item">
-                    <h4 class="text-light mb-3">Shop Info</h4>
-                    <a class="btn-link" href="">About Us</a>
-                    <a class="btn-link" href="">Contact Us</a>
-                    <a class="btn-link" href="">Terms & Conditions</a>
+                    <h4 class="text-light mb-3">Info Belanja</h4>
+                    <a class="btn-link" href="">Tentang Kami</a>
+                    <a class="btn-link" href="">Kontak Kami</a>
+                    <a class="btn-link" href="">Aturan</a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="d-flex flex-column text-start footer-item">
-                    <h4 class="text-light mb-3">Account</h4>
-                    <a class="btn-link" href="">My Account</a>
-                    <a class="btn-link" href="">Shop Details</a>
+                    <h4 class="text-light mb-3">Akun</h4>
+                    <a class="btn-link" href="">Akun Saya</a>
+                    <a class="btn-link" href="">Detail Belanja</a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="footer-item">
-                    <h4 class="text-light mb-3">Contact</h4>
+                    <h4 class="text-light mb-3">Kontak</h4>
                     <p>Address: Jl. UMKM No.1, Jakarta</p>
                     <p>Email: info@umkmmart.com</p>
                     <p>Phone: +62 123 456 789</p>

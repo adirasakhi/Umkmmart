@@ -8,7 +8,7 @@
     </div>
 @endif
 
-<form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('users.update.status', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="name" class="form-label">Nama</label>
@@ -31,29 +31,31 @@
             style="background-color:#e9ecef; cursor: default;">
     </div>
     <div class="mb-3">
-        <label for="photo" class="form-label">Foto</label>
+        <label for="photo" class="form-label d-flex">Dokumen</label>
         <img src="{{ asset('storage/' . $user->support_document) }}" class="img-fluid rounded mb-2 img-thumbnail"
-            alt="">
+            width="150">
     </div>
     <div class="form-group">
         <label for="facebook" class="control-label">Facebook</label>
         <input type="text" name="facebook" class="form-control" placeholder="Facebook"
-            value="{{ $sosmed->first()->facebook ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+            value="{{ $user->socialMedia->facebook ?? '' }}" style="background-color: #e9ecef; cursor: default"
+            readonly>
     </div>
     <div class="form-group">
         <label for="whatsapp" class="control-label">WhatsApp</label>
         <input type="text" name="whatsapp" class="form-control" placeholder="WhatsApp"
-            value="{{ $sosmed->first()->whatsapp ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+            value="{{ $user->socialMedia->whatsapp ?? '' }}" style="background-color: #e9ecef; cursor: default"
+            readonly>
     </div>
     <div class="form-group">
         <label for="tiktok" class="control-label">Tiktok</label>
         <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
-            value="{{ $sosmed->first()->tiktok ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+            value="{{ $user->socialMedia->tiktok ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
     </div>
     <div class="form-group">
         <label for="instagram" class="control-label">Instagram</label>
         <input type="text" name="instagram" class="form-control" placeholder="Instagram"
-            value="{{ $sosmed->first()->instagram ?? '' }}" style="background-color: #e9ecef; cursor: default"
+            value="{{ $user->socialMedia->instagram ?? '' }}" style="background-color: #e9ecef; cursor: default"
             readonly>
     </div>
     <div class="d-flex justify-content-start align-items-center">

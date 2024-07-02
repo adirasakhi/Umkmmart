@@ -8,7 +8,7 @@
     </div>
 @endif
 
-<form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('users.update.status', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="name" class="form-label">Nama</label>
@@ -31,9 +31,9 @@
             style="background-color:#e9ecef; cursor: default;">
     </div>
     <div class="mb-3">
-        <label for="photo" class="form-label">Foto</label>
-        <img src="{{ asset('storage/' . $user->support_document) }}" class="img-fluid rounded mb-2 img-thumbnail"
-            alt="">
+        <label for="photo" class="form-label d-flex">Dokumen</label>
+        <img src="{{ asset('storage/' . $user->support_document) }}" class="img-fluid rounded img-thumbnail"
+            width="150">
     </div>
     <div class="form-group">
         <label for="facebook" class="control-label">Facebook</label>

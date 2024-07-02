@@ -2,8 +2,9 @@
 
 @section('content')
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header">
-    <div class="container py-5" style="background-image: url('{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}');">
+<div class="container-fluid py-5 mb-5 hero-header position-relative">
+    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" >
+    <div class="container py-5 ">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-3" style="color: #747d88; font-family: 'Open Sans', sans-serif;"></h4>
@@ -57,11 +58,13 @@
             <div class="p-4 rounded bg-light">
                 <div class="row align-items-center">
                     <div class="col-6">
+
                         <img src="{{ asset('storage/' . $product->min_variant_image) }}"
                         class="img-fluid rounded-circle w-100" alt="" style=" width:120px; height: 120px; object-fit: cover;">
                     </div>
                     <div class="col-6">
                         <a href="{{ route('katalog.detail', ['id' => $product->id]) }}" class="h6">{{ $product->name }}</a>
+
                         <h4 class="mb-3">Rp {{ number_format($product->min_price, 0, ',', '.') }}</h4>
                         <p class="small"><i class="fas fa-store"></i> {{ $product->seller_name }}</p>
                     </a>

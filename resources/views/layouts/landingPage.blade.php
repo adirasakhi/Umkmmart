@@ -218,6 +218,19 @@
             /* Menghapus margin bawah dari elemen h6 */
             margin-top: 0;
             /* Menghapus margin atas dari elemen h2 */
+        .container-fluid .overlay {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.4); /* Ubah opacity sesuai kebutuhan */
+            z-index: 1; /* Pastikan overlay muncul di atas background image */
+            background-repeat:no-repeat;
+        }
+        .hero-header {
+            background-size: cover;
+            background-position: center;
         }
 
         .strike-through {
@@ -227,6 +240,7 @@
             font-size: 1.5rem;
             color: #dc3545;
         }
+
     </style>
 </head>
 

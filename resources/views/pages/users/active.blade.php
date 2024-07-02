@@ -67,15 +67,11 @@
                                     value="{{ $user->phone }}" style="background-color:#e9ecef; cursor: default;">
                             </div>
                             <div class="mb-3">
-                                <label for="photo" class="form-label">Dokumen</label>
+                                <label for="photo" class="form-label d-flex">Dokumen</label>
                                 <img src="{{ asset('storage/' . $user->support_document) }}"
-                                    class="img-fluid rounded mb-2 img-thumbnail" alt="">
+                                    class="img-fluid rounded mb-3 img-thumbnail d-flex" width="150px">
                                 <input type="file" name="support_document" id="support_document"
                                     accept=".jpeg,.png,.jpg,.pdf" style="color: #404040">
-                                <label for="support_document" style="color: #404040">
-                                    Dokumen Pendukung: KTP, Surat Domisili, Surat Keterangan Usaha<br>
-                                    <small>Jenis file yang dapat dikirimkan: jpeg, png, jpg, pdf</small>
-                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="facebook" class="control-label">Facebook</label>

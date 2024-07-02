@@ -16,7 +16,7 @@ class AboutController extends Controller
     public function index()
     {
         $abouts = About::all();
-        return view('pages.about.about', ['about' => $abouts, 'isEmpty' => $abouts->isEmpty()]);
+        return view('pages.about.about', ['abouts' => $abouts, 'isEmpty' => $abouts->isEmpty()]);
     }
 
     /**

@@ -3,8 +3,8 @@
 @section('content')
 <!-- Hero Start -->
 <div class="container-fluid py-5 mb-5 hero-header position-relative">
-    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" style="height: 480px; object-fit:cover" >
-    <div class="container py-5 ">
+    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100 img-fluid" style="height: 480px; object-fit: cover;">
+    <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-3" style="color: #747d88; font-family: 'Open Sans', sans-serif;"></h4>
@@ -17,15 +17,15 @@
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                     <div class="carousel-inner rounded" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid bg-secondary rounded" alt="First slide" style="height: 240px; width:400px;">
-                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 200px; height:60px;">Kerajinan</a>
+                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid bg-secondary rounded" alt="First slide" style="height: 240px; width: 100%;">
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 100%;">Kerajinan</a>
                         </div>
                         @foreach($slide as $value)
                         <div class="carousel-item rounded">
                             <div class="image-wrapper">
-                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img rounded" alt="Slide" style="height: 240px; width:400px;">
+                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img rounded" alt="Slide" style="height: 240px; width: 100%;">
                             </div>
-                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 200px; height:60px;">{!! $value->description !!}</a>
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 100%;">{!! $value->description !!}</a>
                         </div>
                         @endforeach
                     </div>
@@ -42,6 +42,7 @@
         </div>
     </div>
 </div>
+
 
 </div>
 <!-- Hero End -->
@@ -113,6 +114,7 @@
         </div>
     </div>
 </div>
+
 {{-- End About Us --}}
 <script type="text/javascript">
 // Melacak klik

@@ -16,6 +16,7 @@
         </div>
     @endif
 
+    @foreach ($rejectedUsers as $user)
     <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -25,38 +26,16 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="data"></div>
+                    <div class="data">
+                        @include('pages.users.showReject')
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>
         </div>
     </div>
+@endforeach
 
-    <div class="modal fade" id="myModalDelete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Hapus Pengguna</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin Mengembalikan Pengguna ini?</p>
-                    <form id="deleteForm" action="" method="POST">
-                        @csrf
-                        <div class="row justify-content-end">
-                            <button type="button" class="btn btn-danger col-2 mx-2" data-dismiss="modal">
-                                <span class="fa fa-times"></span> Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary col-2 mr-3">
-                                <span class="fa fa-check"></span> Yakin
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="main-content">
         <section class="section">
@@ -95,7 +74,8 @@
                                                     <td>
                                                         <div class="d-flex justify-content-start align-items-center">
                                                             <button class="btn btn-icon btn-primary edit"
-                                                                data-id="{{ $user->id }}"><i
+                                                                data-id="{{ $user->id }}" data-toggle="modal"
+                                                                data-target="#myModalEdit_{{ $user->id }}"><i
                                                                     class="bi bi-eye-fill"></i></button>
                                                         </div>
                                                     </td>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{{ asset('storage/logo.png') }}" type="image/x-icon">
     <title>UMKMART @yield('title')</title>
 
     <!-- General CSS Files -->
@@ -23,7 +24,7 @@
 
     <!-- jQuery -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-    
+
     {{-- RTE --}}
     <link rel="stylesheet" href="{{ asset('assets/modules/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/modules/codemirror/lib/codemirror.css') }}">
@@ -36,7 +37,7 @@
         .sorting-form {
             display: none;
         }
-        
+
     </style>
     <script>
       window.dataLayer = window.dataLayer || [];

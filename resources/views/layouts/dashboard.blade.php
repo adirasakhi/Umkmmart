@@ -36,6 +36,7 @@
         .sorting-form {
             display: none;
         }
+        
     </style>
     <script>
       window.dataLayer = window.dataLayer || [];

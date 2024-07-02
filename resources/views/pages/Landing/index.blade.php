@@ -2,8 +2,9 @@
 
 @section('content')
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header">
-    <div class="container py-5" style="background-image: url('{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}');">
+<div class="container-fluid py-5 mb-5 hero-header position-relative">
+    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100" >
+    <div class="container py-5 ">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-3" style="color: #747d88; font-family: 'Open Sans', sans-serif;"></h4>
@@ -102,7 +103,7 @@
             </div>
             <div class="text-center">
                 <p>{!! $about->content !!}</p>
-                
+
             </div>
             @else
             <p>Data tentang kami belum tersedia.</p>

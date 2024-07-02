@@ -12,8 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-    rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
@@ -125,29 +125,99 @@
         .custom-checkbox:hover {
             border-color: black;
         }
-        .image-wrapper {
+
+        .scrollable-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .main-image-container img {
+            height: 300px;
             width: 100%;
-            height: 0;
-            padding-top: 56.25%; /* Rasio aspek 16:9 untuk gambar */
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .scrollable-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+            gap: 10px;
+        }
+
+        .scrollable-row .col {
+            flex: 0 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .scrollable-row .col img {
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .variant-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .variant-item {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+
+        .variant-item:hover {
+            background-color: #e2e2e2;
+            cursor: pointer;
+        }
+
+        .main-image-container img {
+            width: 100%;
+            height: 360px;
+        }
+
+        .nav-tabs .nav-link {
+            text-align: center;
             position: relative;
-            overflow: hidden;
+            display: inline-block;
+            padding-bottom: 10px;
         }
 
-        .equal-img {
+        .nav-tabs .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: black;
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Memastikan gambar terisi penuh dalam area yang ditetapkan */
         }
 
-        .carousel-item img {
-            width: 100%;
-            height: auto;
-            object-fit: cover; /* Memastikan gambar di dalam carousel terisi penuh */
+        .scrollable-column {
+            max-height: 500px;
+            /* Adjust this value as needed */
+            overflow-y: auto;
         }
 
+        h6,
+        h2#orderVariantPrice {
+            margin-bottom: 0;
+            /* Menghapus margin bawah dari elemen h6 */
+            margin-top: 0;
+            /* Menghapus margin atas dari elemen h2 */
         .container-fluid .overlay {
             position: absolute;
             top: 0px;
@@ -156,16 +226,17 @@
             height: 100%;
             background-color: rgba(255, 255, 255, 0.4); /* Ubah opacity sesuai kebutuhan */
             z-index: 1; /* Pastikan overlay muncul di atas background image */
+            background-repeat:no-repeat;
         }
         .hero-header {
             background-size: cover;
             background-position: center;
         }
 
-        .hero-header .container {
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
+        .strike-through {
+            text-decoration: line-through;
+            opacity: 0.6;
+            font-weight: lighter;
         }
 
     </style>
@@ -175,50 +246,50 @@
 
     <!-- Spinner Start -->
     <div id="spinner"
-    class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-    <div class="spinner-grow text-primary" role="status"></div>
-</div>
-<!-- Spinner End -->
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
 
 
-<!-- Modal Search Start -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content rounded-0">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body d-flex align-items-center">
-                <div class="input-group w-75 mx-auto d-flex">
-                    <input type="search" class="form-control p-3" placeholder="keywords"
-                    aria-describedby="search-icon-1">
-                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+    <!-- Modal Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center">
+                    <div class="input-group w-75 mx-auto d-flex">
+                        <input type="search" class="form-control p-3" placeholder="keywords"
+                            aria-describedby="search-icon-1">
+                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Modal Search End -->
-<!-- Navbar start -->
-@include('partials.Landing.navbar')
-<!-- Navbar End -->
-<!-- Content Start -->
-<div class="container">
-    @yield('content')
-</div>
-<!-- Content End -->
+    <!-- Modal Search End -->
+    <!-- Navbar start -->
+    @include('partials.Landing.navbar')
+    <!-- Navbar End -->
+    <!-- Content Start -->
+    <div class="container">
+        @yield('content')
+    </div>
+    <!-- Content End -->
 
-<!-- Footer Start -->
-@include('partials.Landing.footer')
-<!-- Footer End -->
-
+    <!-- Footer Start -->
+    @include('partials.Landing.footer')
+    <!-- Footer End -->
 
 
 
-<!-- Back to Top -->
-<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-    class="fa fa-arrow-up" style="color: white"></i></a>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+            class="fa fa-arrow-up" style="color: white"></i></a>
 
 
     <!-- JavaScript Libraries -->

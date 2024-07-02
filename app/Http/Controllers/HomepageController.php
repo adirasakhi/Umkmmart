@@ -22,8 +22,6 @@ class HomepageController extends Controller
         $popularProduct = Product::select(
             'product.id',
             'product.name',
-            'product.price',
-            'product.image',
             'users.name as saller_name',
             DB::raw('COUNT(product_clicks.id) as click_count')
         )
@@ -34,8 +32,6 @@ class HomepageController extends Controller
         ->groupBy(
             'product.id',
             'product.name',
-            'product.price',
-            'product.image',
             'users.name'
         )
         ->orderByDesc('click_count')

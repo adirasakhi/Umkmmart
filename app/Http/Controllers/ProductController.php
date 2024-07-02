@@ -56,7 +56,22 @@ class ProductController extends Controller
 
     public function storeVariant(Request $request, Product $product)
     {
-        $validatedData = $request->validate([
+        $customMessages = [
+            'variant_name.required' => 'Nama varian wajib diisi.',
+            'variant_name.*.required' => 'Nama varian wajib diisi.',
+            'variant_name.*.max' => 'Panjang maksimum nama varian adalah 255 karakter.',
+            'variant_price.required' => 'Harga varian wajib diisi.',
+            'variant_price.*.required' => 'Harga varian wajib diisi.',
+            'variant_price.*.integer' => 'Harga varian harus berupa angka.',
+            'variant_image.required' => 'Gambar varian wajib diunggah.',
+            'variant_image.*.required' => 'Gambar varian wajib diunggah.',
+            'variant_image.*.image' => 'File harus berupa gambar (jpeg, png, jpg, gif, svg).',
+            'variant_image.*.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif, svg.',
+            'variant_image.*.max' => 'Ukuran gambar maksimum adalah 2MB.',
+            'variant_discount.integer' => 'Diskon varian harus berupa angka.',
+        ];
+
+        $request->validate([
             'variant_name' => 'required|array',
             'variant_name.*' => 'required|string|max:255',
             'variant_price' => 'required|array',
@@ -65,25 +80,31 @@ class ProductController extends Controller
             'variant_image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'variant_discount' => 'nullable|array',
             'variant_discount.*' => 'nullable|integer',
-        ]);
+        ], $customMessages);
 
-        foreach ($validatedData['variant_name'] as $key => $variantName) {
-            $variant = new Variant();
-            $variant->product_id = $product->id;
-            $variant->name = $variantName;
-            $variant->price = str_replace('.', '', $validatedData['variant_price'][$key]);
-            $variant->discount = $validatedData['variant_discount'][$key] ?? null;
+        try {
+            foreach ($request->variant_name as $key => $variantName) {
+                $variant = new Variant();
+                $variant->product_id = $product->id;
+                $variant->name = $variantName;
+                $variant->price = str_replace('.', '', $request->variant_price[$key]);
+                $variant->discount = $request->variant_discount[$key] ?? null;
 
-            $imagePath = $request->file('variant_image')[$key]->store('variant_images', 'public');
-            $image = Image::make(Storage::disk('public')->path($imagePath));
-            $image->resize(1080, 1351)->save();
-            $variant->image = $imagePath;
+                $imagePath = $request->file('variant_image')[$key]->store('variant_images', 'public');
+                $image = Image::make(Storage::disk('public')->path($imagePath));
+                $image->resize(1080, 1351)->save();
+                $variant->image = $imagePath;
 
-            $variant->save();
+                $variant->save();
+            }
+
+            return redirect()->route('products.index')->with('success', 'Varian berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan varian: ' . $e->getMessage());
         }
-
-        return redirect()->route('products.index')->with('success', 'Varian berhasil ditambahkan');
     }
+    
+    
 
     public function edit(Request $request)
     {
@@ -129,12 +150,24 @@ class ProductController extends Controller
 
     public function updateVariant(Request $request, $id)
     {
+        $customMessages = [
+            'variant_name.required' => 'Nama varian wajib diisi.',
+            'variant_name.string' => 'Nama varian harus berupa teks.',
+            'variant_name.max' => 'Panjang maksimum nama varian adalah 255 karakter.',
+            'variant_price.required' => 'Harga varian wajib diisi.',
+            'variant_price.integer' => 'Harga varian harus berupa angka.',
+            'variant_image.image' => 'File harus berupa gambar (jpeg, png, jpg, gif, svg).',
+            'variant_image.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif, svg.',
+            'variant_image.max' => 'Ukuran gambar maksimum adalah 2MB.',
+            'variant_discount.integer' => 'Diskon varian harus berupa angka.',
+        ];
+
         $validatedData = $request->validate([
             'variant_name' => 'required|string|max:255',
             'variant_price' => 'required|integer',
             'variant_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'variant_discount' => 'nullable|integer',
-        ]);
+        ], $customMessages);
 
         $variant = Variant::find($id);
         if ($variant) {
@@ -164,8 +197,6 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('error', 'Varian tidak ditemukan');
     }
-
-
 
     public function destroy($id)
     {

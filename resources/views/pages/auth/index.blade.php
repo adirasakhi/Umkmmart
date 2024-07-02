@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.auth.css') }}">
-    <title>Halaman Login Modern | AsmrProg</title>
+    <title>UMKMart | Login</title>
     <style>
         .error-message {
             color: red;
@@ -52,8 +52,6 @@
                     @endif
 
                     <div style="display: flex; align-items: center;">
-                        <span
-                            style="padding: 11px 0px 10px 11px;  background-color: #eee; border-radius: 7px 0 0 7px; color: grey">+62</span>
                         <input type="tel" name="phone" placeholder="No. Telepon"
                             value="{{ old('phone') ? substr(old('phone'), 3) : '' }}" pattern="[0-9]+"
                             title="Masukkan hanya angka" style="flex: 1; padding: 10px; border-radius: 0 7px 7px 0;">
@@ -96,7 +94,7 @@
                 <input type="email" name="email" placeholder="Email" required
                     value="{{ session('action') == 'login' ? old('email') : '' }}">
                 <input type="password" name="password" placeholder="Kata Sandi" required>
-                <a href="#">Lupa Kata Sandi Anda?</a>
+                {{-- <a href="#">Lupa Kata Sandi Anda?</a> --}}
                 <button type="submit">Masuk</button>
             </form>
         </div>

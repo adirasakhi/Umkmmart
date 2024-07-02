@@ -12,39 +12,17 @@
                     </a>
                 </div>
 
-                <div class="col-lg-9">
-                    <div class="d-flex justify-content-end pt-3">
-                        <a class="btn me-2 btn-md-square rounded-circle" style="color: #00acee; background-color: white" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn me-2 btn-md-square rounded-circle" style="color: #3b5998; background-color: white" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn me-2 btn-md-square rounded-circle" style="color: #c4302b; background-color: white" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-md-square rounded-circle" style="color:  #0e76a8; background-color: white"  href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
+                
             </div>
         </div>
         <div class="row g-5">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-6 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Mengapa Orang Memilih Kami!</h4>
                     <p class="mb-4">Di UMKMMART, kami mengutamakan kualitas dan keberlanjutan, menawarkan produk yang mendukung pengusaha dan komunitas lokal.</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="d-flex flex-column text-start footer-item">
-                    <h4 class="text-light mb-3">Info Belanja</h4>
-                    <a class="btn-link" href="">Tentang Kami</a>
-                    <a class="btn-link" href="">Kontak Kami</a>
-                    <a class="btn-link" href="">Aturan</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="d-flex flex-column text-start footer-item">
-                    <h4 class="text-light mb-3">Akun</h4>
-                    <a class="btn-link" href="">Akun Saya</a>
-                    <a class="btn-link" href="">Detail Belanja</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-6 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Kontak</h4>
                     <p>Address: Jl. UMKM No.1, Jakarta</p>
@@ -61,11 +39,8 @@
 <div class="container-fluid copyright py-4" style="background-color: #404040">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <div class="col-md-12 text-center text-md-center mb-3 mb-md-0">
                 <span class="text-light"><a href="#" style="color: white"><i class="fas fa-copyright text-light me-2"></i>UMKMMART</a>, All rights reserved.</span>
-            </div>
-            <div class="col-md-6 my-auto text-center text-md-end text-white">
-                Designed By <a class="border-bottom" style="color: white" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a class="border-bottom" style="color: white" href="https://themewagon.com">ThemeWagon</a>
             </div>
         </div>
     </div>

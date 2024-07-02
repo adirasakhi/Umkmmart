@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fruitables - Vegetable Website Template</title>
+    <title>UMKMart</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -217,7 +217,8 @@
             margin-bottom: 0;
             /* Menghapus margin bawah dari elemen h6 */
             margin-top: 0;
-            /* Menghapus margin atas dari elemen h2 */}
+            /* Menghapus margin atas dari elemen h2 */
+        }
         .container-fluid .overlay {
             position: absolute;
             top: 0px;

@@ -285,6 +285,7 @@
                         <h6 class="mt-3">
                             <center>Tambah Varian</center>
                         </h6>
+
                         <form action="{{ route('products.variants.store', $product->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
@@ -429,6 +430,7 @@
             background-color: #f44336;
         }
     </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
@@ -540,4 +542,42 @@
             });
         });
     </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: '{{ session('success') }}',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        @endif
+
+        @if (session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        @endif
+
+        @if ($errors->any())
+        let errorMessages = '';
+        @foreach ($errors->all() as $error)
+            errorMessages += '{{ $error }}\n';
+        @endforeach
+        Swal.fire({
+            icon: 'error',
+            title: 'Proses Gagal',
+            html: errorMessages,
+            showConfirmButton: true
+        });
+        @endif
+    });
+</script>
+
 @endsection

@@ -3,11 +3,11 @@
     <aside id="sidebar-wrapper">
 
         <!-- Sidebar Brand -->
-        <div class="sidebar-brand">
-            <a href="/dashboard">UMKMart</a>
+        <div class="sidebar-brand mb-4">
+            <a href="/dashboard"><img src="{{asset('storage/logo.png')}}" style="width: 100px" alt=""></a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="/dashboard">UM</a>
+            <a href="/dashboard"><img src="{{asset('storage/logo.png')}}" class="img-thumbnail" alt=""></a>
         </div>
 
         <!-- Sidebar Menu -->

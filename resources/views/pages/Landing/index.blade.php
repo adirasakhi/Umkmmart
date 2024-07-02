@@ -56,14 +56,14 @@
            <div class="col-lg-6 col-xl-4">
             <div class="p-4 rounded bg-light">
                 <div class="row align-items-center">
-                    {{-- <div class="col-6">
-                        <img src="{{ asset('storage/' . $product->image) }}"
+                    <div class="col-6">
+                        <img src="{{ asset('storage/' . $product->min_variant_image) }}"
                         class="img-fluid rounded-circle w-100" alt="" style=" width:120px; height: 120px; object-fit: cover;">
-                    </div> --}}
+                    </div>
                     <div class="col-6">
                         <a href="{{ route('katalog.detail', ['id' => $product->id]) }}" class="h6">{{ $product->name }}</a>
-                        {{-- <h4 class="mb-3">Rp {{ number_format($product->price, 0, ',', '.') }}</h4> --}}
-                        <p class="small"><i class="fas fa-store"></i> {{ $product->saller_name }}</p>
+                        <h4 class="mb-3">Rp {{ number_format($product->min_price, 0, ',', '.') }}</h4>
+                        <p class="small"><i class="fas fa-store"></i> {{ $product->seller_name }}</p>
                     </a>
                 </div>
             </div>

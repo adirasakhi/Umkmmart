@@ -37,13 +37,15 @@
                         @if (
                             $product->variants->sortBy('price')->first()->price >
                                 $product->variants->sortBy('price')->first()->discounted_price)
-                            <p class="strike-through">Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
+                            <p>Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}</p>
                             <h2 class="discounted-price" id="orderVariantPrice">
                                 Rp{{ number_format($product->variants->sortBy('price')->first()->discounted_price, 0, ',', '.') }}
                             </h2>
                         @else
-                            <h2 class="discounted-price" id="orderVariantPrice">
-                                Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}
+                            <h2 class="discounted-price mb-3" id="orderVariantPrice">
+                                <strong>
+                                    Rp{{ number_format($product->variants->sortBy('price')->first()->price, 0, ',', '.') }}
+                                </strong>
                             </h2>
                         @endif
                     </div>
@@ -164,33 +166,33 @@
                     <hr>
                     <p><strong>Media Sosial</strong></p>
                     <div>
-                        @if ($product->seller->social)
-                            @if ($product->seller->social->facebook)
-                                <a href="https://www.facebook.com/{{ $product->seller->social->facebook }}"
+                        @if ($product->seller->socialMedia)
+                            @if ($product->seller->socialMedia->facebook)
+                                <a href="https://www.facebook.com/{{ $product->seller->socialMedia->facebook }}"
                                     style="display: inline-block; margin-right: 10px;">
                                     <span class="badge bg-primary text-white" style="padding: 10px; border-radius: 5px;">
                                         <i class="bi bi-facebook text-white"></i> Facebook
                                     </span>
                                 </a>
                             @endif
-                            @if ($product->seller->social->instagram)
-                                <a href="https://www.instagram.com/{{ $product->seller->social->instagram }}"
+                            @if ($product->seller->socialMedia->instagram)
+                                <a href="https://www.instagram.com/{{ $product->seller->socialMedia->instagram }}"
                                     style="display: inline-block; margin-right: 10px;">
                                     <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
                                         <i class="bi bi-instagram text-white"></i> Instagram
                                     </span>
                                 </a>
                             @endif
-                            @if ($product->seller->social->tiktok)
-                                <a href="https://www.tiktok.com/@{{ $product - > seller - > social - > tiktok }}"
+                            @if ($product->seller->socialMedia->tiktok)
+                                <a href="https://www.tiktok.com/@{{ $product - > seller - > socialMedia - > tiktok }}"
                                     style="display: inline-block; margin-right: 10px;">
                                     <span class="badge bg-dark text-white" style="padding: 10px; border-radius: 5px;">
                                         <i class="bi bi-tiktok text-white"></i> TikTok
                                     </span>
                                 </a>
                             @endif
-                            @if ($product->seller->social->youtube)
-                                <a href="https://www.youtube.com/{{ $product->seller->social->youtube }}"
+                            @if ($product->seller->socialMedia->youtube)
+                                <a href="https://www.youtube.com/{{ $product->seller->socialMedia->youtube }}"
                                     style="display: inline-block; margin-right: 10px;">
                                     <span class="badge bg-danger text-white" style="padding: 10px; border-radius: 5px;">
                                         <i class="bi bi-youtube text-white"></i> YouTube
@@ -241,7 +243,7 @@
             btnMinus.addEventListener('click', function() {
                 if (parseInt(productQuantity.value) > 0) {
                     productQuantity.value = parseInt(productQuantity
-                    .value); // Decrement quantity by 1, but not below 1
+                        .value); // Decrement quantity by 1, but not below 1
                     updateTotalPrice();
                 }
             });
@@ -259,11 +261,11 @@
 
                 if (variantPrice > variantDiscountedPrice) {
                     orderVariantPrice.innerHTML =
-                        `Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}<br>Rp${new Intl.NumberFormat('id-ID').format(variantDiscountedPrice)}`;
+                        `<span class="strike-through">Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</span><br><strong>Rp${new Intl.NumberFormat('id-ID').format(variantDiscountedPrice)}</strong>`;
                 } else {
                     orderVariantPrice.textContent = `Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}`;
+                    orderVariantPrice.innerHTML = `<strong>Rp${new Intl.NumberFormat('id-ID').format(variantPrice)}</strong>`;
                 }
-
                 updateTotalPrice();
             }
 
@@ -294,7 +296,7 @@
                 var originalPrice = priceElements.length > 1 ? parseFloat(priceElements[0].replace(/[^\d]/g,
                     '')) : null;
                 var variantPrice = parseFloat(priceElements[priceElements.length - 1].replace(/[^\d]/g,
-                ''));
+                    ''));
                 var totalPrice = variantPrice * quantity;
                 var sellerPhone = "{{ $product->seller->phone }}";
 

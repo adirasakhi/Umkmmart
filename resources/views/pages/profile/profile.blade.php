@@ -72,7 +72,6 @@
                         <div class="form-group">
                             <label for="whatsapp" class="control-label">WhatsApp</label>
                             <div class="input-group">
-                                <span class="input-group-text">+62</span>
                                 <input type="tel" name="whatsapp" placeholder="WhatsApp"
                                     value="{{ $social->whatsapp ? (substr($social->whatsapp, 0, 1) === '0' ? '62' . substr($social->whatsapp, 1) : $social->whatsapp) : '' }}"
                                     pattern="[0-9]+" title="Masukkan hanya angka" class="form-control">

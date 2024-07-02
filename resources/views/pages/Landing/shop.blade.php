@@ -132,8 +132,8 @@
                                             <div class="card-body">
                                                 <h6 class="card-title" style="font-weight: medium">{{ $product->name }}
                                                 </h6>
-                                                <h6><strong>Rp{{ number_format($product->min_price, 0, ',', '.') }}</strong>
-                                                </h6>
+                                                <h5 class="mb-3"><strong>Rp{{ number_format($product->min_price, 0, ',', '.') }}</strong>
+                                                </h5>
                                                 <h6 class="small"><i class="fas fa-store"></i>
                                                     {{ $product->seller_name }}</h6>
                                             </div>

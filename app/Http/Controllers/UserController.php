@@ -80,7 +80,7 @@ class UserController extends Controller
 
                 $user->update($dataToUpdate);
 
-                return redirect()->route('users.active')->with('success', 'User berhasil diapprove');
+                return redirect()->route('users.active')->with('success', 'Pengguna berhasil diaktifkan');
             } else {
                 $dataToUpdate = [
                     'status' => 'inactive',
@@ -88,7 +88,7 @@ class UserController extends Controller
 
                 $user->update($dataToUpdate);
 
-                return redirect()->route('users.inactive')->with('success', 'User berhasil diUnapprove');
+                return redirect()->route('users.inactive')->with('success', 'Pengguna berhasil dinonaktifkan');
             }
         } else {
             return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan');
@@ -141,7 +141,7 @@ class UserController extends Controller
                 // Update user status to declined
                 $user->update(['status' => 'declined']);
 
-                return redirect()->route('users.showReject')->with('success', 'Pengguna Berhasil Diblok');
+                return redirect()->route('users.showReject')->with('success', 'Pengguna berhasil ditangguhkan');
             }
         } else {
             return redirect()->route('users.inactive')->with('error', 'User tidak ditemukan atau tidak memiliki role yang sesuai');
@@ -172,7 +172,7 @@ class UserController extends Controller
 
                 return redirect()->route('users.active')->with('success', 'Pengguna berhasil direstorasi');
             } else {
-                return redirect()->route('users.showReject')->with('error', 'Pengguna tidak dalam status declined');
+                return redirect()->route('users.showReject')->with('error', 'Pengguna tidak dalam status ditangguhkan');
             }
         } else {
             return redirect()->route('users.showReject')->with('error', 'User tidak ditemukan');

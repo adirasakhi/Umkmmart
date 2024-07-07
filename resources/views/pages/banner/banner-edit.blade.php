@@ -12,7 +12,7 @@
     <label for="title" class="control-label">Judul</label>
     <input type="text" name="title" class="form-control mb-3" value="{{ $banner->title }}">
     <label for="description" class="control-label">Descripsi</label>
-    <textarea name="description" class="summernote-simple">{{ $banner->description }}</textarea>
+    <textarea name="description" class="summernote-simple" >{{ $banner->description }}</textarea>
     <label for="type" class="control-label">Tipe</label>
     <select name="type" class="form-control mb-3" style="display: none;">
         <option value="">-- Pilih Tipe Banner --</option>

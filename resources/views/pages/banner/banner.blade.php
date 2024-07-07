@@ -36,7 +36,8 @@
 @endif
 
 <!-- Modal Edit -->
-<div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+@foreach ($banners as $banner)
+<div class="modal fade" id="myModalEdit_{{ $banner->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,7 +47,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="data">
-
+                        @include('pages.banner.banner-edit')
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -54,6 +55,7 @@
             </div>
         </div>
     </div>
+    @endforeach
     <!-- end Edit Modal -->
     <!-- Main Content -->
     <div class="main-content">
@@ -89,13 +91,13 @@
                                         @php
                                         $no = 1;
                                         @endphp
-                                        @foreach ($banner as $val)
+                                        @foreach ($banners as $banner)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $val->title }}</td>
+                                            <td>{{ $banner->title }}</td>
                                             <td>@php
                                             $maxWords = 15;
-                                            $description = $val->description;
+                                            $description = $banner->description;
                                             $words = explode(' ', $description);
                                             $shortDescription = implode(' ', array_slice($words, 0, $maxWords));
                                             $remainingWords = implode(' ', array_slice($words, $maxWords));
@@ -109,18 +111,19 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="{{ asset('storage/' . $val->image) }}">
-                                                <img src="{{ asset('storage/' . $val->image) }}" alt="val_image" class="img-fluid img-thumbnail" width="200">
+                                            <a href="{{ asset('storage/' . $banner->image) }}">
+                                                <img src="{{ asset('storage/' . $banner->image) }}" alt="banner_image" class="img-fluid img-thumbnail" width="200">
                                             </a>
                                         </td>
-                                        <td>{{ $val->type }}</td>
+                                        <td>{{ $banner->type }}</td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
                                                 <button class="btn btn-icon btn-warning edit mx-2"
-                                                data-id="{{ $val->id }}"><i
+                                                data-id="{{ $banner->id }}" data-bs-toggle="modal"
+                                                data-bs-target="#myModalEdit_{{ $banner->id }}"><i
                                                 class="far fa-edit"></i></button>
                                                 <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                data-id="{{ $val->id }}" data-bs-toggle="modal"
+                                                data-id="{{ $banner->id }}" data-bs-toggle="modal"
                                                 data-bs-target="#myModalDelete"><i
                                                 class="fas fa-trash"></i></button>
                                             </div>
@@ -143,7 +146,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Tambah Kategori</h4>
+                <h4 class="modal-title" id="myModalLabel">Tambah Banner</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>
                 </div>
@@ -156,18 +159,18 @@
                         </div>
                         <div class="form-group">
                             <label for="description" class="control-label">Deskripsi</label>
-                            <textarea name="description" class="summernote-simple"></textarea>
+                            <textarea name="description" class="summernote-simple" style="height: 100px"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="type" class="control-label">Tipe</label>
                             <select name="type" class="form-control">
-                                <option value="">-- Pilih Tipe Banner --</option>
-                                <option value="slideshow">Banner Slideshow</option>
+                                <option bannerue="">-- Pilih Tipe Banner --</option>
+                                <option bannerue="slideshow">Banner Slideshow <span class="bg-red">(Ukuran : )</span></option>
                                 @php
-                                $headBannerExists = $banner->contains('type', 'head');
+                                $headBannerExists = $banners->contains('type', 'head');
                                 @endphp
                                 @if (!$headBannerExists)
-                                    <option value="head">Banner Head</option>
+                                    <option bannerue="head">Banner Head</option>
                                 @endif
                             </select>
                         </div>
@@ -190,7 +193,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Hapus Kategori</h4>
+                    <h4 class="modal-title" id="myModalLabel">Hapus Banner</h4>
                 </div>
                 <div class="modal-body">
                     <p>Apakah Anda yakin ingin menghapus Banner ini?</p>

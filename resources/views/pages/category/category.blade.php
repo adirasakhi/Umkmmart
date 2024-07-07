@@ -36,7 +36,8 @@
     @endif
 
     <!-- Modal Edit -->
-    <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    @foreach ($categorys as $data)
+    <div class="modal fade" id="myModalEdit_{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -46,7 +47,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="data">
-
+                        @include('pages.category.category-edit')
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -54,6 +55,7 @@
             </div>
         </div>
     </div>
+    @endforeach
     <!-- end Edit Modal -->
     <!-- Main Content -->
     <div class="main-content">
@@ -86,14 +88,15 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($category as $val)
+                                        @foreach ($categorys as $val)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $val->category }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-start align-items-center">
                                                         <button class="btn btn-icon btn-warning edit mx-2"
-                                                            data-id="{{ $val->id }}"><i
+                                                            data-id="{{ $val->id }}" data-bs-toggle="modal"
+                                                            data-bs-target="#myModalEdit_{{ $val->id }}"><i
                                                                 class="far fa-edit"></i></button>
                                                         <button class="btn btn-icon btn-danger delete-btn mx-2"
                                                             data-id="{{ $val->id }}" data-bs-toggle="modal"

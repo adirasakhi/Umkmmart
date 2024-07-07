@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $category = Category::all();
-        return view('pages.category.category', ['category' => $category]);
+        return view('pages.category.category', ['categorys' => $category]);
     }
 
     public function store(Request $request)

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fruitables - Vegetable Website Template</title>
+    <title>UMKMart</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -220,10 +220,57 @@
             /* Menghapus margin atas dari elemen h2 */
         }
 
+        .container-fluid .overlay {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.4);
+            /* Ubah opacity sesuai kebutuhan */
+            z-index: 1;
+            /* Pastikan overlay muncul di atas background image */
+            background-repeat: no-repeat;
+        }
+
+        .hero-header {
+            background-size: cover;
+            background-position: center;
+        }
+
         .strike-through {
             text-decoration: line-through;
-            opacity: 0.6;
-            font-weight: lighter;
+            /* opacity: 0.6; */
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #dc3545;
+        }
+
+        .variant-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* Menjadikan teks turun ke bawah saat terlalu panjang */
+            height: auto;
+            /* Menyesuaikan tinggi elemen sesuai dengan konten */
+        }
+
+        .variant-name {
+            overflow-x: auto;
+            /* Membuat nama varian discroll jika terlalu panjang */
+            overflow-y: hidden;
+            /* Menghindari pemunculan scrollbar vertikal jika tidak diperlukan */
+            white-space: nowrap;
+            /* Mencegah pematahan baris */
+            max-width: 100%;
+            /* Menyesuaikan lebar maksimum dengan kontainer */
+            margin-right: 10px;
+            /* Jarak kanan dari gambar */
+        }
+
+        #orderVariantImage {
+            flex-shrink: 0;
+            /* Menjamin gambar variant tetap di samping teks */
         }
     </style>
 </head>
@@ -311,3 +358,4 @@
 </body>
 
 </html>
+

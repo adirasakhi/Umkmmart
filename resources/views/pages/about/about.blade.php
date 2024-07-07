@@ -36,7 +36,8 @@
 @endif
 
 <!-- Modal Edit -->
-<div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+@foreach ($abouts as $about)
+<div class="modal fade" id="myModalEdit_{{ $about->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,7 +47,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="data">
-
+                        @include('pages.about.about-edit')
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -54,6 +55,7 @@
             </div>
         </div>
     </div>
+    @endforeach
     <!-- end Edit Modal -->
     <!-- Main Content -->
     <div class="main-content">
@@ -91,13 +93,13 @@
                                         @php
                                         $no = 1;
                                         @endphp
-                                        @foreach ($about as $val)
+                                        @foreach ($abouts as $about)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>
                                                 @php
                                                 $maxWords = 35;
-                                                $description = $val->content;
+                                                $description = $about->content;
                                                 $words = explode(' ', $description);
                                                 $shortDescription = implode(' ', array_slice($words, 0, $maxWords));
                                                 $remainingWords = implode(' ', array_slice($words, $maxWords));
@@ -110,17 +112,18 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ asset('storage/' . $val->image) }}">
-                                                        <img src="{{ asset('storage/' . $val->image) }}" alt="val_image" class="img-fluid img-thumbnail" width="200">
+                                                    <a href="{{ asset('storage/' . $about->image) }}">
+                                                        <img src="{{ asset('storage/' . $about->image) }}" alt="val_image" class="img-fluid img-thumbnail" width="200">
                                                     </a>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex justify-content-start align-items-center">
                                                         <button class="btn btn-icon btn-warning edit mx-2"
-                                                        data-id="{{ $val->id }}"><i
+                                                        data-id="{{ $about->id }}" data-bs-toggle="modal"
+                                                        data-bs-target="#myModalEdit_{{ $about->id }}"><i
                                                         class="far fa-edit"></i></button>
                                                         <button class="btn btn-icon btn-danger delete-btn mx-2"
-                                                        data-id="{{ $val->id }}" data-bs-toggle="modal"
+                                                        data-id="{{ $about->id }}" data-bs-toggle="modal"
                                                         data-bs-target="#myModalDelete"><i
                                                         class="fas fa-trash"></i></button>
                                                     </div>

@@ -81,7 +81,7 @@ class KatalogController extends Controller
             ->where('product.category_id', $product->category_id)
             ->where('product.id', '!=', $product->id)
             ->select('product.*', 'variants.image as min_variant_image', 'users.name as seller_name', 'min_variants.min_price as min_price')
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         // Mengidentifikasi perangkat menggunakan IP address atau metode lain
@@ -234,33 +234,32 @@ class KatalogController extends Controller
     }
 
 
-    public function getPopularProduct()
-    {
-        $user = User::all();
-        $popularProduct = Product::select(
-            'product.id',
-            'product.name',
-            'product.price',
-            'product.image',
-            'users.name as saller_name',
-            DB::raw('COUNT(product_clicks.id) as click_count')
-        )
-            ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
-            ->join('users', 'product.seller_id', '=', 'users.id')
+    // public function getPopularProduct()
+    // {
+    //     $user = User::all();
+    //     $popularProduct = Product::select(
+    //         'product.id',
+    //         'product.name',
+    //         // 'product.price',
+    //         // 'product.image',
+    //         'users.name as seller_name',
+    //         DB::raw('COUNT(product_clicks.id) as click_count')
+    //     )
+    //         ->join('product_clicks', 'product.id', '=', 'product_clicks.product_id')
+    //         ->join('users', 'product.seller_id', '=', 'users.id')
 
-            ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
-            ->groupBy(
-                'product.id',
-                'product.name',
-                'product.price',
-                'product.image',
-                'users.name'
-            )
-            ->orderByDesc('click_count')
-            ->take(10)
-            ->get();
+    //         ->whereDate('product_clicks.clicked_at', '>=', Carbon::now()->subDays(30))
+    //         ->groupBy(
+    //             'product.id',
+    //             'product.name',
+    //             // 'product.price',
+    //             // 'product.image',
+    //             'users.name'
+    //         )
+    //         ->orderByDesc('click_count')
+    //         ->take(10)
+    //         ->get();
 
-
-        return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
-    }
+    //     return view('pages.Landing.index', ['popularProduct' => $popularProduct]);
+    // }
 }

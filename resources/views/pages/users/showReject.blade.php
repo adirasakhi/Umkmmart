@@ -38,35 +38,35 @@
     <div class="form-group">
         <label for="facebook" class="control-label">Facebook</label>
         <input type="text" name="facebook" class="form-control" placeholder="Facebook"
-            value="{{ $sosmed->first()->facebook ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+            value="{{ $user->socialMedia->facebook ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
     </div>
     <div class="form-group">
         <label for="whatsapp" class="control-label">WhatsApp</label>
         <input type="text" name="whatsapp" class="form-control" placeholder="WhatsApp"
-            value="{{ $sosmed->first()->whatsapp ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+            value="{{ $user->socialMedia->whatsapp ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
     </div>
     <div class="form-group">
         <label for="tiktok" class="control-label">Tiktok</label>
         <input type="text" name="tiktok" class="form-control" placeholder="Tiktok"
-            value="{{ $sosmed->first()->tiktok ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
+            value="{{ $user->socialMedia->tiktok ?? '' }}" style="background-color: #e9ecef; cursor: default" readonly>
     </div>
     <div class="form-group">
         <label for="instagram" class="control-label">Instagram</label>
         <input type="text" name="instagram" class="form-control" placeholder="Instagram"
-            value="{{ $sosmed->first()->instagram ?? '' }}" style="background-color: #e9ecef; cursor: default"
+            value="{{ $user->socialMedia->instagram ?? '' }}" style="background-color: #e9ecef; cursor: default"
             readonly>
     </div>
 
     <div class="d-flex justify-content-start align-items-center">
         <button type="button" class="btn btn-primary mt-3 mr-2 col-12 text-light" data-toggle="modal"
-            data-target="#myModalrestore">
+            data-target="#myModalrestore_{{ $user->id }}">
             <i class="fas fa-sync-alt"></i> Pulihkan
         </button>
     </div>
 </form>
 
 <!-- Modal for Restore User -->
-<div class="modal fade" id="myModalrestore" role="dialog" aria-labelledby="myModalLabelrestore" aria-hidden="true">
+<div class="modal fade" id="myModalrestore_{{ $user->id }}" role="dialog" aria-labelledby="myModalLabelrestore" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

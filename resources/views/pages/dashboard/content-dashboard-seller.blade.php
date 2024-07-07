@@ -70,7 +70,7 @@
                 data: {
                     labels: clicksPerProductLabels,
                     datasets: [{
-                        label: 'Clicks Count',
+                        label: 'Total klik Produk',
                         data: clicksPerProductData,
                         backgroundColor: '#6777ef',
                         borderColor: '#6777ef',

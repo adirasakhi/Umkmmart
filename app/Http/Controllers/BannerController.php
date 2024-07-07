@@ -17,7 +17,7 @@ class BannerController extends Controller
     public function index()
     {
         $banners = Banner::all();
-        return view('pages.banner.banner', ['banner' => $banners]);
+        return view('pages.banner.banner', ['banners' => $banners]);
     }
 
     public function create()

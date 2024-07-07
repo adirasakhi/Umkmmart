@@ -34,8 +34,9 @@
         </script>
     @endif
 
+    @foreach ($products as $product)
     <!-- Modal Edit -->
-    <div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myModalEdit_{{ $product->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -44,13 +45,16 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="data"></div>
+                    <div class="data">
+                        @include('pages.product.product-edit')
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>
         </div>
     </div>
     <!-- End Edit Modal -->
+    @endforeach
 
     <!-- Main Content -->
     <div class="main-content">
@@ -124,7 +128,8 @@
                                                             @if (Auth::user()->role_id == 2)
                                                                 <button class="btn btn-icon btn-warning edit mx-2"
                                                                     data-id="{{ $product->id }}"><i
-                                                                        class="far fa-edit"></i></button>
+                                                                        class="far fa-edit" data-bs-toggle="modal"
+                                                                        data-bs-target="#myModalEdit_{{ $product->id }}"></i></button>
                                                             @endif
                                                             <button class="btn btn-icon btn-danger delete-btn mx-2"
                                                                 data-id="{{ $product->id }}" data-bs-toggle="modal"
@@ -147,7 +152,7 @@
 
     <!-- Modal Tambah -->
     <div class="modal fade" id="myModalCreate" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">Tambah Produk</h4>
@@ -159,15 +164,15 @@
                         onsubmit="return validateForm();">
                         @csrf
                         <div class="form-group">
-                            <label for="name" class="control-label">Nama Produk</label>
+                            <label for="name" class="control-label">Nama Produk <span style="color: red">*</span></label>
                             <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                         </div>
                         <div class="form-group">
-                            <label for="description" class="control-label">Deskripsi</label>
+                            <label for="description" class="control-label">Deskripsi <span style="color: red">*</span></label>
                             <textarea name="description" class="summernote-simple"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="category_id" class="control-label">Kategori</label>
+                            <label for="category_id" class="control-label">Kategori <span style="color: red">*</span></label>
                             <select name="category_id" class="form-control">
                                 <option value="">-- Pilih Jenis --</option>
                                 @foreach ($categories as $category)
@@ -238,6 +243,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="table-responsive">
                         <!-- Tampilkan daftar varian -->
                         <table class="table table-striped border border-color-black">
                             <thead>
@@ -258,8 +264,8 @@
                                         <td>{{ $variant->name }}</td>
                                         <td>{{ $variant->price }}</td>
                                         <td>{{ $variant->discount }}</td>
-                                        <td><img src="{{ Storage::url($variant->image) }}" alt="Image" width="50"
-                                                style="object-fit: cover;">
+                                        <td><a href="{{ Storage::url($variant->image) }}"><img src="{{ Storage::url($variant->image) }}" alt="Image" width="50"
+                                                style="object-fit: cover;"></a>
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -285,18 +291,19 @@
                         <h6 class="mt-3">
                             <center>Tambah Varian</center>
                         </h6>
+
                         <form action="{{ route('products.variants.store', $product->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div id="variantContainer{{ $product->id }}">
                                 <div class="variant">
                                     <div class="form-group">
-                                        <label>Nama Varian</label>
+                                        <label>Nama Varian <span style="color: red">*</span></label>
                                         <input type="text" name="variant_name[]" class="form-control"
                                             placeholder="Misal : Warna/Ukuran/Rasa" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Harga Varian</label>
+                                        <label>Harga Varian <span style="color: red">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text" style="border-radius: 4px">
@@ -312,7 +319,7 @@
                                             placeholder="Misal : 10 (boleh dikosongkan bila tidak ada diskon)">
                                     </div>
                                     <div class="form-group">
-                                        <label>Gambar Varian</label>
+                                        <label>Gambar Varian <span style="color: red">*</span></label>
                                         <input type="file" name="variant_image[]" class="form-control" required>
                                     </div>
                                 </div>
@@ -320,7 +327,7 @@
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
                         @endif
-
+                    </div>
                     </div>
                 </div>
             </div>
@@ -429,6 +436,7 @@
             background-color: #f44336;
         }
     </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
@@ -540,4 +548,42 @@
             });
         });
     </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: '{{ session('success') }}',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        @endif
+
+        @if (session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        @endif
+
+        @if ($errors->any())
+        let errorMessages = '';
+        @foreach ($errors->all() as $error)
+            errorMessages += '{{ $error }}\n';
+        @endforeach
+        Swal.fire({
+            icon: 'error',
+            title: 'Proses Gagal',
+            html: errorMessages,
+            showConfirmButton: true
+        });
+        @endif
+    });
+</script>
+
 @endsection

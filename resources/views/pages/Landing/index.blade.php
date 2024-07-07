@@ -2,8 +2,9 @@
 
 @section('content')
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header">
-    <div class="container py-5" style="background-image: url('{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}');">
+<div class="container-fluid py-5 mb-5 hero-header position-relative">
+    <img src="{{ $bannerHead ? asset('storage/' . $bannerHead->image) : '' }}" class="position-absolute top-0 end-0 w-100 img-fluid" style="height: 480px; object-fit: cover;">
+    <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-3" style="color: #747d88; font-family: 'Open Sans', sans-serif;"></h4>
@@ -14,17 +15,17 @@
             </div>
             <div class="col-md-12 col-lg-5">
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
+                    <div class="carousel-inner rounded" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Kerajinan</a>
+                            <img src="{{ asset('LandingPage/img/kerajinan.jpg') }}" class="img-fluid bg-secondary rounded" alt="First slide" style="height: 240px; width: 100%;">
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 100%;">Kerajinan</a>
                         </div>
                         @foreach($slide as $value)
                         <div class="carousel-item rounded">
                             <div class="image-wrapper">
-                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img" alt="Slide">
+                                <img src="{{ asset('storage/' . $value->image) }}" class="img-fluid equal-img rounded" alt="Slide" style="height: 240px; width: 100%;">
                             </div>
-                            <a href="#" class="btn px-4 py-2 text-white rounded">{!! $value->description !!}</a>
+                            <a href="#" class="btn px-4 py-2 text-white rounded" style="width: 100%;">{!! $value->description !!}</a>
                         </div>
                         @endforeach
                     </div>
@@ -42,13 +43,14 @@
     </div>
 </div>
 
+
 </div>
 <!-- Hero End -->
 <!-- Bestseller Product Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-5">Produk Terlaris</h1>
+            <h1 class="display-5">Produk Terpopuler</h1>
             <p>Dukung produk lokal berkualitas yang dihasilkan oleh UMKM unggulan.</p>
         </div>
         <div class="row g-4">
@@ -56,14 +58,16 @@
            <div class="col-lg-6 col-xl-4">
             <div class="p-4 rounded bg-light">
                 <div class="row align-items-center">
-                    {{-- <div class="col-6">
-                        <img src="{{ asset('storage/' . $product->image) }}"
+                    <div class="col-6">
+
+                        <img src="{{ asset('storage/' . $product->min_variant_image) }}"
                         class="img-fluid rounded-circle w-100" alt="" style=" width:120px; height: 120px; object-fit: cover;">
-                    </div> --}}
+                    </div>
                     <div class="col-6">
                         <a href="{{ route('katalog.detail', ['id' => $product->id]) }}" class="h6">{{ $product->name }}</a>
-                        {{-- <h4 class="mb-3">Rp {{ number_format($product->price, 0, ',', '.') }}</h4> --}}
-                        <p class="small"><i class="fas fa-store"></i> {{ $product->saller_name }}</p>
+
+                        <h4 class="mb-3">Rp {{ number_format($product->min_price, 0, ',', '.') }}</h4>
+                        <p class="small"><i class="fas fa-store"></i> {{ $product->seller_name }}</p>
                     </a>
                 </div>
             </div>
@@ -101,7 +105,7 @@
                 @endif
             </div>
             <div class="text-center">
-                <p>{!! $about->content !!}</p>
+                <p  style="text-align: justify">{!! $about->content !!}</p>
 
             </div>
             @else
@@ -110,6 +114,7 @@
         </div>
     </div>
 </div>
+
 {{-- End About Us --}}
 <script type="text/javascript">
 // Melacak klik
